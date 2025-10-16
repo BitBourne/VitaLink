@@ -1,11 +1,12 @@
-import BaseDAO from "./BaseDAO.JS";
+import BaseDAO from "./BaseDAO.js";
+import User from "../Models/User.js";
 
 class UserDAO extends BaseDAO {
-
-    findUserByID = (id) => {
-        const odt = this.findUserByID(id);
-        return odt;
+    constructor() {
+        super(User);
     }
+
+    // Custom methods
 }
 
-export default UserDAO;
+export default UserDAO; 

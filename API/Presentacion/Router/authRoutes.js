@@ -1,15 +1,17 @@
-import express from 'express';
+// Dependences
+import { Router } from 'express';
+
+// Cusom modules
+import * as authControllers from '../Controllers/AuthControllers/index.js';
 
 
-import { login } from '../Controllers/LogInControllers.js';
 
+// Router init
+const router = Router();
 
-
-const router = express.Router();
-
-// Controllers
-router.route('/login').
-                    get(login);
+// Public routes
+router.post('/logIn', authControllers.logIn);
+router.post('/singUp', authControllers.singUp);
 
 
 
