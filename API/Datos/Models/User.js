@@ -19,10 +19,20 @@ const User = db.define('users', {
         type: Sequelize.STRING,
         allowNull: false
     },
-    type_user: {
+    role: {
         type: Sequelize.STRING,
         allowNull: false
     },
+    // account verification status
+    verified: {
+    type: Sequelize.BOOLEAN,
+        defaultValue: false // By default, a new user is not verified
+    }, 
+    // New field for the verification code or token
+    token: {
+        type: Sequelize.STRING,
+        allowNull: true // It must be null after verification
+    }
 });
 
 export default User;

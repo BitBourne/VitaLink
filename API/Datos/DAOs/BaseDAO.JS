@@ -16,6 +16,11 @@ class BaseDAO {
         return await this.model.findAll(options);
     }
 
+    // receives an object as a parameter
+    async findOne(data) {
+        return await this.model.findOne({ where: data });
+    }
+
     async update(id, data) {
         const instance = await this.model.findByPk(id);
         if (!instance) throw new Error(`${this.model.name} with ID ${id} not found`);

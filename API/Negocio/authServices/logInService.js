@@ -1,25 +1,72 @@
-import User from "../../../../../Odonto/web3/Odonto_API/Models/User";
 
-const loginService = (email, password) => {
+import * as utils from '../../Infraestructura/utils/index.js'
+import UserDAO from '../../Datos/DAOs/UserDAO.js';
+
+const logInService = async (logInDTO) => {
+    // data from controller
+    const { email, password } = logInDTO;
+
+    // instance of DAO
+    const userDAO = new UserDAO();
 
 
-
-    const dto = new LoginDao({email, password});
-
-
-
-    if(password) {
-        return "TU contraseña es correcta";
+        // Prevent null inputs
+    if( !email || !password ) {
+        const error = new Error('Todos los campos son obligatorios');
+        error.statusCode = 400;
+        throw error;
     }
-    else {
-        return "TU contraseña es incorrecta";
+
+    // Validate email
+    if( utils.isValidEmail(email)) {
+        const error = new Error('El email no es valido');
+        error.statusCode = 400;
+        throw error;
     }
+
+    // exist user?
+    const user =  await userDAO.findOne({email});
+    if( !userExist ) {
+        const error = new Error('Este usuario no existe');
+        error.statusCode = 400;
+        throw error;
+    }
+
+    // is Confirmed?
+    if( !user.verified ) {
+        const error = new Error('Tu cuenta aun no ha sido verificada');
+        error.statusCode = 400;
+        throw error;
+    }
+
+    // compare password
+
+
+
+
+
+    try {
+        const userDAO = new UserDAO();
+
+        const profile = await userDAO.logIn({
+            email,
+            password
+        });
+
+        return profile
+    } catch (error) {
+        
+    }
+
+
+
+
 
 }
 
 
 export {
-    loginService,
+    logInService,
 }
 
 
@@ -41,109 +88,109 @@ export {
 
 
 
-const controlador = () => {
-    // Llamadas a servicios, etc.
-    const result = servicio();
+// const controlador = () => {
+//     // Llamadas a servicios, etc.
+//     const result = servicio();
 
-    // Respuesta a usuario
-    return result.json(result);
+//     // Respuesta a usuario
+//     return result.json(result);
 
-}
-
-
-const servicio = () => {
-    // Validaciones, lógica de negocio, etc.
-
-    // Preparación de datos para DAO
-    const dto = {email: "", password: ""};
-
-    // Llamada a DAO
-    const result = pacienteDAO.findUserByID(dto);
-
-    // Respuesta al controlador
-    return result;
+// }
 
 
-}
+// const servicio = () => {
+//     // Validaciones, lógica de negocio, etc.
+
+//     // Preparación de datos para DAO
+//     const dto = {email: "", password: ""};
+
+//     // Llamada a DAO
+//     const result = pacienteDAO.findUserByID(dto);
+
+//     // Respuesta al controlador
+//     return result;
 
 
-const dao = (dto) => {
-
-    const {email, password} = dto;
-
-    // Funciones simuladas
-    const executeQuery = (query) => {
-        return "Resultado de la consulta";
-    }
-
-    // Simulación de consulta a base de datos
-    const query = `SELECT * FROM users WHERE ${email} = ? AND ${password} = ?`;
-    const result = executeQuery(query);
-
-    const resultORM = findUserByID(1);
-
-    // Retornar resultado
-    return resultORM;
-
-}
+// }
 
 
-const pacienteDAO = (dto) => {
+// const dao = (dto) => {
 
-    const {email, password} = dto;
+//     const {email, password} = dto;
 
-    const findUserByID = (id) => {
-        const user = PatientModel.findUserByID(1);
+//     // Funciones simuladas
+//     const executeQuery = (query) => {
+//         return "Resultado de la consulta";
+//     }
 
-        return user;
-    }
+//     // Simulación de consulta a base de datos
+//     const query = `SELECT * FROM users WHERE ${email} = ? AND ${password} = ?`;
+//     const result = executeQuery(query);
 
-    const findAll = () => {
-        const user = findAll();
+//     const resultORM = findUserByID(1);
 
-        return user;
-    }
-    const UpdateUser = () => {
-        const user = findAll();
+//     // Retornar resultado
+//     return resultORM;
 
-        return user;
-    }
-    const DeleteUser = () => {
-        const user = findAll();
-
-        return user;
-    }
-}
+// }
 
 
-class PatientDAO extends BaseDAO {
+// const pacienteDAO = (dto) => {
 
-    findUserByID = (id) => {
-        return `Usuario con ID: ${id}`;
-    }
+//     const {email, password} = dto;
 
-}
+//     const findUserByID = (id) => {
+//         const user = PatientModel.findUserByID(1);
+
+//         return user;
+//     }
+
+//     const findAll = () => {
+//         const user = findAll();
+
+//         return user;
+//     }
+//     const UpdateUser = () => {
+//         const user = findAll();
+
+//         return user;
+//     }
+//     const DeleteUser = () => {
+//         const user = findAll();
+
+//         return user;
+//     }
+// }
 
 
-class BaseDAO {
+// class PatientDAO extends BaseDAO {
 
-    findAll = () => {
-        return "Todos los usuarios";
-    }   
+//     findUserByID = (id) => {
+//         return `Usuario con ID: ${id}`;
+//     }
 
-    findByID = (id) => {
-        return `Usuario con ID: ${id}`;
-    }
+// }
 
-    create = (user) => {
-        return `Usuario creado: ${user}`;
-    }   
 
-    update = (id, user) => {
-        return `Usuario con ID: ${id} actualizado a ${user}`;
-    }
+// class BaseDAO {
 
-    deleteByID = (id) => {
-        return `Usuario con ID: ${id} eliminado`;
-    }
-}
+//     findAll = () => {
+//         return "Todos los usuarios";
+//     }   
+
+//     findByID = (id) => {
+//         return `Usuario con ID: ${id}`;
+//     }
+
+//     create = (user) => {
+//         return `Usuario creado: ${user}`;
+//     }   
+
+//     update = (id, user) => {
+//         return `Usuario con ID: ${id} actualizado a ${user}`;
+//     }
+
+//     deleteByID = (id) => {
+//         return `Usuario con ID: ${id} eliminado`;
+//     }
+// }
