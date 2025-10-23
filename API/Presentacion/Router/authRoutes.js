@@ -10,7 +10,7 @@ import * as authControllers from '../Controllers/AuthControllers/index.js';
 const router = Router();
 
 // Public routes
-router.post('/singUp', authControllers.singUp);
+router.post('/register', authControllers.singUp);
 router.post('/singUp/confirm-account', authControllers.confirmAccount);
 
 router.post('/logIn', authControllers.logIn);

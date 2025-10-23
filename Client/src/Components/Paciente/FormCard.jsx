@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import { User, Mail, Lock, ArrowRight, ArrowLeft } from "lucide-react";
 import { useNavigate } from 'react-router-dom';
+import axios from "axios";
 
-export default function FormCard() {
+export default function FormCardPaciente() {
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
@@ -15,18 +16,15 @@ export default function FormCard() {
 
   const [error, setError] = useState("");
 
-  // validacion email
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  // validacion contraseña
   const passwordRegex = /^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+={}[\]|:;"'<>,.?/~`-]).{8,}$/;
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-
     const { nombre, apellidos, email, password, confirmPassword } = formData;
 
     // Validaciones
@@ -52,9 +50,24 @@ export default function FormCard() {
       return;
     }
 
-    // Si pasa todas las validaciones
-    setError("");
-    navigate("/VerificationCard"); 
+    try {
+      setError(""); 
+
+      const response = await axios.post("http://localhost:4000/api/auth/register", {
+        name: nombre,
+        last_name: apellidos,
+        email,
+        password,
+        role: "paciente", 
+      });
+
+      console.log("Paciente creado:", response.data);
+      navigate("/VerificationCard"); // Redirigir a pantalla de verificación
+
+    } catch (err) {
+      console.error("Error al registrar paciente:", err);
+      setError(err.response?.data?.msg || "Ocurrió un error al crear la cuenta. Intenta más tarde.");
+    }
   };
 
   return (
@@ -69,7 +82,6 @@ export default function FormCard() {
 
       <form className="space-y-4" onSubmit={handleSubmit}>
         <div className="sm:flex sm:gap-3">
-          {/* Nombre */}
           <div className="relative w-full sm:w-1/2 mb-4 sm:mb-0">
             <User className="absolute left-3 top-2.5 text-[#4C575F]/70 w-5 h-5" />
             <input
@@ -82,7 +94,6 @@ export default function FormCard() {
             />
           </div>
 
-          {/* Apellidos */}
           <div className="relative w-full sm:w-1/2">
             <User className="absolute left-3 top-2.5 text-[#4C575F]/70 w-5 h-5" />
             <input
@@ -96,7 +107,6 @@ export default function FormCard() {
           </div>
         </div>
 
-        {/* Email */}
         <div className="relative">
           <Mail className="absolute left-3 top-2.5 text-[#4C575F]/70 w-5 h-5" />
           <input
@@ -109,7 +119,6 @@ export default function FormCard() {
           />
         </div>
 
-        {/* Contraseña */}
         <div className="relative">
           <Lock className="absolute left-3 top-2.5 text-[#4C575F]/70 w-5 h-5" />
           <input
@@ -122,7 +131,6 @@ export default function FormCard() {
           />
         </div>
 
-        {/* Confirmar Contraseña */}
         <div className="relative">
           <Lock className="absolute left-3 top-2.5 text-[#4C575F]/70 w-5 h-5" />
           <input
@@ -135,7 +143,6 @@ export default function FormCard() {
           />
         </div>
 
-        {/* Alerta de error */}
         {error && (
           <div className="text-red-500 text-sm font-medium text-center bg-red-50 p-2 rounded-md">
             {error}

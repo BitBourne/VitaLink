@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { User, Mail, Lock, CircleStar, ArrowRight, ArrowLeft } from "lucide-react";
 import { useNavigate } from 'react-router-dom';
+import axios from "axios";
+
 
 export default function FormCardEspecialista() {
   const navigate = useNavigate();
@@ -24,7 +26,7 @@ export default function FormCardEspecialista() {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
     e.preventDefault();
     const { nombre, apellidos, email, password, confirmPassword, especialidad } = formData;
 
@@ -49,11 +51,32 @@ export default function FormCardEspecialista() {
       return;
     }
 
-    // Si pasa todas las validaciones
-    setError("");
-    navigate("/VerificationCard");
-  };
+    try {
+      // Enviar datos al backend
+      const response = await axios.post("http://localhost:4000/api/auth/register", {
+        name: nombre,
+        last_name: apellidos,
+        email,
+        password,
+        role: "specialist_role",
+        especialidad
+      });
 
+      console.log("Usuario creado:", response.data);
+
+      // Redirigir a pantalla de verificación
+      navigate("/VerificationCard");
+
+    } catch (error) {
+      console.error("Error al registrar especialista:", error);
+      if (error.response?.data?.message) {
+        setError(error.response.data.message);
+      } else {
+        setError("Ocurrió un error al crear la cuenta. Intenta más tarde.");
+      }
+    }
+  };
+  
   return (
     <div className="bg-white shadow-2xl rounded-2xl p-8 w-full max-w-lg">
       <h2 className="text-lg font-semibold text-[#4C575F] mb-6">
