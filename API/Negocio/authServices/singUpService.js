@@ -57,7 +57,7 @@ const singUpService = async (singUpDTO) => {
         // send verification email
         emailSingUp({name, last_name, email, token: usuario.token})
 
-        return 'Tu cuenta se ha confirmado correctamente!';
+        return 'Hemos enviado un email de verificacion a tu correo.';
 
     } catch (error) {
         console.log( error);

@@ -25,7 +25,7 @@ const confirmAccountService = async (confirmAccountDTO) => {
     try {
         const userConfirmed = await userDAO.update(userToConfirm.id, { token: null, verified: true });
 
-        return userConfirmed;
+        return "Su cuenta ha sido verificada con exito, ya puede iniciar sesion!";
 
     } catch (error) {
         console.log( error);

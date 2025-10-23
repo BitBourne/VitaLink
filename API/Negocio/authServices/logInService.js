@@ -1,6 +1,8 @@
 
-import * as utils from '../../Infraestructura/utils/index.js'
 import UserDAO from '../../Datos/DAOs/UserDAO.js';
+import * as utils from '../../Infraestructura/utils/index.js'
+import comparePassword from './helpers/comparePassword.js';
+import generateJWT from './helpers/generateJWT.js';
 
 const logInService = async (logInDTO) => {
     // data from controller
@@ -26,7 +28,7 @@ const logInService = async (logInDTO) => {
 
     // exist user?
     const user =  await userDAO.findOne({email});
-    if( !userExist ) {
+    if( !user ) {
         const error = new Error('Este usuario no existe');
         error.statusCode = 400;
         throw error;
@@ -40,27 +42,19 @@ const logInService = async (logInDTO) => {
     }
 
     // compare password
-
-
-
-
-
-    try {
-        const userDAO = new UserDAO();
-
-        const profile = await userDAO.logIn({
-            email,
-            password
-        });
-
-        return profile
-    } catch (error) {
-        
+    if( !comparePassword(password, user.password) ){
+        const error = new Error('La contraseña es incorrecta.');
+        error.statusCode = 400;
+        throw error;
     }
 
-
-
-
+    // Autenticar
+    return {
+        _id: user.id,
+        nombre: user.name,
+        email: user.email,
+        token: generateJWT(user.id)
+    }
 
 }
 

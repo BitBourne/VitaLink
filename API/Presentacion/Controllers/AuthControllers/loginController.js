@@ -8,4 +8,4 @@ const logIn = async (req, res) => {
     res.json({ message: result });
 }
 
-export default logIn;
+export default logIn; 
