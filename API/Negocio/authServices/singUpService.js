@@ -7,7 +7,7 @@ import hashPassword from './helpers/hashPassword.js';
 
 const singUpService = async (singUpDTO) => {
     // data from controller
-    const {name, last_name, email, password, role} = singUpDTO;
+    const {name, last_name, email, password, role, especialidad} = singUpDTO;
     
     // instance of DAO
     const userDAO = new UserDAO();
@@ -20,7 +20,7 @@ const singUpService = async (singUpDTO) => {
     }
 
     // Email validation
-    if(utils.isValidEmail(email)) { 
+    if(!utils.isValidEmail(email)) { 
         const error = new Error('El email no es valido');
         error.statusCode = 400;
         throw error;
@@ -51,11 +51,12 @@ const singUpService = async (singUpDTO) => {
             email,
             password: hashedPassword,
             role,
+            especialidad,
             token: generateToken()
         });
 
         // send verification email
-        emailSingUp({name, last_name, email, token: usuario.token})
+       emailSingUp({name, last_name, email, token: usuario.token})
 
         return 'Hemos enviado un email de verificacion a tu correo.';
 

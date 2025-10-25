@@ -20,7 +20,7 @@ const logInService = async (logInDTO) => {
     }
 
     // Validate email
-    if( utils.isValidEmail(email)) {
+    if( !utils.isValidEmail(email)) {
         const error = new Error('El email no es valido');
         error.statusCode = 400;
         throw error;
