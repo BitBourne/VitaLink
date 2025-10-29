@@ -7,7 +7,7 @@ import hashPassword from './helpers/hashPassword.js';
 
 const singUpService = async (singUpDTO) => {
     // data from controller
-    const {name, last_name, email, password, role, especialidad} = singUpDTO;
+    const { name, last_name, email, password, role } = singUpDTO;
     
     // instance of DAO
     const userDAO = new UserDAO();
@@ -15,6 +15,14 @@ const singUpService = async (singUpDTO) => {
     // Prevent null inputs
     if(!name || !last_name || !email || !password || !role) {
         const error = new Error('Todos los campos son obligatorios');
+        error.statusCode = 400;
+        throw error;
+    }
+
+    // Rol validation
+    const PUBLIC_ROLES = [1, 2]; // role_id in DB
+    if (!PUBLIC_ROLES.includes(parseInt(role, 10))) {
+        const error = new Error('Rol no válido.');
         error.statusCode = 400;
         throw error;
     }
@@ -42,7 +50,6 @@ const singUpService = async (singUpDTO) => {
     }
 
     try {
-
         const hashedPassword = await hashPassword(password);
 
         const usuario = await userDAO.create({
@@ -50,19 +57,20 @@ const singUpService = async (singUpDTO) => {
             last_name,
             email,
             password: hashedPassword,
-            role,
-            especialidad,
+            role_id: role,
             token: generateToken()
         });
 
         // send verification email
-       emailSingUp({name, last_name, email, token: usuario.token})
+       await emailSingUp({name, last_name, email, token: usuario.token})
 
         return 'Hemos enviado un email de verificacion a tu correo.';
 
     } catch (error) {
-        console.log( error);
-        return error;
+        console.log( 'Error in singUpService.js: ', error);
+        const serviceError = new Error('Ocurrió un error al crear la cuenta.');
+        serviceError.statusCode = 500;
+        throw serviceError;
     }
 };
 

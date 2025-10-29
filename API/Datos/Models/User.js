@@ -19,7 +19,7 @@ const User = db.define('users', {
         type: Sequelize.STRING,
         allowNull: false
     },
-    role: {
+    role_id: {
         type: Sequelize.STRING,
         allowNull: false
     },

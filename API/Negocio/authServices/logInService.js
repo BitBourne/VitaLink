@@ -21,7 +21,7 @@ const logInService = async (logInDTO) => {
 
     // Validate email
     if( !utils.isValidEmail(email)) {
-        const error = new Error('El email no es valido');
+        const error = new Error('El email o la contraseña son incorrectos.');
         error.statusCode = 400;
         throw error;
     }
@@ -29,21 +29,21 @@ const logInService = async (logInDTO) => {
     // exist user?
     const user =  await userDAO.findOne({email});
     if( !user ) {
-        const error = new Error('Este usuario no existe');
-        error.statusCode = 400;
-        throw error;
-    }
-
-    // is Confirmed?
-    if( !user.verified ) {
-        const error = new Error('Tu cuenta aun no ha sido verificada');
+        const error = new Error('El email o la contraseña son incorrectos.');
         error.statusCode = 400;
         throw error;
     }
 
     // compare password
     if( !comparePassword(password, user.password) ){
-        const error = new Error('La contraseña es incorrecta.');
+        const error = new Error('El email o la contraseña son incorrectos.');
+        error.statusCode = 400;
+        throw error;
+    }
+    
+    // is Confirmed?
+    if( !user.verified ) {
+        const error = new Error('Tu cuenta aun no ha sido verificada');
         error.statusCode = 400;
         throw error;
     }
@@ -53,11 +53,10 @@ const logInService = async (logInDTO) => {
         _id: user.id,
         nombre: user.name,
         email: user.email,
-        token: generateJWT(user.id)
+        token: generateJWT(user.id, user.role_id)
     }
 
 }
-
 
 export {
     logInService,

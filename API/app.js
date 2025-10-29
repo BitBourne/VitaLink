@@ -5,7 +5,7 @@ import cors from 'cors';
 
 // Custom modules
 import db from './Infraestructura/config/db.js';
-import authRoutes from './Presentacion/Router/authRoutes.js';
+import routes from './Presentacion/Routes/index.js';
 import ErrorHandling from './Infraestructura/middlewares/errorHandling.js';
 
 // Init express server
@@ -33,7 +33,7 @@ db.sync({ alter: true })
   .catch(err => console.log(err));
 
 // Routing
-app.use('/api/auth', authRoutes);
+app.use('/api', routes); 
 
 // Error Handling
 app.use(ErrorHandling);

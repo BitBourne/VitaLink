@@ -14,6 +14,12 @@ const confirmAccountService = async (confirmAccountDTO) => {
         throw error;
     }
 
+    if( token.lenght > 6 ) {
+        const error = new Error('Este codigo no es valido o ha expirado');
+        error.statusCode = 400;
+        throw error;
+    }
+
     // search for the token
     const userToConfirm =  await userDAO.findOne({token});
     if( !userToConfirm ) {
