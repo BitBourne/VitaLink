@@ -30,7 +30,10 @@ export default function Signup() {
 
         <div className="flex items-center gap-4">
             <p className="text-sm text-[#4C575F] hidden sm:block">¿Ya tienes una cuenta?</p>
-            <button className="px-4 py-2 border border-indigo-300 text-indigo-600 font-medium rounded-lg hover:bg-indigo-100 transition">
+            <button
+            type="button"
+            onClick={() => navigate("/LogIn")}
+            className="px-4 py-2 border border-indigo-300 text-indigo-600 font-medium rounded-lg hover:bg-indigo-100 transition">
                 Inicia Sesión →
             </button>
         </div>

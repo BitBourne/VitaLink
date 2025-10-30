@@ -35,7 +35,7 @@ export default function SignupVerification() {
       });
 
       console.log("Paciente creado:", response.data);
-      navigate("/Dashboard"); // Redirigir a pantalla de verificación
+      navigate("/login"); // Redirigir a pantalla de verificación
 
     } catch (err) {
       console.error("Error al registrar paciente:", err);

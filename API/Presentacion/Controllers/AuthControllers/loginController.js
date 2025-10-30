@@ -6,7 +6,7 @@ const logIn = async (req, res, next) => {
         const logInDTO = { email, password }
         
         const result = await logInService(logInDTO);
-        res.json({ message: result });
+        res.json(result);
     } catch (error) {
         next(error);
     }

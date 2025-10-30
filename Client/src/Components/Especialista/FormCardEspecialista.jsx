@@ -58,8 +58,7 @@ export default function FormCardEspecialista() {
         last_name: apellidos,
         email,
         password,
-        role: "specialist_role",
-        especialidad
+        role: "2"
       });
 
       console.log("Usuario creado:", response.data);

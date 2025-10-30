@@ -16,8 +16,12 @@ const checkAuth = async (req, res, next) => {
     
             // verify JWT
             const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    
-            req.user = { id: decoded.id, role: decoded.role };
+
+            const userDAO = new UserDAO;
+            const user = await userDAO.findById(decoded.id);
+            
+            const { id, name, last_name, email, role_id } = user;
+            req.user = { id, name, last_name, email, role_id }
     
             return next();
         } catch (error) {
@@ -50,4 +54,4 @@ const checkRole = (allowedRoles) => {
     };
 };
 
-export default { checkAuth, checkRole };
+export { checkAuth, checkRole };
