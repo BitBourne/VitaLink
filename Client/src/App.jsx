@@ -7,7 +7,7 @@ import SignupEspecialista from './Components/Especialista/SignupEspecialista';
 import VerificationCard from './Components/Verification/VerificationCard';
 import Sucess from './Components/Success/Sucess';
 import Dashboard from './Components/Dashboard/Dashboard';
-
+import Login from './Components/Login/Login';
 
 
 export default function App() {
@@ -22,6 +22,8 @@ export default function App() {
         <Route path="/VerificationCard" element={<VerificationCard />} />
         <Route path="/Sucess" element={<Sucess />} />
         <Route path="/Dashboard" element={<Dashboard />} />
+        <Route path="/login" element={<Login />} />
+
 
       </Routes>
     </Router>
