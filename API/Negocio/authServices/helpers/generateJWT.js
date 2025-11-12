@@ -1,10 +1,10 @@
 import JWT from 'jsonwebtoken'; 
 
-const generateJWT = (id, role) => {
+const generateJWT = (id, roleNames) => {
     // El payload ahora contiene ambos datos
     const payload = { 
         id: id,
-        role: role // <-- La adición clave
+        role: roleNames // <-- La adición clave
     };
 
     return JWT.sign(payload, process.env.JWT_SECRET, {

@@ -1,31 +1,37 @@
 import * as utils from '../../Infraestructura/utils/index.js'
 
 import UserDAO from '../../Datos/DAOs/UserDAO.js';
+import RoleDAO from '../../Datos/DAOs/RoleDAO.js';
+import UserRolesDAO from '../../Datos/DAOs/UserRoleDAO.js'
 import generateToken from './helpers/generateToken.js';
 import emailSingUp from './helpers/emailSingUp.js';
 import hashPassword from './helpers/hashPassword.js';
 
 const singUpService = async (singUpDTO) => {
     // data from controller
-    const { name, last_name, email, password, role } = singUpDTO;
+    const { name, last_name, email, password, roleId } = singUpDTO;
     
     // instance of DAO
     const userDAO = new UserDAO();
+    const roleDAO = new RoleDAO();
+    const userRolesDAO = new UserRolesDAO();
 
     // Prevent null inputs
-    if(!name || !last_name || !email || !password || !role) {
+    if(!name || !last_name || !email || !password) {
         const error = new Error('Todos los campos son obligatorios');
         error.statusCode = 400;
         throw error;
     }
 
-    // Rol validation
-    const PUBLIC_ROLES = [1, 2]; // role_id in DB
-    if (!PUBLIC_ROLES.includes(parseInt(role, 10))) {
-        const error = new Error('Rol no válido.');
-        error.statusCode = 400;
-        throw error;
-    }
+    // // Validación de rol (solo si viene desde el frontend)
+    // const PUBLIC_ROLES = [1, 2];
+    // const roleId = role ? parseInt(role, 10) : DEFAULT_ROLE_ID;
+
+    // if (!PUBLIC_ROLES.includes(roleId)) {
+    //     const error = new Error('Rol no válido.');
+    //     error.statusCode = 400;
+    //     throw error;
+    // }
 
     // Email validation
     if(!utils.isValidEmail(email)) { 
@@ -57,9 +63,24 @@ const singUpService = async (singUpDTO) => {
             last_name,
             email,
             password: hashedPassword,
-            role_id: role,
             token: generateToken()
         });
+
+        // Crear relación user-role (aquí se asigna el rol por defecto o el que venga)
+        const roleDefualt = roleId || 2;
+        await userRolesDAO.create({
+            user_id: usuario.id,
+            role_id: roleDefualt
+        });
+
+        // // validar que el rol existe
+        // const roleExists = await roleDAO.findById(roleId);
+        // if (!roleExists) {
+        //     const error = new Error('El rol especificado no existe');
+        //     error.statusCode = 400;
+        //     throw error;
+        // }
+        
 
         // send verification email
        await emailSingUp({name, last_name, email, token: usuario.token})

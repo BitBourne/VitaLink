@@ -1,5 +1,9 @@
 import jwt from 'jsonwebtoken';
+
+
 import UserDAO from '../../Datos/DAOs/UserDAO.js';
+import RoleDAO from '../../Datos/DAOs/RoleDAO.js';
+import PermissionDAO from '../../Datos/DAOs/PermissionDAO.js';
 
 // Middleware to authenticate users
 const checkAuth = async (req, res, next) => {
@@ -13,15 +17,17 @@ const checkAuth = async (req, res, next) => {
         try {
             // take the JWT from request headers
             token = req.headers.authorization.split(" ")[1];
-    
+
             // verify JWT
             const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
-            const userDAO = new UserDAO;
+
+            const userDAO = new UserDAO();
             const user = await userDAO.findById(decoded.id);
-            
-            const { id, name, last_name, email, role_id } = user;
-            req.user = { id, name, last_name, email, role_id }
+
+            const { id, name, last_name, email } = user;
+            req.user = { id, name, last_name, email }
+
     
             return next();
         } catch (error) {
@@ -36,22 +42,62 @@ const checkAuth = async (req, res, next) => {
         error.statusCode = 401;
         return next(error);
     }
+};
 
-    // finally the middleware
-    next();
-}
 
-// Recibe un array de roles permitidos (ej: [1] para doctor, [2] para paciente)
+// ✅ checkRole
 const checkRole = (allowedRoles) => {
-    return (req, res, next) => {
-        // Asumimos que verifyToken ya se ejecutó, por lo que tenemos req.user
-        if (!req.user || !allowedRoles.includes(req.user.role)) {
+    return async (req, res, next) => {
+        const userDAO = new UserDAO();
+        const roles = await userDAO.getUserRoles(req.user.id);
+        console.log("ROLES DEL USUARIO:", roles);
+
+        const roleNames = roles.map(r => r.name);
+        const hasRole = allowedRoles.some(role => roleNames.includes(role));
+
+        if (!hasRole) {
             const error = new Error('No tienes los permisos necesarios para acceder a este recurso.');
-            error.statusCode = 403; // 403 Forbidden
+            error.statusCode = 403;
             return next(error);
         }
-        next(); // El rol es correcto, continuar
+
+        next();
     };
 };
 
-export { checkAuth, checkRole };
+// ✅ checkPermission
+const checkPermission = (allowedPermissions) => {
+    return async (req, res, next) => {
+        const userDAO = new UserDAO();
+        const roleDAO = new RoleDAO();
+
+        // Obtener roles del usuario
+        const roles = await userDAO.getUserRoles(req.user.id);
+        if (!roles.length) {
+            return res.status(403).json({ success: false, msg: "No tienes roles asignados" });
+        }
+
+        // Obtener IDs de roles
+        const roleIds = roles.map(r => r.id);
+
+        // Obtener permisos de esos roles
+        const permissions = await roleDAO.getPermissionsByRoles(roleIds);
+        const permissionNames = permissions.map(p => p.name);
+
+        // Validar si el usuario tiene al menos uno de los permisos requeridos
+        const hasPermission = allowedPermissions.some(perm => permissionNames.includes(perm));
+
+
+        if (!hasPermission) {
+            const error = new Error(`No tienes permiso para: ${allowedPermissions.join(', ')}`);
+            error.statusCode = 403;
+            return next(error);
+        }
+
+        next();
+    };
+};
+
+
+
+export { checkAuth, checkRole, checkPermission };
