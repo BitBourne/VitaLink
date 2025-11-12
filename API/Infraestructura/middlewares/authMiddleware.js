@@ -45,7 +45,7 @@ const checkAuth = async (req, res, next) => {
 };
 
 
-// ✅ checkRole
+// checkRole
 const checkRole = (allowedRoles) => {
     return async (req, res, next) => {
         const userDAO = new UserDAO();
@@ -65,7 +65,7 @@ const checkRole = (allowedRoles) => {
     };
 };
 
-// ✅ checkPermission
+// checkPermission
 const checkPermission = (allowedPermissions) => {
     return async (req, res, next) => {
         const userDAO = new UserDAO();
