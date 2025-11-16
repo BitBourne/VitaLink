@@ -20,7 +20,7 @@ const singUpService = async (singUpDTO) => {
     // Prevent null inputs
     if(!name || !last_name || !email || !password) {
         const error = new Error('Todos los campos son obligatorios');
-        error.statusCode = 400;
+        error.statusCode = 400; 
         throw error;
     }
 

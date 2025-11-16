@@ -8,7 +8,7 @@ import { assignPermissionCtrlr } from '../Controllers/PermissionControllers/acti
 
 const router = express.Router();
 
-router.post('/assign-role', checkAuth, checkRole(["admin"]), checkPermission(['asignar_permisos','todo']), assignRoleUserCtrlr)
+router.post('/assign-role', checkAuth, checkRole(["admin"]), checkPermission(['todo']), assignRoleUserCtrlr)
 router.post('/assign-permission', checkAuth, checkRole(["admin"]), checkPermission(['asignar_permisos','todo']), assignPermissionCtrlr)
 
 
