@@ -51,6 +51,7 @@ UserPermission.belongsTo(User, {
   foreignKey: 'user_id',
   as: 'UP_user'
 });
+
 UserPermission.belongsTo(Permission, {
   foreignKey: 'permission_id',
   as: 'UP_permission'

@@ -23,7 +23,7 @@ class UserDAO extends BaseDAO {
         return userRoles.map(ur => ur.UR_role);
     }
 
-
+    
 
     // Obtener los permisos de una lista de roles
     async getPermissionsByUser(userId) {
