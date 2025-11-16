@@ -40,27 +40,13 @@ export const createRoleService = async (roleDTO) => {
         throw new Error("No tienes permiso para esta accion");
     }
 
-
     // Crear el nuevo rol
     const newRole = await roleDAO.create({
         role_name: newRoleData.role_name,
     });
 
-    // Asociar permisos si vienen en el body
-    if (newRoleData.permissions && newRoleData.permissions.length > 0) {
-        const permisos = await permissionDAO.findAll({
-            where: { id: newRoleData.permissions },
-        });
-        await newRole.setPermissions(permisos);
-    }
-
-    // Devolver el rol creado con sus permisos
-    const createdRole = await Roles.findByPk(newRole.id, {
-        include: {
-        model: permissionDAO,
-        through: { attributes: [] },
-        },
-    });
+    // Devolver el rol creado
+    const createdRole = await Roles.findByPk(newRole.id);
 
     return createdRole;
 };

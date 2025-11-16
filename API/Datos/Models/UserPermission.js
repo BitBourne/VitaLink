@@ -3,18 +3,18 @@ import { Sequelize } from "sequelize";
 import db from "../../Infraestructura/config/db.js";
 
 import Permission from "./Permission.js";
-import Role from "./Role.js"
+import User from "./User.js";
 
-const RolePermission = db.define('roles_permissions', {
+const UserPermission = db.define('user_permissions', {
   id: {
     type: Sequelize.INTEGER,
     autoIncrement: true,
     primaryKey: true,
   },
-  role_id: {
+  user_id: {
     type: Sequelize.INTEGER,
     references: {
-      model: Role,
+      model: User,
       key: "id",
     },
   },
@@ -27,4 +27,4 @@ const RolePermission = db.define('roles_permissions', {
   },
 });
 
-export default RolePermission;
+export default UserPermission;

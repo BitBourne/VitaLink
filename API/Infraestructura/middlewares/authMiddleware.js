@@ -50,7 +50,6 @@ const checkRole = (allowedRoles) => {
     return async (req, res, next) => {
         const userDAO = new UserDAO();
         const roles = await userDAO.getUserRoles(req.user.id);
-        console.log("ROLES DEL USUARIO:", roles);
 
         const roleNames = roles.map(r => r.name);
         const hasRole = allowedRoles.some(role => roleNames.includes(role));
@@ -69,27 +68,25 @@ const checkRole = (allowedRoles) => {
 const checkPermission = (allowedPermissions) => {
     return async (req, res, next) => {
         const userDAO = new UserDAO();
-        const roleDAO = new RoleDAO();
 
-        // Obtener roles del usuario
-        const roles = await userDAO.getUserRoles(req.user.id);
-        if (!roles.length) {
-            return res.status(403).json({ success: false, msg: "No tienes roles asignados" });
+
+        // Obtener permisos de ese usuario
+        const permissions = await userDAO.getPermissionsByUser(req.user.id);
+        if (!permissions.length) {
+            const error = new Error(`No tienes permiso.`);
+            error.statusCode = 403;
+            return next(error);
         }
 
-        // Obtener IDs de roles
-        const roleIds = roles.map(r => r.id);
-
-        // Obtener permisos de esos roles
-        const permissions = await roleDAO.getPermissionsByRoles(roleIds);
+        // Extraer nombres
         const permissionNames = permissions.map(p => p.name);
 
-        // Validar si el usuario tiene al menos uno de los permisos requeridos
+        // Validar si el usuario tiene los permisos requeridos
         const hasPermission = allowedPermissions.some(perm => permissionNames.includes(perm));
 
 
         if (!hasPermission) {
-            const error = new Error(`No tienes permiso para: ${allowedPermissions.join(', ')}`);
+            const error = new Error(`No tienes permiso.`);
             error.statusCode = 403;
             return next(error);
         }

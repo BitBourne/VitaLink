@@ -3,10 +3,10 @@ import User from "./User.js";
 import Role from "./Role.js";
 import Permission from "./Permission.js";
 import UserRoles from "./UserRoles.js";
-import RolePermission from "./RolePermission.js";
+import UserPermission from "./UserPermission.js";
 
 
-// Relación USER ↔ ROLE (muchos a muchos)
+// USER ↔ ROLE (M:N)
 User.belongsToMany(Role, {
   through: UserRoles,
   foreignKey: 'user_id',
@@ -21,32 +21,43 @@ Role.belongsToMany(User, {
   as: 'R_users',
 });
 
-// Relación ROLE ↔ PERMISSION (muchos a muchos)
-Role.belongsToMany(Permission, {
-  through: RolePermission,
-  foreignKey: 'role_id',
+// USER ↔ PERMISSION (M:N)
+User.belongsToMany(Permission, {
+  through: UserPermission,
+  foreignKey: 'user_id',
   otherKey: 'permission_id',
-  as: 'R_permissions',
+  as: 'U_permissions',
 });
 
-Permission.belongsToMany(Role, {
-  through: RolePermission,
+Permission.belongsToMany(User, {
+  through: UserPermission,
   foreignKey: 'permission_id',
-  otherKey: 'role_id',
-  as: 'P_roles',
+  otherKey: 'user_id',
+  as: 'P_users',
 });
 
+// RELACIONES DE TABLA PIVOTE
 UserRoles.belongsTo(Role, {
-    foreignKey: 'role_id',
-    as: 'UR_role'
+  foreignKey: 'role_id',
+  as: 'UR_role'
 });
-
 UserRoles.belongsTo(User, {
-    foreignKey: 'user_id',
-    as: 'UR_user'
+  foreignKey: 'user_id',
+  as: 'UR_user'
+});
+
+
+UserPermission.belongsTo(User, {
+  foreignKey: 'user_id',
+  as: 'UP_user'
+});
+UserPermission.belongsTo(Permission, {
+  foreignKey: 'permission_id',
+  as: 'UP_permission'
 });
 
 
 
 
-export { User, Role, Permission, UserRoles, RolePermission };
+
+export { User, Role, Permission, UserRoles, UserPermission };

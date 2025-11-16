@@ -1,9 +1,9 @@
 import BaseDAO from "./BaseDAO.js";
-import RolePermission from "../Models/RolePermission.js";
+import UserPermission from "../Models/UserPermission.js";
 
-class RolePermissionDAO extends BaseDAO {
+class UserPermissionDAO extends BaseDAO {
     constructor() {
-        super(RolePermission);
+        super(UserPermission);
     }
 
     // Custom methods
@@ -16,4 +16,4 @@ class RolePermissionDAO extends BaseDAO {
     }
 }
 
-export default RolePermissionDAO; 
+export default UserPermissionDAO; 

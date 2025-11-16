@@ -1,19 +1,20 @@
 import * as utils from '../../Infraestructura/utils/index.js'
 
 import UserDAO from '../../Datos/DAOs/UserDAO.js';
-import RoleDAO from '../../Datos/DAOs/RoleDAO.js';
+import UserPermissionDAO from '../../Datos/DAOs/UserPermissionDAO.js';
 import UserRolesDAO from '../../Datos/DAOs/UserRoleDAO.js'
+
 import generateToken from './helpers/generateToken.js';
 import emailSingUp from './helpers/emailSingUp.js';
 import hashPassword from './helpers/hashPassword.js';
 
 const singUpService = async (singUpDTO) => {
     // data from controller
-    const { name, last_name, email, password, roleId } = singUpDTO;
+    const { name, last_name, email, password, roleId, permId} = singUpDTO;
     
     // instance of DAO
     const userDAO = new UserDAO();
-    const roleDAO = new RoleDAO();
+    const userPermissionDAO = new UserPermissionDAO();
     const userRolesDAO = new UserRolesDAO();
 
     // Prevent null inputs
@@ -73,6 +74,13 @@ const singUpService = async (singUpDTO) => {
             role_id: roleDefualt
         });
 
+
+        const permissionDefault = permId || 2;
+        await userPermissionDAO.create({
+            user_id: usuario.id,
+            permission_id: permissionDefault
+        });
+
         // // validar que el rol existe
         // const roleExists = await roleDAO.findById(roleId);
         // if (!roleExists) {
@@ -80,7 +88,6 @@ const singUpService = async (singUpDTO) => {
         //     error.statusCode = 400;
         //     throw error;
         // }
-        
 
         // send verification email
        await emailSingUp({name, last_name, email, token: usuario.token})

@@ -8,7 +8,7 @@ const Permission = db.define("permissions", {
     autoIncrement: true,
     primaryKey: true,
   },
-  permission_name: { // mantenemos el formato original
+  name: { // mantenemos el formato original
     type: Sequelize.STRING,
     allowNull: false,
     // unique: false,
