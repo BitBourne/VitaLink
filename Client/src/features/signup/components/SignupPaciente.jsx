@@ -1,5 +1,5 @@
 import React from "react";
-import Header from "../Layout/Header";
+import Header from "../../../core/ui/layout/Header";
 import FormCard from "./FormCard";
 
 export default function SignupPaciente() {

@@ -1,6 +1,6 @@
 import React from "react";
-import Header from "../Layout/Header";
-import LoginCard from "./LoginCard";
+import Header from "../../../core/ui/layout/Header";
+import LoginCard from "../components/LoginCard";
 
 export default function Login() {
   return (
