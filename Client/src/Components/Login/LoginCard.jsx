@@ -43,7 +43,7 @@ export default function LoginCard() {
 
       login(token);
 
-      navigate("/user");
+      navigate("/doctor");
     } catch (err) {
       console.log("Error al iniciar sesión:", err);
       setError(err.response?.data?.msg || "Credenciales inválidas o error en el servidor.");

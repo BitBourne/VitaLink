@@ -20,8 +20,12 @@ const User = db.define('users', {
         allowNull: false
     },
     role_id: {
-        type: Sequelize.STRING,
-        allowNull: false
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        references: {
+            model: 'roles',
+            key: 'id'
+        }
     },
     // account verification status
     verified: {

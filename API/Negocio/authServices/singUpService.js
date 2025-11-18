@@ -1,7 +1,7 @@
 import * as utils from '../../Infraestructura/utils/index.js'
 
 import UserDAO from '../../Datos/DAOs/UserDAO.js';
-import generateToken from './helpers/generateToken.js';
+import generateToken from './helpers/generate6DigitToken.js';
 import emailSingUp from './helpers/emailSingUp.js';
 import hashPassword from './helpers/hashPassword.js';
 

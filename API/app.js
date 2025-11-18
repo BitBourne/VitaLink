@@ -27,10 +27,10 @@ db.authenticate()
     .catch(error => console.log(error));
 
 // Sync models
-import User from './Datos/Models/User.js';
-db.sync({ alter: true })
-  .then(() => console.log('Database & tables synced'))
-  .catch(err => console.log(err));
+// import User from './Datos/Models/User.js';
+// db.sync({ alter: true })
+//   .then(() => console.log('Database & tables synced'))
+//   .catch(err => console.log(err));
 
 // Routing
 app.use('/api', routes); 

@@ -13,6 +13,7 @@ const AuthProvider = ({ children }) => {
   // Verifica que el usuario este autenticado
   useEffect(() => {
       const autenticarUsuario = async () => {
+        setLoading(true);
         const token = localStorage.getItem('token');
 
         // en caso de que no encuentre el token detiene la ejecucion del codigo

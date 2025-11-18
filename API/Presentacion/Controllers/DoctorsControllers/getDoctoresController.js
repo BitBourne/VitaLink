@@ -1,6 +1,6 @@
 import { getDoctoresService } from '../../../Negocio/services/doctoresService.js';
 
-const getDoctores = async (req, res, next) => {
+const getDoctors = async (req, res, next) => {
     try {
         const doctores = await getDoctoresService();
         res.status(200).json(doctores);
@@ -9,4 +9,4 @@ const getDoctores = async (req, res, next) => {
     }
 };
 
-export default getDoctores;
+export default getDoctors;
