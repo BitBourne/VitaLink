@@ -3,11 +3,13 @@ import * as utils from '../../Infraestructura/utils/index.js'
 import UserDAO from '../../Datos/DAOs/UserDAO.js';
 import UserPermissionDAO from '../../Datos/DAOs/UserPermissionDAO.js';
 import UserRolesDAO from '../../Datos/DAOs/UserRoleDAO.js'
+import DoctorProfileDAO from '../../Datos/DAOs/DoctorProfileDAO.js';
 
 import generateToken from './helpers/generateToken.js';
 import emailSingUp from './helpers/emailSingUp.js';
 import hashPassword from './helpers/hashPassword.js';
 
+// REVISAR QUE NO SE CREE UN USER SI HAY UN ERROR EN LA DB O BACK
 const singUpService = async (singUpDTO) => {
     // data from controller
     const { name, last_name, email, password, roleId, permId} = singUpDTO;
@@ -74,12 +76,29 @@ const singUpService = async (singUpDTO) => {
             role_id: roleDefualt
         });
 
+        // Asignar permisos según el rol
+        let permissionDefault = permId;
+        if (!permId) {
+            if (roleDefualt === 3) { // Rol de doctor
+                permissionDefault = 5; // Ejemplo: ID del permiso 'manage_own_schedule'
+            } else if (roleDefualt === 2) { // Rol de paciente
+                permissionDefault = 8; // Ejemplo: ID del permiso 'manage_own_appointments'
+            }
+        }
 
-        const permissionDefault = permId || 2;
         await userPermissionDAO.create({
             user_id: usuario.id,
             permission_id: permissionDefault
         });
+
+        // Crear perfil de doctor si el rol asignado es de doctor (por ejemplo, role_id = 3)
+        if (roleDefualt === 3) {
+            const doctorProfileDAO = new DoctorProfileDAO();
+            await doctorProfileDAO.create({
+                user_id: usuario.id,
+                is_active: true, // Por defecto, el perfil está activo
+            });
+        }
 
         // // validar que el rol existe
         // const roleExists = await roleDAO.findById(roleId);

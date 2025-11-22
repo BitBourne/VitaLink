@@ -12,8 +12,8 @@ class UserPermissionDAO extends BaseDAO {
         return await this.model.findOne({ where: data });
     }
 
-    async assignPermission(roleId, permissionId){
-        return await this.model.create({ role_id: roleId, permission_id: permissionId })
+    async assignPermission(userId, permissionId){
+        return await this.model.create({ user_id: userId, permission_id: permissionId })
     }
 
     async findAllPermissionsByID(userId){

@@ -9,4 +9,7 @@ const router = express.Router();
 // Cualquier usuario autenticado puede ver la lista de doctores.
 router.get('/', checkAuth, doctorControllers.getDoctores);
 
+// Búsqueda de doctores por filtros (especialidad, ubicación, etc.).
+router.get('/search', checkAuth, doctorControllers.searchDoctors);
+
 export default router;

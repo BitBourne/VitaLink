@@ -41,7 +41,8 @@ const logInService = async (logInDTO) => {
 
 
     // compare password
-    if( !comparePassword(password, user.password) ){
+    const isPasswordValid = await comparePassword(password, user.password);
+    if( !isPasswordValid ){
         const error = new Error('El email o la contraseña son incorrectos.');
         error.statusCode = 400;
         throw error;

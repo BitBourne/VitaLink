@@ -4,6 +4,9 @@ import Role from "./Role.js";
 import Permission from "./Permission.js";
 import UserRoles from "./UserRoles.js";
 import UserPermission from "./UserPermission.js";
+import DoctorProfile from "./DoctorProfile.js";
+import Specialty from "./Specialty.js";
+import DoctorSpecialty from "./DoctorSpecialty.js";
 
 
 // USER ↔ ROLE (M:N)
@@ -58,7 +61,34 @@ UserPermission.belongsTo(Permission, {
 });
 
 
+// USER ↔ DOCTOR_PROFILE (1:1)
+User.hasOne(DoctorProfile, {
+  foreignKey: 'user_id',
+  as: 'U_doctorProfile',
+});
+
+DoctorProfile.belongsTo(User, {
+  foreignKey: 'user_id',
+  as: 'DP_user',
+});
+
+// DOCTOR_PROFILE ↔ SPECIALTY (M:N)
+DoctorProfile.belongsToMany(Specialty, {
+  through: DoctorSpecialty,
+  foreignKey: 'doctor_profile_id',
+  otherKey: 'specialty_id',
+  as: 'DP_specialties',
+});
+
+Specialty.belongsToMany(DoctorProfile, {
+  through: DoctorSpecialty,
+  foreignKey: 'specialty_id',
+  otherKey: 'doctor_profile_id',
+  as: 'S_doctors',
+});
 
 
 
-export { User, Role, Permission, UserRoles, UserPermission };
+
+
+export { User, Role, Permission, UserRoles, UserPermission, DoctorProfile, Specialty, DoctorSpecialty };

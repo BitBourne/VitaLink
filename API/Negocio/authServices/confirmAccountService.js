@@ -14,7 +14,7 @@ const confirmAccountService = async (confirmAccountDTO) => {
         throw error;
     }
 
-    if( token.lenght > 6 ) {
+    if( token.length > 6 ) {
         const error = new Error('Este codigo no es valido o ha expirado');
         error.statusCode = 400;
         throw error;
@@ -29,7 +29,7 @@ const confirmAccountService = async (confirmAccountDTO) => {
     }
 
     try {
-        const userConfirmed = await userDAO.update(userToConfirm.id, { token: null, verified: true });
+        const userConfirmed = await userDAO.update({ id: userToConfirm.id }, { token: null, verified: true });
 
         return "Su cuenta ha sido verificada con exito, ya puede iniciar sesion!";
 
