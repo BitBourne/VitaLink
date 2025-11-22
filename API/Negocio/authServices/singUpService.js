@@ -4,7 +4,7 @@ import UserDAO from '../../Datos/DAOs/UserDAO.js';
 import UserPermissionDAO from '../../Datos/DAOs/UserPermissionDAO.js';
 import UserRolesDAO from '../../Datos/DAOs/UserRoleDAO.js'
 
-import generateToken from './helpers/generateToken.js';
+import generateToken from './helpers/generate6DigitToken.js';
 import emailSingUp from './helpers/emailSingUp.js';
 import hashPassword from './helpers/hashPassword.js';
 

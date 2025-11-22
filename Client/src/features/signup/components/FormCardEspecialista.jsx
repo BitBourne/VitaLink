@@ -52,21 +52,13 @@ export default function FormCardEspecialista() {
     }
 
     try {
-<<<<<<< HEAD
-      // Enviar datos al backend         
-=======
       // Enviar datos al backend
->>>>>>> remotes/origin/Cristian
-      const response = await axios.post("http://localhost:4000/api/auth/singUp", {
+      const response = await axios.post("http://localhost:4000/api/auth/register", {
         name: nombre,
         last_name: apellidos,
         email,
         password,
-<<<<<<< HEAD
-        role: 2
-=======
-        role: "1"
->>>>>>> remotes/origin/Cristian
+        role: "2"
       });
 
       console.log("Usuario creado:", response.data);

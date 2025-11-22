@@ -3,8 +3,8 @@ import { Mail, Lock, LogIn, ArrowLeft } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
-import useAuth from "../../auth/hooks/useAuth"
-import apiClient from "../../api/apiClient";
+import useAuth from "../../../core/hooks/useAuth"
+import apiClient from "../../../core/api/apiClient";
 
 export default function LoginCard() {
   const { login } = useAuth();
@@ -43,7 +43,7 @@ export default function LoginCard() {
 
       login(token);
 
-      navigate("/doctor");
+      navigate("/user");
     } catch (err) {
       console.log("Error al iniciar sesión:", err);
       setError(err.response?.data?.msg || "Credenciales inválidas o error en el servidor.");

@@ -9,4 +9,4 @@ router.use('/auth', authRoutes);
 router.use('/doctor', doctorRoutes);
 router.use('/roles', adminRoutes)
 
-export default router;
+export default router; 
