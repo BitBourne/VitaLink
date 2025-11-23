@@ -11,7 +11,7 @@ export default function SignupVerification() {
     token: ""
   });
 
-    const [error, setError] = useState("");
+  const [error, setError] = useState("");
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -28,9 +28,9 @@ export default function SignupVerification() {
     }
 
     try {
-      setError(""); 
+      setError("");
 
-      const response = await axios.post("http://localhost:4000/api/auth/singUp/confirm-account", {
+      const response = await axios.post("http://localhost:4000/api/auth/signUp/confirm-account", {
         token
       });
 
@@ -64,13 +64,13 @@ export default function SignupVerification() {
         <div className="relative mb-5 w-3/4 mx-auto">
           <Lock className="absolute left-3 top-2.5 text-[#4C575F]/60 w-5 h-5" />
           <input
-              name="token"
-              type="text"
-              placeholder="Código de Verificación"
-              value={formData.nombre}
-              onChange={handleChange}
-              className="w-full pl-10 pr-3 py-2 border rounded-md text-sm text-[#4C575F] focus:outline-none focus:ring-2 focus:ring-[#5EE7DF]"
-            />
+            name="token"
+            type="text"
+            placeholder="Código de Verificación"
+            value={formData.nombre}
+            onChange={handleChange}
+            className="w-full pl-10 pr-3 py-2 border rounded-md text-sm text-[#4C575F] focus:outline-none focus:ring-2 focus:ring-[#5EE7DF]"
+          />
         </div>
 
         {error && (
@@ -83,7 +83,7 @@ export default function SignupVerification() {
           <button
             onClick={() => navigate("/SignupPaciente")}
             className="flex items-center gap-2 px-5 py-2 border border-[#B490CA] text-[#4C575F] text-sm rounded-md hover:bg-[#B490CA]/10 transition"
-            >
+          >
             <ArrowLeft className="w-4 h-4" />
             Anterior
           </button>
@@ -91,7 +91,7 @@ export default function SignupVerification() {
           <button
             type="submit"
             className="flex items-center gap-2 px-6 py-2 bg-gradient-to-r from-[#B490CA] to-[#5EE7DF] text-white font-medium text-sm rounded-md hover:opacity-90 transition"
-            >
+          >
             Siguiente
             <ArrowRight className="w-4 h-4" />
           </button>
