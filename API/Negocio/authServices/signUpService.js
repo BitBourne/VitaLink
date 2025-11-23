@@ -5,7 +5,7 @@ import UserPermissionDAO from '../../Datos/DAOs/UserPermissionDAO.js';
 import UserRolesDAO from '../../Datos/DAOs/UserRoleDAO.js'
 import DoctorProfileDAO from '../../Datos/DAOs/DoctorProfileDAO.js';
 
-import generateToken from './helpers/generateToken.js';
+import generate6DigitToken from './helpers/generate6DigitToken.js';
 import emailSingUp from './helpers/emailSingUp.js';
 import hashPassword from './helpers/hashPassword.js';
 
@@ -55,7 +55,7 @@ const signUpService = async (signUpDTO) => {
             last_name,
             email,
             password: hashedPassword,
-            token: generateToken()
+            token: generate6DigitToken()
         });
 
         // Crear relación user-role

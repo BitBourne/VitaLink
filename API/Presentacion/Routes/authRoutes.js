@@ -11,13 +11,8 @@ import logoutController from '../Controllers/AuthControllers/logoutController.js
 const router = Router();
 
 // Public routes
-<<<<<<< HEAD
-router.post('/singUp', authControllers.signUp);
-router.post('/singUp/confirm-account', authControllers.confirmAccount);
-=======
-router.post('/signUp', authControllers.singUp);
+router.post('/signUp', authControllers.signUp);
 router.post('/signUp/confirm-account', authControllers.confirmAccount);
->>>>>>> MC
 
 router.post('/logIn', authControllers.logIn);
 
