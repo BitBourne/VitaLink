@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import UserCard from './UserCard'; 
+import UserCard from '../components/UserCard'; 
 import { useNavigate } from 'react-router-dom'; 
 
 

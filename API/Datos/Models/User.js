@@ -19,12 +19,14 @@ const User = db.define('users', {
   email: {
     type: Sequelize.STRING,
     allowNull: false,
-    // unique: true
+    unique: true
   },
   password: {
     type: Sequelize.STRING,
     allowNull: false
   },
+  
+  // account verification status
   verified: {
     type: Sequelize.BOOLEAN,
     defaultValue: false

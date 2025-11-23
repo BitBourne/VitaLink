@@ -13,7 +13,6 @@ const AuthProvider = ({ children }) => {
   // Verifica que el usuario este autenticado
   useEffect(() => {
       const autenticarUsuario = async () => {
-        setLoading(true);
         const token = localStorage.getItem('token');
 
         // en caso de que no encuentre el token detiene la ejecucion del codigo
@@ -29,7 +28,7 @@ const AuthProvider = ({ children }) => {
               // Agregamos al estado global el JWT
               setUser(data); 
           } catch (error) {
-              console.log(error.response.data.msg)
+              // console.log(error.response.data.msg)
               setUser({});
           }
           setLoading(false);

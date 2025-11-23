@@ -19,4 +19,4 @@ router.use('/audit', auditRoutes);
 router.use('/clinics', clinicRoutes);
 router.use('/roles', roleRoutes);
 
-export default router;
+export default router; 

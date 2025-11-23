@@ -2,8 +2,6 @@ import jwt from 'jsonwebtoken';
 
 
 import UserDAO from '../../Datos/DAOs/UserDAO.js';
-import RoleDAO from '../../Datos/DAOs/RoleDAO.js';
-import PermissionDAO from '../../Datos/DAOs/PermissionDAO.js';
 
 // Middleware to authenticate users
 const checkAuth = async (req, res, next) => {
