@@ -10,7 +10,7 @@ import { checkAuth } from '../../Infraestructura/middlewares/authMiddleware.js'
 const router = Router();
 
 // Public routes
-router.post('/singUp', authControllers.singUp);
+router.post('/singUp', authControllers.signUp);
 router.post('/singUp/confirm-account', authControllers.confirmAccount);
 
 router.post('/logIn', authControllers.logIn);

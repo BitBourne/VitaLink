@@ -9,50 +9,39 @@ import generateToken from './helpers/generateToken.js';
 import emailSingUp from './helpers/emailSingUp.js';
 import hashPassword from './helpers/hashPassword.js';
 
-// REVISAR QUE NO SE CREE UN USER SI HAY UN ERROR EN LA DB O BACK
-const singUpService = async (singUpDTO) => {
+const signUpService = async (signUpDTO) => {
     // data from controller
-    const { name, last_name, email, password, roleId, permId} = singUpDTO;
-    
+    const { name, last_name, email, password, roleId, permId } = signUpDTO;
+
     // instance of DAO
     const userDAO = new UserDAO();
     const userPermissionDAO = new UserPermissionDAO();
     const userRolesDAO = new UserRolesDAO();
 
     // Prevent null inputs
-    if(!name || !last_name || !email || !password) {
+    if (!name || !last_name || !email || !password) {
         const error = new Error('Todos los campos son obligatorios');
-        error.statusCode = 400; 
+        error.statusCode = 400;
         throw error;
     }
 
-    // // Validación de rol (solo si viene desde el frontend)
-    // const PUBLIC_ROLES = [1, 2];
-    // const roleId = role ? parseInt(role, 10) : DEFAULT_ROLE_ID;
-
-    // if (!PUBLIC_ROLES.includes(roleId)) {
-    //     const error = new Error('Rol no válido.');
-    //     error.statusCode = 400;
-    //     throw error;
-    // }
-
     // Email validation
-    if(!utils.isValidEmail(email)) { 
+    if (!utils.isValidEmail(email)) {
         const error = new Error('El email no es valido');
         error.statusCode = 400;
         throw error;
     }
 
     // password validation
-    if(password.length < 6) {
+    if (password.length < 6) {
         const error = new Error('La contraseña debe tener al menos 6 caracteres');
         error.statusCode = 400;
         throw error;
     }
 
     // prevent duplicated users
-    const userExist =  await userDAO.findOne({email});
-    if( userExist ) {
+    const userExist = await userDAO.findOne({ email });
+    if (userExist) {
         const error = new Error('Este usuario ya existe');
         error.statusCode = 400;
         throw error;
@@ -69,7 +58,7 @@ const singUpService = async (singUpDTO) => {
             token: generateToken()
         });
 
-        // Crear relación user-role (aquí se asigna el rol por defecto o el que venga)
+        // Crear relación user-role
         const roleDefualt = roleId || 2;
         await userRolesDAO.create({
             user_id: usuario.id,
@@ -80,45 +69,47 @@ const singUpService = async (singUpDTO) => {
         let permissionDefault = permId;
         if (!permId) {
             if (roleDefualt === 3) { // Rol de doctor
-                permissionDefault = 5; // Ejemplo: ID del permiso 'manage_own_schedule'
+                permissionDefault = 5; // Permiso 'manage_own_schedule'
             } else if (roleDefualt === 2) { // Rol de paciente
-                permissionDefault = 8; // Ejemplo: ID del permiso 'manage_own_appointments'
+                permissionDefault = 8; // Permiso 'manage_own_appointments'
+            } else if (roleDefualt === 1) { // Rol de admin
+                permissionDefault = 1; // Permiso 'todo'
             }
         }
 
-        await userPermissionDAO.create({
-            user_id: usuario.id,
-            permission_id: permissionDefault
-        });
+        // Solo crear permiso si se definió uno
+        if (permissionDefault) {
+            await userPermissionDAO.create({
+                user_id: usuario.id,
+                permission_id: permissionDefault
+            });
+        }
 
-        // Crear perfil de doctor si el rol asignado es de doctor (por ejemplo, role_id = 3)
+        // Crear perfil de doctor si el rol asignado es de doctor
         if (roleDefualt === 3) {
             const doctorProfileDAO = new DoctorProfileDAO();
             await doctorProfileDAO.create({
                 user_id: usuario.id,
-                is_active: true, // Por defecto, el perfil está activo
+                is_active: true,
             });
         }
 
-        // // validar que el rol existe
-        // const roleExists = await roleDAO.findById(roleId);
-        // if (!roleExists) {
-        //     const error = new Error('El rol especificado no existe');
-        //     error.statusCode = 400;
-        //     throw error;
-        // }
-
-        // send verification email
-       await emailSingUp({name, last_name, email, token: usuario.token})
+        // send verification email (no fallar si el email no se puede enviar)
+        try {
+            await emailSingUp({ name, last_name, email, token: usuario.token });
+        } catch (emailError) {
+            console.log('Error enviando email (no crítico):', emailError.message);
+            // No lanzar error, el usuario ya fue creado exitosamente
+        }
 
         return 'Hemos enviado un email de verificacion a tu correo.';
 
     } catch (error) {
-        console.log( 'Error in singUpService.js: ', error);
+        console.log('Error in signUpService.js: ', error);
         const serviceError = new Error('Ocurrió un error al crear la cuenta.');
         serviceError.statusCode = 500;
         throw serviceError;
     }
 };
 
-export default singUpService;
+export default signUpService;

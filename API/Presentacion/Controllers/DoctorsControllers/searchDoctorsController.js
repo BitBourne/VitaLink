@@ -2,7 +2,18 @@ import { searchDoctors } from '../../../Negocio/doctorsServices/doctorSearchServ
 
 const searchDoctorsController = async (req, res, next) => {
   try {
-    const { specialty, city, country, location, minPrice, maxPrice } = req.query;
+    const {
+      specialty,
+      city,
+      country,
+      location,
+      minPrice,
+      maxPrice,
+      minRating,
+      hasAvailability,
+      clinicId,
+      clinicName
+    } = req.query;
 
     const filtersDTO = {
       specialtyName: specialty,
@@ -11,6 +22,10 @@ const searchDoctorsController = async (req, res, next) => {
       location,
       minPrice: minPrice ? Number(minPrice) : undefined,
       maxPrice: maxPrice ? Number(maxPrice) : undefined,
+      minRating: minRating ? Number(minRating) : undefined,
+      hasAvailability: hasAvailability,
+      clinicId: clinicId ? Number(clinicId) : undefined,
+      clinicName: clinicName
     };
 
     const doctors = await searchDoctors(filtersDTO);

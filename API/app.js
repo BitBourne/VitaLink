@@ -23,8 +23,8 @@ dotenv.config();
 
 // Connect to database
 db.authenticate()
-    .then(() => console.log('Database connected'))
-    .catch(error => console.log(error));
+  .then(() => console.log('Database connected'))
+  .catch(error => console.log(error));
 
 // Sync models
 import './Datos/Models/Relations.js';
@@ -33,13 +33,17 @@ import UserRoles from './Datos/Models/UserRoles.js';
 import UserPermission from './Datos/Models/UserPermission.js';
 import Roles from './Datos/Models/Role.js';
 import Permission from './Datos/Models/Permission.js';
+import AuditLog from './Datos/Models/AuditLog.js';
+import UserSession from './Datos/Models/UserSession.js';
+import Review from './Datos/Models/Review.js';
+import DoctorAvailability from './Datos/Models/DoctorAvailability.js';
 db.sync({ alter: true })
   .then(() => console.log('Database & tables synced'))
   .catch(err => console.log(err));
 
 
 // Routing
-app.use('/api', routes); 
+app.use('/api', routes);
 
 // Error Handling
 app.use(ErrorHandling);

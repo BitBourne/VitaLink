@@ -21,14 +21,14 @@ class BaseDAO {
         return await this.model.findOne({ where: data });
     }
 
-    async update(where, data) {
-        const instance = await this.model.findOne({ where });
+    async update(id, data) {
+        const instance = await this.model.findByPk(id);
         if (!instance) throw new Error(`${this.model.name} not found`);
         return await instance.update(data);
     }
 
-    async delete(where) {
-        const instance = await this.model.findOne({ where });
+    async delete(id) {
+        const instance = await this.model.findByPk(id);
         if (!instance) throw new Error(`${this.model.name} not found`);
         return await instance.destroy();
     }

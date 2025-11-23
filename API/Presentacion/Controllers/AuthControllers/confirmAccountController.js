@@ -3,9 +3,9 @@ import confirmAccountService from '../../../Negocio/authServices/confirmAccountS
 
 const confirmAccount = async (req, res, next) => {
     const { token } = req.body;
-    const singUpDTO = { token };
+    const signUpDTO = { token };
 
-    const result = await confirmAccountService(singUpDTO);
+    const result = await confirmAccountService(signUpDTO);
     res.json({ message: result });
 }
 
