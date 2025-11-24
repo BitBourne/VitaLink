@@ -11,7 +11,7 @@ export default function SignupVerification() {
     token: ""
   });
 
-    const [error, setError] = useState("");
+  const [error, setError] = useState("");
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -35,7 +35,7 @@ export default function SignupVerification() {
       });
 
       console.log("Paciente creado:", response.data);
-      navigate("/login"); // Redirigir a pantalla de verificación
+      navigate("/login");
 
     } catch (err) {
       console.error("Error al registrar paciente:", err);
@@ -43,55 +43,60 @@ export default function SignupVerification() {
     }
   };
 
-
   return (
-    <div className="bg-white shadow-2xl rounded-2xl p-10 w-full max-w-xl text-center">
+    <div className="w-full">
 
-      <h2 className="text-xl font-semibold text-[#4C575F] mb-2">
-        Confirma Tu Identidad
-      </h2>
+      <div className="text-center mb-8">
+        <h2 className="text-2xl font-bold text-[#4C575F] mb-3">
+          Confirma Tu Identidad
+        </h2>
 
-      <p className="text-sm text-[#4C575F]/80 mb-8">
-        Hemos enviado un código de verificación a tu email. <br />
-        Revisa tu bandeja de entrada.
-      </p>
-
-      <div className="flex justify-center mb-8">
-        <CheckCircle className="w-16 h-16 text-[#5EE7DF]" strokeWidth={2.5} />
+        <p className="text-base text-[#4C575F]/80 leading-relaxed">
+          Hemos enviado un código de verificación a tu email.<br />
+          Revisa tu bandeja de entrada.
+        </p>
       </div>
 
-      <form className="space-y-4" onSubmit={handleSubmit}>
-        <div className="relative mb-5 w-3/4 mx-auto">
-          <Lock className="absolute left-3 top-2.5 text-[#4C575F]/60 w-5 h-5" />
+     
+      <div className="flex justify-center mb-10">
+        <CheckCircle className="w-20 h-20 text-[#5EE7DF]" strokeWidth={2} />
+      </div>
+
+      <form className="space-y-6" onSubmit={handleSubmit}>
+
+        <div className="relative">
+          <Lock className="absolute left-4 top-3.5 text-[#4C575F]/60 w-5 h-5" />
           <input
-              name="token"
-              type="text"
-              placeholder="Código de Verificación"
-              value={formData.nombre}
-              onChange={handleChange}
-              className="w-full pl-10 pr-3 py-2 border rounded-md text-sm text-[#4C575F] focus:outline-none focus:ring-2 focus:ring-[#5EE7DF]"
-            />
+            name="token"
+            type="text"
+            placeholder="Código de Verificación"
+            value={formData.token}
+            onChange={handleChange}
+            className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-lg text-[#4C575F] focus:outline-none focus:ring-2 focus:ring-[#5EE7DF] focus:border-transparent text-center text-lg font-medium"
+          />
         </div>
 
+        {/* Alerta de error */}
         {error && (
-          <div className="text-red-500 text-sm font-medium text-center bg-red-50 p-2 rounded-md">
+          <div className="text-red-500 text-sm font-medium text-center bg-red-50 p-3 rounded-lg border border-red-200">
             {error}
           </div>
         )}
 
-        <div className="flex justify-center gap-3 w-full sm:w-3/4 mx-auto">
+        <div className="flex justify-between gap-4 pt-4">
           <button
+            type="button"
             onClick={() => navigate("/SignupPaciente")}
-            className="flex items-center gap-2 px-5 py-2 border border-[#B490CA] text-[#4C575F] text-sm rounded-md hover:bg-[#B490CA]/10 transition"
-            >
+            className="flex items-center gap-2 px-5 py-2 border border-gray-300 text-[#4C575F] font-medium rounded-lg hover:bg-gray-50 transition-colors flex-1 justify-center"
+          >
             <ArrowLeft className="w-4 h-4" />
             Anterior
           </button>
 
           <button
             type="submit"
-            className="flex items-center gap-2 px-6 py-2 bg-gradient-to-r from-[#B490CA] to-[#5EE7DF] text-white font-medium text-sm rounded-md hover:opacity-90 transition"
-            >
+            className="flex items-center gap-2 px-5 py-2 bg-gradient-to-r from-[#B490CA] to-[#5EE7DF] text-white font-medium rounded-lg hover:opacity-90 transition-opacity shadow-lg flex-1 justify-center"
+          >
             Siguiente
             <ArrowRight className="w-4 h-4" />
           </button>

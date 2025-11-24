@@ -77,7 +77,7 @@ export default function FormCardEspecialista() {
   };
   
   return (
-    <div className="bg-white shadow-2xl rounded-2xl p-8 w-full max-w-lg">
+    <div className="">
       <h2 className="text-lg font-semibold text-[#4C575F] mb-6">
         Crea una cuenta gratuita
       </h2>

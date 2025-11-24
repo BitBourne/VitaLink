@@ -1,9 +1,8 @@
 import React, { useState } from "react";
 import { Mail, Lock, LogIn, ArrowLeft } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
 
-import useAuth from "../../../core/hooks/useAuth"
+import useAuth from "../../../features/auth/hooks/useAuth";
 import apiClient from "../../../core/api/apiClient";
 
 export default function LoginCard() {
@@ -14,7 +13,6 @@ export default function LoginCard() {
     email: "",
     password: "",
   });
-
 
   const [error, setError] = useState("");
 
@@ -33,12 +31,8 @@ export default function LoginCard() {
 
     try {
       setError("");
-      // const response = await axios.post("http://localhost:4000/api/auth/login", {
-      //   email,
-      //   password,
-      // });
 
-      const response =  await apiClient.post('/auth/login', { email, password });
+      const response = await apiClient.post("/auth/login", { email, password });
       const { token } = response.data;
 
       login(token);
@@ -51,10 +45,11 @@ export default function LoginCard() {
   };
 
   return (
-    <div className="bg-white shadow-2xl rounded-2xl p-10 w-full max-w-md mx-auto">
+    <div className="w-full mx-auto">
       <h2 className="text-center text-lg font-semibold mb-2 text-[#4C575F]">
         Inicia sesión en tu cuenta
       </h2>
+
       <p className="text-center text-sm text-gray-500 mb-6">
         Bienvenido de nuevo, nos alegra verte otra vez
       </p>
@@ -89,6 +84,10 @@ export default function LoginCard() {
             {error}
           </div>
         )}
+
+        <button className="text-sm text-[#4C575F] " onClick={() => navigate('/forgot-password')} type="button">
+          ¿Olvidaste tu contraseña?
+        </button>
 
         <div className="flex justify-between items-center pt-4">
           <button
