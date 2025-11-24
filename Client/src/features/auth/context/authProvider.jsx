@@ -1,5 +1,4 @@
 import React, { createContext, useState, useEffect } from 'react';
-import { jwtDecode } from 'jwt-decode';
 import apiClient from '../../../core/api/apiClient';
 
 // 1. Crear el Contexto

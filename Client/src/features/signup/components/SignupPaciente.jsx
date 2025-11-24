@@ -4,12 +4,17 @@ import FormCard from "./FormCard";
 
 export default function SignupPaciente() {
   return (
-    <div>
-
+    <div className="px-2">
       {/* Contenido  */}
-      <main className="flex-grow flex flex-col items-center justify-center px-4">
-        <FormCard />
-      </main>
+      <h2 className="text-lg font-semibold text-[#4C575F] mb-6">
+        Crea una cuenta gratuita
+      </h2>
+
+      <p className="text-sm font-medium text-[#4C575F] mb-4">
+        Información Personal
+      </p>
+
+      <FormCard />
     </div>
   );
 }

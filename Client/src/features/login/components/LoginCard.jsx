@@ -1,36 +1,44 @@
 import React, { useState } from "react";
-import { Mail, Lock, LogIn, ArrowLeft } from "lucide-react";
+import { Mail, Lock} from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
+// Context
 import useAuth from "../../../features/auth/hooks/useAuth";
 import apiClient from "../../../core/api/apiClient";
 
-export default function LoginCard() {
-  const { login } = useAuth();
-  const navigate = useNavigate();
+// Components
+import FormInput from "../../../core/ui/Components/FormInput";
+import Button from "../../../core/ui/Components/Button";
+import Alert from "../../../core/ui/Components/Alert";
 
+
+export default function LoginCard() {
+  // Form Data
   const [formData, setFormData] = useState({
     email: "",
     password: "",
   });
 
-  const [error, setError] = useState("");
+  // Alert State
+  const [alert, setAlert] = useState({});
 
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
+  // Auth
+  const { login } = useAuth();
+  const navigate = useNavigate();
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     const { email, password } = formData;
 
     if (!email || !password) {
-      setError("Por favor completa todos los campos.");
+      setAlert({ type: "error", message: "Por favor completa todos los campos." });
       return;
     }
 
     try {
-      setError("");
+      setAlert({});
 
       const response = await apiClient.post("/auth/login", { email, password });
       const { token } = response.data;
@@ -39,8 +47,7 @@ export default function LoginCard() {
 
       navigate("/user");
     } catch (err) {
-      console.log("Error al iniciar sesión:", err);
-      setError(err.response?.data?.msg || "Credenciales inválidas o error en el servidor.");
+      setAlert({ type: "error", message: err.response?.data?.msg || "Credenciales inválidas o error en el servidor." });
     }
   };
 
@@ -55,57 +62,53 @@ export default function LoginCard() {
       </p>
 
       <form className="space-y-5" onSubmit={handleSubmit}>
-        <div className="relative">
-          <Mail className="absolute left-3 top-2.5 text-[#4C575F]/70 w-5 h-5" />
-          <input
-            name="email"
-            type="email"
-            placeholder="Correo electrónico"
-            value={formData.email}
-            onChange={handleChange}
-            className="w-full pl-10 pr-3 py-2 border rounded-md text-sm text-[#4C575F] focus:outline-none focus:ring-2 focus:ring-[#5EE7DF]"
-          />
-        </div>
+        <FormInput
+          icon="Mail"
+          id="email"
+          label="Email"
+          type="email"
+          value={formData.email}
+          setValue={(value) => setFormData({ ...formData, email: value })}
+        />
 
-        <div className="relative">
-          <Lock className="absolute left-3 top-2.5 text-[#4C575F]/70 w-5 h-5" />
-          <input
-            name="password"
-            type="password"
-            placeholder="Contraseña"
-            value={formData.password}
-            onChange={handleChange}
-            className="w-full pl-10 pr-3 py-2 border rounded-md text-sm text-[#4C575F] focus:outline-none focus:ring-2 focus:ring-[#5EE7DF]"
-          />
-        </div>
+        <FormInput
+          icon="Lock"
+          id="password"
+          label="Contraseña"
+          type="password"
+          value={formData.password}
+          setValue={(value) => setFormData({ ...formData, password: value })}
+        />
 
-        {error && (
-          <div className="text-red-500 text-sm font-medium text-center bg-red-50 p-2 rounded-md">
-            {error}
-          </div>
+        {alert.message && (
+          <Alert
+            type={alert.type}
+            message={alert.message}
+          />
         )}
 
         <button className="text-sm text-[#4C575F] " onClick={() => navigate('/forgot-password')} type="button">
           ¿Olvidaste tu contraseña?
         </button>
 
-        <div className="flex justify-between items-center pt-4">
-          <button
+        <div className="flex justify-between items-center pt-4 gap-5">
+          <Button
+            icon="arrowLeft"
+            iconPosition="left"
+            text="Crear cuenta"
             type="button"
+            variant="secondary"
             onClick={() => navigate("/signup")}
-            className="flex items-center gap-2 px-4 py-2 border border-[#5EE7DF] text-[#4C575F] text-sm rounded-md hover:bg-[#5EE7DF]/10 transition"
-          >
-            <ArrowLeft className="w-4 h-4" />
-            Crear cuenta
-          </button>
+          />
 
-          <button
+          <Button
+            icon="login"
+            iconPosition="right"
+            text="Iniciar Sesion"
             type="submit"
-            className="flex items-center gap-2 px-5 py-2 bg-gradient-to-r from-[#B490CA] to-[#5EE7DF] text-white font-medium text-sm rounded-md hover:opacity-90 transition"
-          >
-            Iniciar sesión
-            <LogIn className="w-4 h-4" />
-          </button>
+            variant="primary"
+            onClick={handleSubmit}
+          />
         </div>
       </form>
     </div>

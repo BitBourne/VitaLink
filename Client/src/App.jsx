@@ -30,17 +30,17 @@ export default function App() {
         <Routes> {/* Crear un conjunto de rutas */}
 
           {/* Redirección al registro */}
-          <Route path="/" element={<AuthLayout />}> {/** Indica el layout principal de la ruta */}
+          <Route path="/" element={<AuthLayout />} > {/** Indica el layout principal de la ruta */}
             <Route index element={<LoginCard />} /> {/* Carga de componente por defecto */}
-            <Route path="signup" element={<Signup />}></Route>
-            <Route path="SignupPaciente" element={< SignupPaciente/>}> </Route>
-            <Route path="SignupEspecialista" element={< SignupEspecialista />}></Route>
-            <Route path="VerificationCard" element={< VerificationCard />}></Route> 
-            <Route path="Sucess" element={<Sucess />}></Route>
-            <Route path="forgot-password" element={<ForgotPassword/>}></Route>
-            <Route path="new-password" element={< NewPassword/>}></Route>
-            <Route path="invalid-link" element={< InvalidLink/>}></Route>
-            <Route path="password-updated" element={< PasswordUpdated/>}></Route>
+            <Route path="signup" element={<Signup />} />
+            <Route path="SignupPaciente" element={< SignupPaciente/>} />
+            <Route path="SignupEspecialista" element={< SignupEspecialista />} />
+            <Route path="VerificationCard" element={< VerificationCard />} />
+            <Route path="Sucess" element={<Sucess />} />
+            <Route path="forgot-password" element={<ForgotPassword/>} />
+            <Route path="new-password" element={< NewPassword/>} />
+            <Route path="invalid-link" element={< InvalidLink/>} />
+            <Route path="password-updated" element={< PasswordUpdated/>} />
           </Route>
 
 
@@ -64,7 +64,7 @@ export default function App() {
  */}
           {/* Página no encontrada */}
           {/* <Route path="*" element={<h1>404: Página No Encontrada</h1>} /> */}
-        </Routes> 
+        </Routes>
       </Router>
      </AuthProvider>
   );
