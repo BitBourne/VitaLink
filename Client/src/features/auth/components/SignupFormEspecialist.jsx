@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { User, Mail, Lock, CircleStar, ArrowRight, ArrowLeft } from "lucide-react";
 import { Form, useNavigate } from 'react-router-dom';
 import axios from "axios";
 
@@ -10,11 +9,12 @@ import FormInput from "../../../core/ui/Components/FormInput";
 import Alert from "../../../core/ui/Components/Alert";
 
 
-export default function FormCardEspecialista() {
+const SignupFormEspecialist = () => {
   const navigate = useNavigate();
 
   // Form Data
   const [formData, setFormData] = useState({
+    role: "2",
     name: "",
     last_name: "",
     email: "",
@@ -151,7 +151,7 @@ export default function FormCardEspecialista() {
             text="Anterior"
             icon="arrowLeft"
             iconPosition="left"
-            onClick={() => navigate("/signup")}
+            onClick={() => navigate(0)}
           />
 
           <Button
@@ -166,3 +166,5 @@ export default function FormCardEspecialista() {
     </div>
   );
 }
+
+export default SignupFormEspecialist;

@@ -1,5 +1,4 @@
 import React from "react";
-import { CheckCircle, Lock, ArrowRight, ArrowLeft } from "lucide-react";
 import { Form, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import axios from "axios";
@@ -9,7 +8,7 @@ import Button from "../../../core/ui/Components/Button";
 import Alert from "../../../core/ui/Components/Alert";
 import FormInput from "../../../core/ui/Components/FormInput";
 
-export default function SignupVerification() {
+const SignupVerification = ({value, setValue}) => {
   const navigate = useNavigate();
 
   // Form Data
@@ -30,6 +29,11 @@ export default function SignupVerification() {
       return;
     }
 
+    if (isNaN(token) || token.length !== 6) {
+      setAlert({ type: "error", message: "El código de verificación debe ser un número de 6 dígitos." });
+      return;
+    }
+
     try {
       // Limpiar alerta
       setAlert({});
@@ -38,7 +42,8 @@ export default function SignupVerification() {
         token
       });
 
-      navigate("/login");
+      // mostrar mensaje de éxito en componente padre
+      setValue(!value);
 
     } catch (err) {
       setAlert({ type: "error", message: err.response?.data?.msg || "Ocurrió un error al enviar el codigo." });
@@ -71,7 +76,7 @@ export default function SignupVerification() {
             iconPosition="left"
             type="button"
             variant="secondary"
-            onClick={() => navigate("/SignupPaciente")}
+            onClick={() => navigate(-1)}
             text="Anterior"
           />
 
@@ -87,3 +92,5 @@ export default function SignupVerification() {
     </div>
   );
 }
+
+export default SignupVerification;

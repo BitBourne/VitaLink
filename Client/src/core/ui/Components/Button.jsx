@@ -30,7 +30,7 @@ const Button = ({
   };
 
   return (
-    <div className="p-0.5 bg-main-gradient rounded-lg">
+    <div className="p-0.5 bg-main-gradient rounded-lg inline-block">
       <button 
         type={type} 
         onClick={onClick} 
