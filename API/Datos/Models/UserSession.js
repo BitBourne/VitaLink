@@ -1,4 +1,3 @@
-// UserSession.js
 import { Sequelize } from "sequelize";
 import db from "../../Infraestructura/config/db.js";
 
@@ -15,12 +14,10 @@ const UserSession = db.define("user_sessions", {
     token: {
         type: Sequelize.TEXT,
         allowNull: false,
-        // JWT token de la sesión
     },
     device_info: {
         type: Sequelize.STRING,
         allowNull: true,
-        // Información del dispositivo/navegador
     },
     ip_address: {
         type: Sequelize.STRING,

@@ -1,4 +1,3 @@
-// getReviewsByDoctorController.js
 import getReviewsByDoctorService from "../../../Negocio/reviewServices/getReviewsByDoctorService.js";
 
 const getReviewsByDoctorController = async (req, res, next) => {

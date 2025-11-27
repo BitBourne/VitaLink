@@ -1,4 +1,3 @@
-// setAvailabilityController.js
 import setAvailabilityService from "../../../Negocio/availabilityServices/setAvailabilityService.js";
 import DoctorProfileDAO from "../../../Datos/DAOs/DoctorProfileDAO.js";
 
@@ -7,7 +6,6 @@ const setAvailabilityController = async (req, res, next) => {
         const { day_of_week, start_time, end_time, is_available } = req.body;
         const userId = req.user.id;
 
-        // Obtener el doctor_profile_id del usuario autenticado
         const doctorProfileDAO = new DoctorProfileDAO();
         const doctorProfile = await doctorProfileDAO.findOne({ user_id: userId });
 

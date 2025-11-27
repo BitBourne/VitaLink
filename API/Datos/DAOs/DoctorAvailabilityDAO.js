@@ -1,4 +1,3 @@
-// DoctorAvailabilityDAO.js
 import BaseDAO from "./BaseDAO.js";
 import DoctorAvailability from "../Models/DoctorAvailability.js";
 
@@ -7,12 +6,10 @@ class DoctorAvailabilityDAO extends BaseDAO {
         super(DoctorAvailability);
     }
 
-    // Crear disponibilidad
     async createAvailability(availabilityData) {
         return await this.create(availabilityData);
     }
 
-    // Obtener disponibilidad de un doctor
     async findByDoctorId(doctorProfileId) {
         return await this.model.findAll({
             where: {
@@ -23,7 +20,6 @@ class DoctorAvailabilityDAO extends BaseDAO {
         });
     }
 
-    // Obtener disponibilidad por día específico
     async findByDoctorAndDay(doctorProfileId, dayOfWeek) {
         return await this.model.findAll({
             where: {
@@ -35,21 +31,18 @@ class DoctorAvailabilityDAO extends BaseDAO {
         });
     }
 
-    // Actualizar disponibilidad
     async updateAvailability(id, data) {
         return await this.model.update(data, {
             where: { id },
         });
     }
 
-    // Eliminar disponibilidad
     async deleteAvailability(id) {
         return await this.model.destroy({
             where: { id },
         });
     }
 
-    // Verificar si un doctor tiene disponibilidad configurada
     async hasAvailability(doctorProfileId) {
         const count = await this.model.count({
             where: {

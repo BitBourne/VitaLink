@@ -1,4 +1,3 @@
-// getReviewsByDoctorService.js
 import ReviewDAO from "../../Datos/DAOs/ReviewDAO.js";
 
 const getReviewsByDoctorService = async (doctorProfileId, limit = 20) => {

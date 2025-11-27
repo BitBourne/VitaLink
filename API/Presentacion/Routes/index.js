@@ -7,10 +7,14 @@ import availabilityRoutes from './availabilityRoutes.js';
 import auditRoutes from './auditRoutes.js';
 import clinicRoutes from './clinicRoutes.js';
 import roleRoutes from './roleRoutes.js';
+import appointmentRoutes from './appointmentRoutes.js';
+import medicalRecordRoutes from './medicalRecordRoutes.js';
+import doctorCredentialsRoutes from './doctorCredentialsRoutes.js';
 
 const router = Router();
 
 router.use('/auth', authRoutes);
+router.use('/doctor', doctorCredentialsRoutes);
 router.use('/doctor', doctorRoutes);
 router.use('/admin', adminRoutes);
 router.use('/reviews', reviewRoutes);
@@ -18,5 +22,7 @@ router.use('/availability', availabilityRoutes);
 router.use('/audit', auditRoutes);
 router.use('/clinics', clinicRoutes);
 router.use('/roles', roleRoutes);
+router.use('/appointments', appointmentRoutes);
+router.use('/medical-records', medicalRecordRoutes);
 
-export default router; 
+export default router;

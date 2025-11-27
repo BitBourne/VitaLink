@@ -6,7 +6,6 @@ const deleteClinicService = async (clinicId) => {
         const clinicDAO = new ClinicDAO();
         const doctorProfileDAO = new DoctorProfileDAO();
 
-        // Verificar que la clínica existe
         const clinic = await clinicDAO.findById(clinicId);
         if (!clinic) {
             const error = new Error('Clínica no encontrada');
@@ -14,7 +13,6 @@ const deleteClinicService = async (clinicId) => {
             throw error;
         }
 
-        // Verificar si hay doctores asignados a esta clínica
         const doctors = await doctorProfileDAO.findAll({
             where: { clinic_id: clinicId }
         });
@@ -25,7 +23,6 @@ const deleteClinicService = async (clinicId) => {
             throw error;
         }
 
-        // Eliminar la clínica
         await clinicDAO.delete(clinicId);
 
         return { message: 'Clínica eliminada exitosamente' };

@@ -1,32 +1,33 @@
-// Dependences
+// Dependencias
 import express from 'express';
 import dotenv from 'dotenv';
 import cors from 'cors';
 
-// Custom modules
+// Módulos personalizados
 import db from './Infraestructura/config/db.js';
 import routes from './Presentacion/Routes/index.js';
 import ErrorHandling from './Infraestructura/middlewares/errorHandling.js';
+import logger from './Infraestructura/utils/logger.js';
 
-// Init express server
+// Inicializar servidor express
 const app = express();
 
 app.use(express.json());
 app.use(cors({
-  origin: 'http://localhost:5173',
+  origin: process.env.ALLOWED_ORIGINS?.split(',') || 'http://localhost:5173',
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   credentials: true
 }));
 
-// Enviroment variables config
+// Configuración de variables de entorno
 dotenv.config();
 
-// Connect to database
+// Conectar a la base de datos
 db.authenticate()
-  .then(() => console.log('Database connected'))
-  .catch(error => console.log(error));
+  .then(() => logger.info('Database connected'))
+  .catch(error => logger.error('Database connection failed', error));
 
-// Sync models
+// Sincronizar modelos
 import './Datos/Models/Relations.js';
 import User from './Datos/Models/User.js';
 import UserRoles from './Datos/Models/UserRoles.js';
@@ -37,19 +38,15 @@ import AuditLog from './Datos/Models/AuditLog.js';
 import UserSession from './Datos/Models/UserSession.js';
 import Review from './Datos/Models/Review.js';
 import DoctorAvailability from './Datos/Models/DoctorAvailability.js';
-db.sync({ alter: true })
-  .then(() => console.log('Database & tables synced'))
-  .catch(err => console.log(err));
 
-
-// Routing
+// Enrutamiento
 app.use('/api', routes);
 
-// Error Handling
+// Manejo de errores
 app.use(ErrorHandling);
 
-// PORT assignment
+// Asignación de puerto
 const PORT = process.env.PORT || 4000;
 app.listen(PORT, () => {
-  console.log(`Server listening in port http://localhost:${PORT}`)
+  logger.info(`Server listening on http://localhost:${PORT}`)
 });

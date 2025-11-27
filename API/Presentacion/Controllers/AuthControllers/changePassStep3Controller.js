@@ -8,7 +8,10 @@ const changePassStep3 = async (req, res, next) => {
 
         const result = await changepassStep3Service(DTO);
 
-        res.json(result);
+        res.json({
+            success: true,
+            message: result.message || result
+        });
     } catch (error) {
         next(error);
     }

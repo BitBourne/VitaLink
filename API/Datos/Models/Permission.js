@@ -1,4 +1,3 @@
-// Permission.js
 import { Sequelize } from "sequelize";
 import db from "../../Infraestructura/config/db.js";
 
@@ -8,10 +7,9 @@ const Permission = db.define("permissions", {
     autoIncrement: true,
     primaryKey: true,
   },
-  name: { // mantenemos el formato original
+  name: {
     type: Sequelize.STRING,
     allowNull: false,
-    // unique: false,
   },
   description: {
     type: Sequelize.STRING,

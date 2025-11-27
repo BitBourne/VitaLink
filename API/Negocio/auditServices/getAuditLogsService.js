@@ -1,4 +1,3 @@
-// getAuditLogsService.js
 import AuditLogDAO from "../../Datos/DAOs/AuditLogDAO.js";
 
 const getAuditLogsService = async (filters = {}) => {

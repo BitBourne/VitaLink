@@ -1,4 +1,3 @@
-// getAvailabilityService.js
 import DoctorAvailabilityDAO from "../../Datos/DAOs/DoctorAvailabilityDAO.js";
 
 const getAvailabilityService = async (doctorProfileId, dayOfWeek = null) => {
@@ -14,10 +13,8 @@ const getAvailabilityService = async (doctorProfileId, dayOfWeek = null) => {
         let availability;
 
         if (dayOfWeek !== null) {
-            // Obtener disponibilidad de un día específico
             availability = await availabilityDAO.findByDoctorAndDay(doctorProfileId, dayOfWeek);
         } else {
-            // Obtener toda la disponibilidad del doctor
             availability = await availabilityDAO.findByDoctorId(doctorProfileId);
         }
 

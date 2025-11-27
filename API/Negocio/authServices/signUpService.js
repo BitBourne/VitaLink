@@ -1,45 +1,55 @@
 import * as utils from '../../Infraestructura/utils/index.js'
-
 import UserDAO from '../../Datos/DAOs/UserDAO.js';
 import UserPermissionDAO from '../../Datos/DAOs/UserPermissionDAO.js';
 import UserRolesDAO from '../../Datos/DAOs/UserRoleDAO.js'
 import DoctorProfileDAO from '../../Datos/DAOs/DoctorProfileDAO.js';
-
 import generate6DigitToken from './helpers/generate6DigitToken.js';
 import emailSingUp from './helpers/emailSingUp.js';
 import hashPassword from './helpers/hashPassword.js';
+import validateMedicalLicense from './helpers/validateMedicalLicense.js';
+import validateCedulaProfesional from './helpers/validateCedulaProfesional.js';
 
 const signUpService = async (signUpDTO) => {
-    // data from controller
-    const { name, last_name, email, password, roleId, permId } = signUpDTO;
+    const { name, last_name, email, password, roleId, permId, medical_license_number, cedula_profesional } = signUpDTO;
 
-    // instance of DAO
     const userDAO = new UserDAO();
     const userPermissionDAO = new UserPermissionDAO();
     const userRolesDAO = new UserRolesDAO();
 
-    // Prevent null inputs
     if (!name || !last_name || !email || !password) {
         const error = new Error('Todos los campos son obligatorios');
         error.statusCode = 400;
         throw error;
     }
 
-    // Email validation
     if (!utils.isValidEmail(email)) {
         const error = new Error('El email no es valido');
         error.statusCode = 400;
         throw error;
     }
 
-    // password validation
+    // Minimum 6 characters required for security
     if (password.length < 6) {
         const error = new Error('La contraseña debe tener al menos 6 caracteres');
         error.statusCode = 400;
         throw error;
     }
 
-    // prevent duplicated users
+    // roleId === 2 is doctor role
+    if (roleId === 2 || (!roleId && permId === 11)) {
+        if (medical_license_number && !validateMedicalLicense(medical_license_number)) {
+            const error = new Error('El número de licencia médica no es válido. Debe tener entre 6-12 caracteres alfanuméricos.');
+            error.statusCode = 400;
+            throw error;
+        }
+
+        if (cedula_profesional && !validateCedulaProfesional(cedula_profesional)) {
+            const error = new Error('La cédula profesional no es válida. Debe tener 7-8 dígitos.');
+            error.statusCode = 400;
+            throw error;
+        }
+    }
+
     const userExist = await userDAO.findOne({ email });
     if (userExist) {
         const error = new Error('Este usuario ya existe');
@@ -58,26 +68,23 @@ const signUpService = async (signUpDTO) => {
             token: generate6DigitToken()
         });
 
-        // Crear relación user-role
         const roleDefualt = roleId || 2;
         await userRolesDAO.create({
             user_id: usuario.id,
             role_id: roleDefualt
         });
 
-        // Asignar permisos según el rol
         let permissionDefault = permId;
         if (!permId) {
-            if (roleDefualt === 3) { // Rol de doctor
-                permissionDefault = 5; // Permiso 'manage_own_schedule'
-            } else if (roleDefualt === 2) { // Rol de paciente
-                permissionDefault = 8; // Permiso 'manage_own_appointments'
-            } else if (roleDefualt === 1) { // Rol de admin
-                permissionDefault = 1; // Permiso 'todo'
+            if (roleDefualt === 1) {
+                permissionDefault = 1;
+            } else if (roleDefualt === 2) {
+                permissionDefault = 11;
+            } else if (roleDefualt === 3) {
+                permissionDefault = 9;
             }
         }
 
-        // Solo crear permiso si se definió uno
         if (permissionDefault) {
             await userPermissionDAO.create({
                 user_id: usuario.id,
@@ -85,27 +92,29 @@ const signUpService = async (signUpDTO) => {
             });
         }
 
-        // Crear perfil de doctor si el rol asignado es de doctor
-        if (roleDefualt === 3) {
+        if (roleDefualt === 2) {
             const doctorProfileDAO = new DoctorProfileDAO();
             await doctorProfileDAO.create({
                 user_id: usuario.id,
                 is_active: true,
+                medical_license_number: medical_license_number || null,
+                cedula_profesional: cedula_profesional || null,
+                license_verified: false,
+                cedula_verified: false,
             });
         }
 
-        // send verification email (no fallar si el email no se puede enviar)
+        // Email sending is non-critical, user creation should succeed even if email fails
         try {
             await emailSingUp({ name, last_name, email, token: usuario.token });
         } catch (emailError) {
-            console.log('Error enviando email (no crítico):', emailError.message);
-            // No lanzar error, el usuario ya fue creado exitosamente
+            console.error('Error enviando email (no crítico):', emailError.message);
         }
 
         return 'Hemos enviado un email de verificacion a tu correo.';
 
     } catch (error) {
-        console.log('Error in signUpService.js: ', error);
+        console.error('Error in signUpService.js: ', error);
         const serviceError = new Error('Ocurrió un error al crear la cuenta.');
         serviceError.statusCode = 500;
         throw serviceError;

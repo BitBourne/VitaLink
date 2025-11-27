@@ -1,4 +1,3 @@
-// DoctorProfile.js
 import { Sequelize } from "sequelize";
 import db from "../../Infraestructura/config/db.js";
 import User from "./User.js";
@@ -62,6 +61,50 @@ const DoctorProfile = db.define("doctor_profiles", {
     type: Sequelize.INTEGER,
     allowNull: true,
     defaultValue: 0,
+  },
+  medical_license_number: {
+    type: Sequelize.STRING,
+    allowNull: true,
+  },
+  cedula_profesional: {
+    type: Sequelize.STRING,
+    allowNull: true,
+  },
+  license_verified: {
+    type: Sequelize.BOOLEAN,
+    defaultValue: false,
+  },
+  cedula_verified: {
+    type: Sequelize.BOOLEAN,
+    defaultValue: false,
+  },
+  verification_notes: {
+    type: Sequelize.TEXT,
+    allowNull: true,
+  },
+  medical_license_document_url: {
+    type: Sequelize.STRING(500),
+    allowNull: true,
+  },
+  cedula_document_url: {
+    type: Sequelize.STRING(500),
+    allowNull: true,
+  },
+  additional_documents_urls: {
+    type: Sequelize.JSON,
+    allowNull: true,
+  },
+  verification_status: {
+    type: Sequelize.ENUM('pending', 'documents_requested', 'under_review', 'verified', 'rejected'),
+    defaultValue: 'pending',
+  },
+  verified_at: {
+    type: Sequelize.DATE,
+    allowNull: true,
+  },
+  verified_by_admin_id: {
+    type: Sequelize.INTEGER,
+    allowNull: true,
   },
 });
 

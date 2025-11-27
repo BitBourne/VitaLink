@@ -1,4 +1,3 @@
-// ReviewDAO.js
 import BaseDAO from "./BaseDAO.js";
 import Review from "../Models/Review.js";
 import User from "../Models/User.js";
@@ -9,12 +8,10 @@ class ReviewDAO extends BaseDAO {
         super(Review);
     }
 
-    // Crear review
     async createReview(reviewData) {
         return await this.create(reviewData);
     }
 
-    // Obtener reviews de un doctor
     async findByDoctorId(doctorProfileId, limit = 20) {
         return await this.model.findAll({
             where: { doctor_profile_id: doctorProfileId },
@@ -30,7 +27,6 @@ class ReviewDAO extends BaseDAO {
         });
     }
 
-    // Obtener reviews de un paciente
     async findByPatientId(patientId) {
         return await this.model.findAll({
             where: { patient_id: patientId },
@@ -51,7 +47,6 @@ class ReviewDAO extends BaseDAO {
         });
     }
 
-    // Calcular promedio de calificaciones de un doctor
     async calculateAverageRating(doctorProfileId) {
         const reviews = await this.model.findAll({
             where: { doctor_profile_id: doctorProfileId },
@@ -71,7 +66,6 @@ class ReviewDAO extends BaseDAO {
         };
     }
 
-    // Verificar si un paciente ya dejó review para un doctor
     async hasReviewed(patientId, doctorProfileId) {
         const review = await this.model.findOne({
             where: {

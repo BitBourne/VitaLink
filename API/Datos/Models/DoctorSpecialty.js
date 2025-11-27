@@ -1,4 +1,3 @@
-// DoctorSpecialty.js
 import { Sequelize } from "sequelize";
 import db from "../../Infraestructura/config/db.js";
 import DoctorProfile from "./DoctorProfile.js";

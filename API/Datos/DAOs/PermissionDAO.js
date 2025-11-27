@@ -6,10 +6,9 @@ class PermissionDAO extends BaseDAO {
         super(Permission);
     }
 
-    // Custom methods
     async findOne(data) {
         return await this.model.findOne({ where: data });
     }
 }
 
-export default PermissionDAO; 
+export default PermissionDAO;

@@ -4,10 +4,10 @@ import { checkAuth, checkRole } from '../../Infraestructura/middlewares/authMidd
 
 const router = express.Router();
 
-// Listar todos los roles (solo admin)
 router.get('/', checkAuth, checkRole(['admin']), roleControllers.getRoles);
 
-// Ver detalles de un rol (solo admin)
+router.post('/', checkAuth, checkRole(['admin']), roleControllers.createRole);
+
 router.get('/:id', checkAuth, checkRole(['admin']), roleControllers.getRoleById);
 
 export default router;
