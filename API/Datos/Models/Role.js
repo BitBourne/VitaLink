@@ -1,4 +1,3 @@
-// Rol.js
 import { Sequelize } from "sequelize";
 import db from "../../Infraestructura/config/db.js";
 
@@ -8,10 +7,9 @@ const Roles = db.define('roles', {
     primaryKey: true,
     autoIncrement: true
   },
-  name: { // mantenemos 'name'
+  name: {
     type: Sequelize.STRING,
     allowNull: false,
-    // unique: true
   },
   description: {
     type: Sequelize.STRING,

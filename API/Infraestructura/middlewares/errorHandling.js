@@ -1,12 +1,20 @@
-const ErrorHandling = (err, req, res, next) => {
-    // Default state code
-    const stateCode = err.statusCode || 500;
+import logger from '../utils/logger.js';
 
-    // Error response 
-    res.status(stateCode).json({
-        success: false,
-        msg: err.message || 'Error interno del servidor'
-    });
-}
+const ErrorHandling = (err, req, res, next) => {
+    logger.error('Error:', err.message);
+
+    const statusCode = err.statusCode || 500;
+    const message = err.message || 'Error interno del servidor';
+
+    const response = {
+        error: message
+    };
+
+    if (err.details) {
+        response.details = err.details;
+    }
+
+    res.status(statusCode).json(response);
+};
 
 export default ErrorHandling;

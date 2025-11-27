@@ -7,32 +7,24 @@ class UserRolesDAO extends BaseDAO {
         super(UserRoles);
     }
 
-    // Custom methods
     async findOne(data) {
         return await this.model.findOne({ where: data });
     }
 
-    
-
-
-    async assignRole(userId, roleId){
-        
+    async assignRole(userId, roleId) {
         return await this.model.create({ user_id: userId, role_id: roleId })
-        
-        
     }
 
-    async findAllRolesByID(userId){
+    async findAllRolesByID(userId) {
         return await this.model.findAll({
-        where: { user_id: userId },
-        include: [{
-            model: Role,      // importa el modelo de roles
-            as: 'UR_role',       // usa el alias definido en la asociación
-            attributes: ['id', 'name']
-        }]
-    })
+            where: { user_id: userId },
+            include: [{
+                model: Role,
+                as: 'UR_role',
+                attributes: ['id', 'name']
+            }]
+        })
     }
-
 }
 
-export default UserRolesDAO; 
+export default UserRolesDAO;

@@ -1,32 +1,27 @@
 import jwt from 'jsonwebtoken';
-
-
 import UserDAO from '../../Datos/DAOs/UserDAO.js';
 
-// Middleware to authenticate users
 const checkAuth = async (req, res, next) => {
     let token;
 
-    // check if the JWT exists in the request headers
-    if(
+    if (
         req.headers.authorization &&
         req.headers.authorization.startsWith('Bearer')
     ) {
         try {
-            // take the JWT from request headers
             token = req.headers.authorization.split(" ")[1];
-
-            // verify JWT
             const decoded = jwt.verify(token, process.env.JWT_SECRET);
-
 
             const userDAO = new UserDAO();
             const user = await userDAO.findById(decoded.id);
 
-            const { id, name, last_name, email } = user;
-            req.user = { id, name, last_name, email }
+            const roles = await userDAO.getUserRoles(decoded.id);
+            // Eliminar espacios en blanco para asegurar coincidencia consistente de roles
+            const roleNames = roles.map(r => r.name.trim());
 
-    
+            const { id, name, last_name, email } = user;
+            req.user = { id, name, last_name, email, roles: roleNames };
+
             return next();
         } catch (error) {
             const err = new Error('Sesión no válida o expirada');
@@ -42,14 +37,13 @@ const checkAuth = async (req, res, next) => {
     }
 };
 
-
-// checkRole
 const checkRole = (allowedRoles) => {
     return async (req, res, next) => {
         const userDAO = new UserDAO();
         const roles = await userDAO.getUserRoles(req.user.id);
 
-        const roleNames = roles.map(r => r.name);
+        // Eliminar espacios en blanco para asegurar coincidencia consistente de roles
+        const roleNames = roles.map(r => r.name.trim());
         const hasRole = allowedRoles.some(role => roleNames.includes(role));
 
         if (!hasRole) {
@@ -62,26 +56,20 @@ const checkRole = (allowedRoles) => {
     };
 };
 
-// checkPermission
 const checkPermission = (allowedPermissions) => {
     return async (req, res, next) => {
         const userDAO = new UserDAO();
-
-
-        // Obtener permisos de ese usuario
         const permissions = await userDAO.getPermissionsByUser(req.user.id);
+
         if (!permissions.length) {
             const error = new Error(`No tienes permiso.`);
             error.statusCode = 403;
             return next(error);
         }
 
-        // Extraer nombres
-        const permissionNames = permissions.map(p => p.name);
-
-        // Validar si el usuario tiene los permisos requeridos
+        // Eliminar espacios en blanco para asegurar coincidencia consistente de permisos
+        const permissionNames = permissions.map(p => p.name.trim());
         const hasPermission = allowedPermissions.some(perm => permissionNames.includes(perm));
-
 
         if (!hasPermission) {
             const error = new Error(`No tienes permiso.`);
@@ -92,7 +80,5 @@ const checkPermission = (allowedPermissions) => {
         next();
     };
 };
-
-
 
 export { checkAuth, checkRole, checkPermission };

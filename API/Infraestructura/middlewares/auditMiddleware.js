@@ -1,11 +1,11 @@
-// auditMiddleware.js
 import logAuditService from "../../Negocio/auditServices/logAuditService.js";
+import logger from "../utils/logger.js";
 
 /**
  * Middleware para registrar automáticamente acciones en el sistema de auditoría
  * @param {string} action - Nombre de la acción a registrar
  * @param {string} resourceType - Tipo de recurso (opcional)
- * @returns {Function} Middleware function
+ * @returns {Function} Función middleware
  * 
  * Uso:
  * router.post('/endpoint', checkAuth, auditAction('create_appointment', 'Appointment'), controller)
@@ -31,7 +31,7 @@ const auditAction = (action, resourceType = null) => {
                     statusCode: res.statusCode,
                 },
             }).catch(err => {
-                console.error('Error in audit middleware:', err);
+                logger.error('Error in audit middleware:', err);
             });
 
             // Llamar a la función original

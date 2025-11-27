@@ -6,13 +6,9 @@ class RoleDAO extends BaseDAO {
         super(Role);
     }
 
-    // Custom methods
     async findOne(data) {
         return await this.model.findOne({ where: data });
     }
-
-
-
 }
 
-export default RoleDAO; 
+export default RoleDAO;

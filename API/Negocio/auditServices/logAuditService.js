@@ -1,4 +1,3 @@
-// logAuditService.js
 import AuditLogDAO from "../../Datos/DAOs/AuditLogDAO.js";
 
 /**
@@ -28,7 +27,7 @@ const logAuditService = async (auditData) => {
 
         await auditLogDAO.createLog(logData);
     } catch (error) {
-        // No lanzar error para no interrumpir el flujo principal
+        // Non-blocking error handling for audit logging
         console.error('Error creating audit log:', error);
     }
 };

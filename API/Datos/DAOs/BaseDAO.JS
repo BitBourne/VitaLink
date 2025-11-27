@@ -1,4 +1,3 @@
-
 class BaseDAO {
     constructor(model) {
         this.model = model;
@@ -16,7 +15,9 @@ class BaseDAO {
         return await this.model.findAll(options);
     }
 
-    // receives an object as a parameter
+    /**
+     * @param {Object} data - Condiciones de consulta
+     */
     async findOne(data) {
         return await this.model.findOne({ where: data });
     }

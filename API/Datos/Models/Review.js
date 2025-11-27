@@ -1,4 +1,3 @@
-// Review.js
 import { Sequelize } from "sequelize";
 import db from "../../Infraestructura/config/db.js";
 
@@ -15,7 +14,6 @@ const Review = db.define("reviews", {
     patient_id: {
         type: Sequelize.INTEGER,
         allowNull: false,
-        // ID del usuario (paciente) que hace la review
     },
     rating: {
         type: Sequelize.INTEGER,
@@ -32,7 +30,6 @@ const Review = db.define("reviews", {
     is_verified: {
         type: Sequelize.BOOLEAN,
         defaultValue: false,
-        // True si el paciente tuvo una cita confirmada con el doctor
     },
 });
 

@@ -1,4 +1,3 @@
-// Relations.js
 import User from "./User.js";
 import Role from "./Role.js";
 import Permission from "./Permission.js";
@@ -12,8 +11,10 @@ import UserSession from "./UserSession.js";
 import Review from "./Review.js";
 import DoctorAvailability from "./DoctorAvailability.js";
 import Clinic from "./Clinic.js";
+import Appointment from "./Appointment.js";
+import MedicalRecord from "./MedicalRecord.js";
+import DoctorClinic from "./DoctorClinic.js";
 
-// USER ↔ ROLE (M:N)
 User.belongsToMany(Role, {
   through: UserRoles,
   foreignKey: 'user_id',
@@ -28,7 +29,6 @@ Role.belongsToMany(User, {
   as: 'R_users',
 });
 
-// USER ↔ PERMISSION (M:N)
 User.belongsToMany(Permission, {
   through: UserPermission,
   foreignKey: 'user_id',
@@ -43,7 +43,6 @@ Permission.belongsToMany(User, {
   as: 'P_users',
 });
 
-// RELACIONES DE TABLA PIVOTE
 UserRoles.belongsTo(Role, {
   foreignKey: 'role_id',
   as: 'UR_role'
@@ -63,7 +62,6 @@ UserPermission.belongsTo(Permission, {
   as: 'UP_permission'
 });
 
-// USER ↔ DOCTOR_PROFILE (1:1)
 User.hasOne(DoctorProfile, {
   foreignKey: 'user_id',
   as: 'U_doctorProfile',
@@ -74,7 +72,6 @@ DoctorProfile.belongsTo(User, {
   as: 'DP_user',
 });
 
-// DOCTOR_PROFILE ↔ SPECIALTY (M:N)
 DoctorProfile.belongsToMany(Specialty, {
   through: DoctorSpecialty,
   foreignKey: 'doctor_profile_id',
@@ -89,7 +86,6 @@ Specialty.belongsToMany(DoctorProfile, {
   as: 'S_doctors',
 });
 
-// USER ↔ AUDIT_LOG (1:N)
 User.hasMany(AuditLog, {
   foreignKey: 'user_id',
   as: 'U_auditLogs',
@@ -100,7 +96,6 @@ AuditLog.belongsTo(User, {
   as: 'AL_user',
 });
 
-// USER ↔ USER_SESSION (1:N)
 User.hasMany(UserSession, {
   foreignKey: 'user_id',
   as: 'U_sessions',
@@ -111,7 +106,6 @@ UserSession.belongsTo(User, {
   as: 'US_user',
 });
 
-// DOCTOR_PROFILE ↔ REVIEW (1:N)
 DoctorProfile.hasMany(Review, {
   foreignKey: 'doctor_profile_id',
   as: 'DP_reviews',
@@ -122,7 +116,6 @@ Review.belongsTo(DoctorProfile, {
   as: 'R_doctorProfile',
 });
 
-// USER (patient) ↔ REVIEW (1:N)
 User.hasMany(Review, {
   foreignKey: 'patient_id',
   as: 'U_reviews',
@@ -133,7 +126,6 @@ Review.belongsTo(User, {
   as: 'R_patient',
 });
 
-// DOCTOR_PROFILE ↔ DOCTOR_AVAILABILITY (1:N)
 DoctorProfile.hasMany(DoctorAvailability, {
   foreignKey: 'doctor_profile_id',
   as: 'DP_availabilities',
@@ -144,29 +136,105 @@ DoctorAvailability.belongsTo(DoctorProfile, {
   as: 'DA_doctorProfile',
 });
 
-// CLINIC ↔ DOCTOR_PROFILE (1:N)
-Clinic.hasMany(DoctorProfile, {
+Clinic.belongsToMany(DoctorProfile, {
+  through: DoctorClinic,
   foreignKey: 'clinic_id',
+  otherKey: 'doctor_profile_id',
   as: 'doctors',
 });
 
-DoctorProfile.belongsTo(Clinic, {
+DoctorProfile.belongsToMany(Clinic, {
+  through: DoctorClinic,
+  foreignKey: 'doctor_profile_id',
+  otherKey: 'clinic_id',
+  as: 'clinics',
+});
+
+DoctorClinic.belongsTo(DoctorProfile, {
+  foreignKey: 'doctor_profile_id',
+  as: 'DC_doctor',
+});
+
+DoctorClinic.belongsTo(Clinic, {
   foreignKey: 'clinic_id',
-  as: 'clinic',
+  as: 'DC_clinic',
+});
+
+User.hasMany(Appointment, {
+  foreignKey: 'patient_id',
+  as: 'U_appointments',
+});
+
+Appointment.belongsTo(User, {
+  foreignKey: 'patient_id',
+  as: 'A_patient',
+});
+
+DoctorProfile.hasMany(Appointment, {
+  foreignKey: 'doctor_profile_id',
+  as: 'DP_appointments',
+});
+
+Appointment.belongsTo(DoctorProfile, {
+  foreignKey: 'doctor_profile_id',
+  as: 'A_doctor',
+});
+
+Clinic.hasMany(Appointment, {
+  foreignKey: 'clinic_id',
+  as: 'C_appointments',
+});
+
+Appointment.belongsTo(Clinic, {
+  foreignKey: 'clinic_id',
+  as: 'A_clinic',
+});
+
+User.hasMany(MedicalRecord, {
+  foreignKey: 'patient_id',
+  as: 'U_medicalRecords',
+});
+
+MedicalRecord.belongsTo(User, {
+  foreignKey: 'patient_id',
+  as: 'MR_patient',
+});
+
+DoctorProfile.hasMany(MedicalRecord, {
+  foreignKey: 'doctor_profile_id',
+  as: 'DP_medicalRecords',
+});
+
+MedicalRecord.belongsTo(DoctorProfile, {
+  foreignKey: 'doctor_profile_id',
+  as: 'MR_doctor',
+});
+
+Appointment.hasOne(MedicalRecord, {
+  foreignKey: 'appointment_id',
+  as: 'A_medicalRecord',
+});
+
+MedicalRecord.belongsTo(Appointment, {
+  foreignKey: 'appointment_id',
+  as: 'MR_appointment',
 });
 
 export {
   User,
   Role,
-  Permission,
   UserRoles,
+  Permission,
   UserPermission,
-  DoctorProfile,
-  Specialty,
-  DoctorSpecialty,
   AuditLog,
   UserSession,
+  Specialty,
+  DoctorProfile,
+  DoctorSpecialty,
+  Clinic,
+  DoctorClinic,
   Review,
   DoctorAvailability,
-  Clinic
+  Appointment,
+  MedicalRecord
 };

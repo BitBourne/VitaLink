@@ -1,4 +1,3 @@
-// getAuditLogsController.js
 import getAuditLogsService from "../../../Negocio/auditServices/getAuditLogsService.js";
 
 const getAuditLogsController = async (req, res, next) => {

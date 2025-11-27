@@ -6,7 +6,6 @@ class SpecialtyDAO extends BaseDAO {
     super(Specialty);
   }
 
-  // Custom methods
   async findOne(data) {
     return await this.model.findOne({ where: data });
   }

@@ -1,4 +1,3 @@
-// RolePermission.js
 import { Sequelize } from "sequelize";
 import db from "../../Infraestructura/config/db.js";
 

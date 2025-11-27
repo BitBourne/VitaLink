@@ -1,4 +1,3 @@
-// UserRoles.js
 import { Sequelize } from "sequelize";
 import db from "../../Infraestructura/config/db.js";
 
@@ -6,7 +5,6 @@ import Role from "./Role.js"
 import User from "./User.js";
 
 const UserRoles = db.define('user_roles', {
-  
   id: {
     type: Sequelize.INTEGER,
     autoIncrement: true,
@@ -26,7 +24,6 @@ const UserRoles = db.define('user_roles', {
       key: "id",
     },
   },
-
 });
 
 export default UserRoles;

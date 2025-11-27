@@ -1,4 +1,3 @@
-// getAvailabilityController.js
 import getAvailabilityService from "../../../Negocio/availabilityServices/getAvailabilityService.js";
 
 const getAvailabilityController = async (req, res, next) => {

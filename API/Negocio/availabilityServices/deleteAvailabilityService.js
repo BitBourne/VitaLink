@@ -1,4 +1,3 @@
-// deleteAvailabilityService.js
 import DoctorAvailabilityDAO from "../../Datos/DAOs/DoctorAvailabilityDAO.js";
 
 const deleteAvailabilityService = async (availabilityId, doctorProfileId) => {
@@ -11,7 +10,6 @@ const deleteAvailabilityService = async (availabilityId, doctorProfileId) => {
             throw error;
         }
 
-        // Verificar que la disponibilidad existe y pertenece al doctor
         const availability = await availabilityDAO.findById(availabilityId);
 
         if (!availability) {

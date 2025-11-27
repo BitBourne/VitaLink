@@ -1,4 +1,3 @@
-// User.js
 import { Sequelize } from "sequelize";
 import db from "../../Infraestructura/config/db.js";
 
@@ -25,8 +24,6 @@ const User = db.define('users', {
     type: Sequelize.STRING,
     allowNull: false
   },
-  
-  // account verification status
   verified: {
     type: Sequelize.BOOLEAN,
     defaultValue: false

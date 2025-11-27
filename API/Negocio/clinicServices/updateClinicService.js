@@ -6,7 +6,6 @@ const updateClinicService = async (clinicId, updateData) => {
     try {
         const clinicDAO = new ClinicDAO();
 
-        // Verificar que la clínica existe
         const clinic = await clinicDAO.findById(clinicId);
         if (!clinic) {
             const error = new Error('Clínica no encontrada');
@@ -14,7 +13,6 @@ const updateClinicService = async (clinicId, updateData) => {
             throw error;
         }
 
-        // Preparar datos de actualización
         const dataToUpdate = {};
         if (name !== undefined) dataToUpdate.name = name;
         if (address !== undefined) dataToUpdate.address = address;
@@ -25,7 +23,6 @@ const updateClinicService = async (clinicId, updateData) => {
 
         await clinicDAO.update(clinicId, dataToUpdate);
 
-        // Obtener la clínica actualizada
         const updatedClinic = await clinicDAO.findById(clinicId);
 
         return updatedClinic;
