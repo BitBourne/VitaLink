@@ -1,4 +1,4 @@
-import updateMedicalRecordService from '../../../Negocio/medicalRecordServices/updateMedicalRecordService.js';
+import updateMedicalRecordService from '../../../Negocio/MedicalRecordServices/updateMedicalRecordService.js';
 
 const updateMedicalRecord = async (req, res, next) => {
     try {

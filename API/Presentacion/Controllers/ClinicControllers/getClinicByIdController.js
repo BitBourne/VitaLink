@@ -1,4 +1,4 @@
-import getClinicByIdService from '../../../Negocio/clinicServices/getClinicByIdService.js';
+import getClinicByIdService from '../../../Negocio/ClinicServices/getClinicByIdService.js';
 
 const getClinicByIdController = async (req, res) => {
     try {

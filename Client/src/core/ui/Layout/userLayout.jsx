@@ -2,6 +2,7 @@ import React from "react";
 import { Outlet, Navigate } from "react-router-dom";
 
 import useAuth from "../../../features/auth/hooks/useAuth";
+import Chat from "./chat.jsx";
 
 
 const UserLayout = () => {
@@ -12,7 +13,7 @@ const UserLayout = () => {
 
 
     return (
-    <div className="min-h-screen bg-[#F9FAFB] flex flex-col">
+    <div className="min-h-screen w-3xl bg-[#F9FAFB] flex flex-col">
 
       {/* Header */}
       <header className="w-full bg-white shadow-sm px-6 py-4 flex justify-between items-center">
@@ -34,6 +35,8 @@ const UserLayout = () => {
             // Contenido
             <main className="flex-1 px-8 py-10">
                 <Outlet/>
+                  <Chat userId={user.id} />
+
             </main>
         ) : <Navigate to='/' />}
 

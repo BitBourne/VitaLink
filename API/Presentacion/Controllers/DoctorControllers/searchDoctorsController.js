@@ -1,4 +1,4 @@
-import { searchDoctors } from '../../../Negocio/doctorServices/doctorSearchService.js';
+import { searchDoctors } from '../../../Negocio/DoctorServices/doctorSearchService.js';
 
 const searchDoctorsController = async (req, res, next) => {
     try {

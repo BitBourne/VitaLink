@@ -1,4 +1,4 @@
-import uploadDoctorDocuments from '../../../Negocio/doctorServices/uploadDoctorDocuments.js';
+import uploadDoctorDocuments from '../../../Negocio/DoctorServices/uploadDoctorDocuments.js';
 
 const uploadDocuments = async (req, res, next) => {
     try {

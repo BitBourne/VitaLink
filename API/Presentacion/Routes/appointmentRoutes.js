@@ -5,9 +5,13 @@ import checkDoctorVerified from '../../Infraestructura/middlewares/checkDoctorVe
 
 const router = Router();
 
-router.post('/', checkAuth, checkRole(['patient', 'doctor']), checkDoctorVerified(['doctor']), appointmentControllers.createAppointment);
+router.post('/', checkAuth, checkRole(['paciente', 'doctor']), checkDoctorVerified(['doctor']), appointmentControllers.createAppointment);
 
 router.get('/', checkAuth, appointmentControllers.getAppointments);
+
+router.get('/:id', checkAuth, appointmentControllers.getAppointmentById);
+
+
 
 router.put('/:id/confirm', checkAuth, checkRole(['doctor']), (req, res, next) => {
     if (!req.body) req.body = {};

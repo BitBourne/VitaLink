@@ -1,4 +1,4 @@
-import assignDoctorToClinicService from '../../../Negocio/doctorServices/assignDoctorToClinicService.js';
+import assignDoctorToClinicService from '../../../Negocio/DoctorServices/assignDoctorToClinicService.js';
 
 const assignDoctorToClinic = async (req, res, next) => {
     try {

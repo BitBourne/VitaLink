@@ -1,4 +1,4 @@
-import requestDocuments from '../../../Negocio/doctorServices/requestDocuments.js';
+import requestDocuments from '../../../Negocio/DoctorServices/requestDocuments.js';
 
 const requestDocumentsController = async (req, res, next) => {
     try {

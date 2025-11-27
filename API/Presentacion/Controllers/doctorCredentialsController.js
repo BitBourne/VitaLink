@@ -1,6 +1,6 @@
-import updateDoctorCredentials from '../../Negocio/doctorServices/updateDoctorCredentials.js';
-import verifyDoctorCredentials from '../../Negocio/doctorServices/verifyDoctorCredentials.js';
-import getDoctorCredentialStatus from '../../Negocio/doctorServices/getDoctorCredentialStatus.js';
+import updateDoctorCredentials from '../../Negocio/DoctorServices/updateDoctorCredentials.js';
+import verifyDoctorCredentials from '../../Negocio/DoctorServices/verifyDoctorCredentials.js';
+import getDoctorCredentialStatus from '../../Negocio/DoctorServices/getDoctorCredentialStatus.js';
 
 const updateCredentials = async (req, res, next) => {
     try {

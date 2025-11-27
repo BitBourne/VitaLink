@@ -1,4 +1,4 @@
-import createMedicalRecordService from '../../../Negocio/medicalRecordServices/createMedicalRecordService.js';
+import createMedicalRecordService from '../../../Negocio/MedicalRecordServices/createMedicalRecordService.js';
 
 const createMedicalRecord = async (req, res, next) => {
     try {

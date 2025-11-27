@@ -1,4 +1,4 @@
-import updateDoctorSalaryService from '../../../Negocio/doctorServices/updateDoctorSalaryService.js';
+import updateDoctorSalaryService from '../../../Negocio/DoctorServices/updateDoctorSalaryService.js';
 
 const updateDoctorSalaryController = async (req, res) => {
     try {

@@ -1,4 +1,4 @@
-import getDocumentUrl from '../../../Negocio/doctorServices/getDocumentUrl.js';
+import getDocumentUrl from '../../../Negocio/DoctorServices/getDocumentUrl.js';
 
 const getDocument = async (req, res, next) => {
     try {

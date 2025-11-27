@@ -10,6 +10,7 @@ import roleRoutes from './roleRoutes.js';
 import appointmentRoutes from './appointmentRoutes.js';
 import medicalRecordRoutes from './medicalRecordRoutes.js';
 import doctorCredentialsRoutes from './doctorCredentialsRoutes.js';
+import chatRoutes from './chatRoutes.js'
 
 const router = Router();
 
@@ -24,5 +25,6 @@ router.use('/clinics', clinicRoutes);
 router.use('/roles', roleRoutes);
 router.use('/appointments', appointmentRoutes);
 router.use('/medical-records', medicalRecordRoutes);
+router.use('/chats', chatRoutes);
 
 export default router;

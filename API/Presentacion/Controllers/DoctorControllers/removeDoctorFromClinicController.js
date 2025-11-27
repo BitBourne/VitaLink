@@ -1,4 +1,4 @@
-import removeDoctorFromClinicService from '../../../Negocio/doctorServices/removeDoctorFromClinicService.js';
+import removeDoctorFromClinicService from '../../../Negocio/DoctorServices/removeDoctorFromClinicService.js';
 
 const removeDoctorFromClinic = async (req, res, next) => {
     try {

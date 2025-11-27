@@ -14,6 +14,9 @@ import Clinic from "./Clinic.js";
 import Appointment from "./Appointment.js";
 import MedicalRecord from "./MedicalRecord.js";
 import DoctorClinic from "./DoctorClinic.js";
+import Conversation from "./Chats/Conversations.js";
+import Message from "./Chats/Messages.js";
+
 
 User.belongsToMany(Role, {
   through: UserRoles,
@@ -220,6 +223,16 @@ MedicalRecord.belongsTo(Appointment, {
   as: 'MR_appointment',
 });
 
+
+
+Conversation.hasMany(Message, { foreignKey: "conversation_id" });
+Message.belongsTo(Conversation, { foreignKey: "conversation_id" });
+
+
+
+
+
+
 export {
   User,
   Role,
@@ -236,5 +249,7 @@ export {
   Review,
   DoctorAvailability,
   Appointment,
-  MedicalRecord
+  MedicalRecord,
+  Conversation,
+  Message
 };

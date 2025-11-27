@@ -1,4 +1,4 @@
-import getPatientMedicalHistoryService from '../../../Negocio/medicalRecordServices/getPatientMedicalHistoryService.js';
+import getPatientMedicalHistoryService from '../../../Negocio/MedicalRecordServices/getPatientMedicalHistoryService.js';
 
 const getPatientHistory = async (req, res, next) => {
     try {

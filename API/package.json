@@ -2,10 +2,10 @@
   "name": "api",
   "version": "1.0.0",
   "description": "API de VitaLink",
-  "main": "app.js",
+  "main": "server.js",
   "type": "module",
   "scripts": {
-    "dev": "nodemon app.js"
+    "dev": "nodemon server.js"
   },
   "author": "",
   "license": "ISC",
@@ -18,7 +18,8 @@
     "multer": "^2.0.2",
     "mysql2": "^3.15.2",
     "nodemailer": "^7.0.9",
-    "sequelize": "^6.37.7"
+    "sequelize": "^6.37.7",
+    "socket.io": "^4.8.1"
   },
   "devDependencies": {
     "nodemon": "^3.1.10"

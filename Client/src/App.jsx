@@ -15,6 +15,7 @@ import SignupVerification from "./features/auth/Pages/SignupVerification";
 
 
 import UserLayout from "./core/ui/Layout/UserLayout";
+import AppointmentPage from "./core/ui/Layout/appointmentpage";
 import ForgotPassword from "./features/auth/Pages/ForgotPassword";
 import NewPassword from "./features/auth/Pages/New-Password";
 import InvalidLink from "./features/auth/Pages/InvalidLink";
@@ -38,6 +39,8 @@ export default function App() {
             <Route path="new-password" element={< NewPassword/>} />
             <Route path="invalid-link" element={< InvalidLink/>} />
             <Route path="password-updated" element={< PasswordUpdated/>} />
+            <Route path="user" element={< UserLayout/>} />
+            <Route path="/appointments/:id" element={<AppointmentPage />} />
           </Route>
 
 

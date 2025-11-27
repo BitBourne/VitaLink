@@ -1,4 +1,4 @@
-import getMedicalRecordService from '../../../Negocio/medicalRecordServices/getMedicalRecordService.js';
+import getMedicalRecordService from '../../../Negocio/MedicalRecordServices/getMedicalRecordService.js';
 
 const getMedicalRecord = async (req, res, next) => {
     try {

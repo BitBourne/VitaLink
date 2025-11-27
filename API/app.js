@@ -9,18 +9,19 @@ import routes from './Presentacion/Routes/index.js';
 import ErrorHandling from './Infraestructura/middlewares/errorHandling.js';
 import logger from './Infraestructura/utils/logger.js';
 
-// Inicializar servidor express
+// Config env
+dotenv.config();
+
+// Inicializar express
 const app = express();
 
+// Middleware
 app.use(express.json());
 app.use(cors({
   origin: process.env.ALLOWED_ORIGINS?.split(',') || 'http://localhost:5173',
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   credentials: true
 }));
-
-// Configuración de variables de entorno
-dotenv.config();
 
 // Conectar a la base de datos
 db.authenticate()
@@ -37,16 +38,17 @@ import Permission from './Datos/Models/Permission.js';
 import AuditLog from './Datos/Models/AuditLog.js';
 import UserSession from './Datos/Models/UserSession.js';
 import Review from './Datos/Models/Review.js';
+import Conversation from './Datos/Models/Chats/Conversations.js';
 import DoctorAvailability from './Datos/Models/DoctorAvailability.js';
+// db.sync({ alter: true })
+//   .then(() => console.log('Database & tables synced'))
+//   .catch(err => console.log(err));
 
-// Enrutamiento
+
+// Rutas
 app.use('/api', routes);
 
 // Manejo de errores
 app.use(ErrorHandling);
 
-// Asignación de puerto
-const PORT = process.env.PORT || 4000;
-app.listen(PORT, () => {
-  logger.info(`Server listening on http://localhost:${PORT}`)
-});
+export default app;

@@ -1,4 +1,4 @@
-import deleteMedicalRecordService from '../../../Negocio/medicalRecordServices/deleteMedicalRecordService.js';
+import deleteMedicalRecordService from '../../../Negocio/MedicalRecordServices/deleteMedicalRecordService.js';
 
 const deleteMedicalRecord = async (req, res, next) => {
     try {

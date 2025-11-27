@@ -1,4 +1,4 @@
-import getDoctorClinicsService from '../../../Negocio/doctorServices/getDoctorClinicsService.js';
+import getDoctorClinicsService from '../../../Negocio/DoctorServices/getDoctorClinicsService.js';
 
 const getDoctorClinics = async (req, res, next) => {
     try {

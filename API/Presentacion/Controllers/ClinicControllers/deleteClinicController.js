@@ -1,4 +1,4 @@
-import deleteClinicService from '../../../Negocio/clinicServices/deleteClinicService.js';
+import deleteClinicService from '../../../Negocio/ClinicServices/deleteClinicService.js';
 
 const deleteClinicController = async (req, res) => {
     try {

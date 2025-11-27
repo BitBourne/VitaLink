@@ -1,4 +1,4 @@
-import updateClinicService from '../../../Negocio/clinicServices/updateClinicService.js';
+import updateClinicService from '../../../Negocio/ClinicServices/updateClinicService.js';
 
 const updateClinicController = async (req, res) => {
     try {
