@@ -40,8 +40,8 @@ export default function Login() {
     try {
       setAlert({});
 
-      const response = await apiClient.post("/auth/login", { email, password });
-      const { token } = response.data;
+      const response = await apiClient.post("/auth/logIn", { email, password });
+      const { token } = response.data.data;
 
       login(token);
 
