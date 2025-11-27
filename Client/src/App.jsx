@@ -2,25 +2,24 @@ import React from "react";
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 
 // Context
- import { AuthProvider } from "./features/auth/context/authProvider";
+import { AuthProvider } from "./features/auth/context/authProvider";
 
 // Features
-import Signup from "./features/signup/pages/Signup";
-import SignupPaciente from "./features/signup/components/SignupPaciente";
-import SignupEspecialista from "./features/signup/components/SignupEspecialista";
-import VerificationCard from "./features/Verification/components/VerificationCard";
-import Sucess from "./features/Success/pages/Sucess";
-import Login from "./features/login/pages/Login";
 import Dashboard from "./features/Dashboard/pages/Dashboard";
 
-// Layout
-import UserLayout from "./core/ui/Layout/UserLayout";
+// Authentication Pages and Layout
 import AuthLayout from "./features/auth/layout/AuthLayout";
-import LoginCard from "./features/login/components/LoginCard";
+import Login from "./features/auth/Pages/Login";
+import Signup from "./features/auth/Pages/Signup";
+import SignupVerification from "./features/auth/Pages/SignupVerification";
+
+
+import UserLayout from "./core/ui/Layout/UserLayout";
 import ForgotPassword from "./features/auth/Pages/ForgotPassword";
 import NewPassword from "./features/auth/Pages/New-Password";
 import InvalidLink from "./features/auth/Pages/InvalidLink";
 import PasswordUpdated from "./features/auth/Pages/PasswordUpdated";
+
 
 export default function App() {
   return (
@@ -30,17 +29,15 @@ export default function App() {
         <Routes> {/* Crear un conjunto de rutas */}
 
           {/* Redirección al registro */}
-          <Route path="/" element={<AuthLayout />}> {/** Indica el layout principal de la ruta */}
-            <Route index element={<LoginCard />} /> {/* Carga de componente por defecto */}
-            <Route path="signup" element={<Signup />}></Route>
-            <Route path="SignupPaciente" element={< SignupPaciente/>}> </Route>
-            <Route path="SignupEspecialista" element={< SignupEspecialista />}></Route>
-            <Route path="VerificationCard" element={< VerificationCard />}></Route> 
-            <Route path="Sucess" element={<Sucess />}></Route>
-            <Route path="forgot-password" element={<ForgotPassword/>}></Route>
-            <Route path="new-password" element={< NewPassword/>}></Route>
-            <Route path="invalid-link" element={< InvalidLink/>}></Route>
-            <Route path="password-updated" element={< PasswordUpdated/>}></Route>
+          <Route path="/" element={<AuthLayout />} > {/** Indica el layout principal de la ruta */}
+            <Route index element={<Login />} /> {/* Carga de componente por defecto */}
+            <Route path="signup" element={<Signup />} />
+            <Route path="signup/verify-account" element={<SignupVerification />} />
+
+            <Route path="forgot-password" element={<ForgotPassword/>} />
+            <Route path="new-password" element={< NewPassword/>} />
+            <Route path="invalid-link" element={< InvalidLink/>} />
+            <Route path="password-updated" element={< PasswordUpdated/>} />
           </Route>
 
 
@@ -64,7 +61,7 @@ export default function App() {
  */}
           {/* Página no encontrada */}
           {/* <Route path="*" element={<h1>404: Página No Encontrada</h1>} /> */}
-        </Routes> 
+        </Routes>
       </Router>
      </AuthProvider>
   );

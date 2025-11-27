@@ -1,38 +1,35 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { ArrowLeft, ArrowRight } from "lucide-react";
-import TextInput from "../../../core/ui/Components/TextInput";
+
+
+
+// Components
+import TextInput from "../../../core/ui/Components/FormInput";
 import Button from "../../../core/ui/Components/Button";
 import Alert from "../../../core/ui/Components/Alert"; 
 
 const ForgotPassword = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
-  const [error, setError] = useState("");
-  const [showAlert, setShowAlert] = useState(false);
+  const [alert, setAlert] = useState({});
 
   const handleSubmit = (e) => {
     e.preventDefault();
     
     // Validación de email
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    
     if (!email) {
-      setError("Por favor ingresa tu email");
-      setShowAlert(true);
+      setAlert({ type: "error", message: "El email es obligatorio." });
       return;
     }
     
     if (!emailRegex.test(email)) {
-      setError("Email no válido");
-      setShowAlert(true);
+      setAlert({ type: "error", message: "El email no es válido." });
       return;
     }
-    
-    // Si pasa la validación
-    setError("");
-    setShowAlert(false);
-    console.log("Email válido:", email);
+
+    // Limpiar alerta
+    setAlert({});
   };
 
   return (
@@ -47,32 +44,36 @@ const ForgotPassword = () => {
 
       <form onSubmit={handleSubmit}>
         <TextInput
+          icon="Mail"
+          id="email"
           label="Email"
-          placeholder="Email"
           type="email"
           value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          error={!!error}
+          setValue={setEmail}
         />
 
-        {/* Si hay error */}
-        {showAlert && error && (
-          <Alert type="error" message={error} className="mt-4" />
+        {/* Mostrar alerta */}
+        {alert.message && (
+          <div className="mt-4">
+            <Alert type={alert.type} message={alert.message} />
+          </div>
         )}
 
         <div className="flex justify-between items-center mt-8">
-          <button
+          <Button 
+            icon="arrowLeft"
+            iconPosition="left"
             type="button"
-            onClick={() => navigate(-1)}
-            className="flex items-center gap-2 px-4 py-2 border border-gray-300 text-[#4C575F] text-sm rounded-lg hover:bg-gray-50 transition"
-          >
-            <ArrowLeft className="w-4 h-4" />
+            variant="secondary"
+            onClick={() => navigate(-1)}>
             Atrás
-          </button>
+          </Button>
 
-          <Button type="submit">
+          <Button 
+            icon="arrowRight"
+            iconPosition="right"
+            type="submit">
             Siguiente
-            <ArrowRight className="w-4 h-4" />
           </Button>
         </div>
       </form>

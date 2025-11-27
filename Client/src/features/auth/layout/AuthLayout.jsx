@@ -4,11 +4,11 @@ import { Outlet } from "react-router-dom";
 
 const AuthLayout = () => {
   return (
-    <div className="min-h-screen flex flex-col bg-[linear-gradient(60deg,#B490CA33,#5EE7DF33)]">
+    <div className="min-h-screen flex flex-col bg-main-gradient-15">
       <Header />
 
-      <main className="flex-grow flex items-center justify-center px-4 sm:px-6 py-6 sm:py-10">
-        <div className="w-full max-w-2xl bg-white rounded-2xl shadow-[0_8px_30px_rgba(0,0,0,0.12)] p-6 sm:p-8 md:p-10 mx-auto">
+      <main className="flex-grow flex items-center justify-center">
+        <div className="w-11/12 md:w-3/5 md:max-w-md md:mx-auto my-5 bg-white rounded-xl shadow-lg px-6 py-10">
           <Outlet />
         </div>
       </main>

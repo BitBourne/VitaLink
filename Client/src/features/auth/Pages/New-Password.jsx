@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ArrowLeft, ArrowRight, Eye, EyeOff } from "lucide-react";
-import TextInput from "../../../core/ui/Components/TextInput";
+import TextInput from "../../../core/ui/Components/FormInput";
 import Button from "../../../core/ui/Components/Button";
 import Alert from "../../../core/ui/Components/Alert";
 
