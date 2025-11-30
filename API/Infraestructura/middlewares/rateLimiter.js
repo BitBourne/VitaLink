@@ -14,10 +14,7 @@ export const globalRateLimiter = rateLimit({
     standardHeaders: true, // Retorna info de rate limit en headers `RateLimit-*`
     legacyHeaders: false, // Deshabilita headers `X-RateLimit-*`
 
-    // Función para generar la key (por defecto usa IP)
-    keyGenerator: (req) => {
-        return req.ip || req.connection.remoteAddress;
-    },
+
 
     // Handler personalizado cuando se excede el límite
     handler: (req, res) => {
@@ -43,9 +40,7 @@ export const authRateLimiter = rateLimit({
     standardHeaders: true,
     legacyHeaders: false,
 
-    keyGenerator: (req) => {
-        return req.ip || req.connection.remoteAddress;
-    },
+
 
     handler: (req, res) => {
         res.status(429).json({
@@ -75,9 +70,7 @@ export const sensitiveRateLimiter = rateLimit({
     standardHeaders: true,
     legacyHeaders: false,
 
-    keyGenerator: (req) => {
-        return req.ip || req.connection.remoteAddress;
-    },
+
 
     handler: (req, res) => {
         res.status(429).json({
