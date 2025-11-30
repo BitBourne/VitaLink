@@ -41,8 +41,12 @@ app.use(globalRateLimiter);
 
 // Conectar a la base de datos
 db.authenticate()
-  .then(() => logger.info('Database connected'))
-  .catch(error => logger.error('Database connection failed', error));
+  .then(() => {
+    logger.info('Database connected');
+    return db.sync({ alter: true });
+  })
+  .then(() => logger.info('Database synchronized'))
+  .catch(error => logger.error('Database connection or sync failed', error));
 
 // Sincronizar modelos
 import './Datos/Models/Relations.js';
