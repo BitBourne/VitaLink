@@ -12,12 +12,12 @@ import logger from "../utils/logger.js";
  */
 const auditAction = (action, resourceType = null) => {
     return async (req, res, next) => {
-        // Guardar la función original de res.json
+        // Guarda la función original de res.json
         const originalJson = res.json.bind(res);
 
-        // Sobrescribir res.json para capturar la respuesta
+        // Sobrescribe res.json para capturar la respuesta
         res.json = function (data) {
-            // Registrar la acción en auditoría
+            // Registra la acción en auditoría
             logAuditService({
                 user_id: req.user?.id || null,
                 action,
@@ -34,7 +34,7 @@ const auditAction = (action, resourceType = null) => {
                 logger.error('Error in audit middleware:', err);
             });
 
-            // Llamar a la función original
+            // Llama a la función original
             return originalJson(data);
         };
 

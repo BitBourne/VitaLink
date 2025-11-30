@@ -2,6 +2,7 @@
 import express from 'express';
 import dotenv from 'dotenv';
 import cors from 'cors';
+import cookieParser from 'cookie-parser';
 
 // Módulos personalizados
 import db from './Infraestructura/config/db.js';
@@ -9,6 +10,7 @@ import routes from './Presentacion/Routes/index.js';
 import ErrorHandling from './Infraestructura/middlewares/errorHandling.js';
 import logger from './Infraestructura/utils/logger.js';
 
+<<<<<<< HEAD
 // Config env
 dotenv.config();
 
@@ -17,16 +19,48 @@ const app = express();
 
 // Middleware
 app.use(express.json());
+=======
+// Middlewares de seguridad
+import securityHeaders from './Infraestructura/middlewares/securityHeaders.js';
+import { globalRateLimiter } from './Infraestructura/middlewares/rateLimiter.js';
+
+// Configuración de variables de entorno (debe ir primero)
+dotenv.config();
+
+// Inicializar servidor express
+const app = express();
+
+// Headers de seguridad HTTP (helmet) - DEBE IR PRIMERO
+app.use(securityHeaders);
+
+// Parseo de JSON con límite de tamaño (previene ataques de payload grande)
+app.use(express.json({ limit: '10mb' }));
+
+// Cookie parser
+app.use(cookieParser());
+
+// CORS configurado
+>>>>>>> remotes/origin/tux
 app.use(cors({
   origin: process.env.ALLOWED_ORIGINS?.split(',') || 'http://localhost:5173',
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   credentials: true
 }));
 
+<<<<<<< HEAD
+=======
+// Rate limiting global (antes de las rutas)
+app.use(globalRateLimiter);
+
+>>>>>>> remotes/origin/tux
 // Conectar a la base de datos
 db.authenticate()
-  .then(() => logger.info('Database connected'))
-  .catch(error => logger.error('Database connection failed', error));
+  .then(() => {
+    logger.info('Database connected');
+    return db.sync({ alter: true });
+  })
+  .then(() => logger.info('Database synchronized'))
+  .catch(error => logger.error('Database connection or sync failed', error));
 
 // Sincronizar modelos
 import './Datos/Models/Relations.js';

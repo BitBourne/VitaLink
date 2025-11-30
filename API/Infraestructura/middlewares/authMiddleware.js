@@ -4,36 +4,42 @@ import UserDAO from '../../Datos/DAOs/UserDAO.js';
 const checkAuth = async (req, res, next) => {
     let token;
 
+    // Intentar obtener el token del header Authorization
     if (
         req.headers.authorization &&
         req.headers.authorization.startsWith('Bearer')
     ) {
-        try {
-            token = req.headers.authorization.split(" ")[1];
-            const decoded = jwt.verify(token, process.env.JWT_SECRET);
-
-            const userDAO = new UserDAO();
-            const user = await userDAO.findById(decoded.id);
-
-            const roles = await userDAO.getUserRoles(decoded.id);
-            // Eliminar espacios en blanco para asegurar coincidencia consistente de roles
-            const roleNames = roles.map(r => r.name.trim());
-
-            const { id, name, last_name, email } = user;
-            req.user = { id, name, last_name, email, roles: roleNames };
-
-            return next();
-        } catch (error) {
-            const err = new Error('Sesión no válida o expirada');
-            err.statusCode = 401;
-            return next(err);
-        }
+        token = req.headers.authorization.split(" ")[1];
+    }
+    // Si no está en el header, intentar obtenerlo de las cookies
+    else if (req.cookies && req.cookies.token) {
+        token = req.cookies.token;
     }
 
     if (!token) {
         const error = new Error('No se proporcionó un token, permiso no válido');
         error.statusCode = 401;
         return next(error);
+    }
+
+    try {
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+
+        const userDAO = new UserDAO();
+        const user = await userDAO.findById(decoded.id);
+
+        const roles = await userDAO.getUserRoles(decoded.id);
+        // Eliminar espacios en blanco para asegurar coincidencia consistente de roles
+        const roleNames = roles.map(r => r.name.trim());
+
+        const { id, name, last_name, email } = user;
+        req.user = { id, name, last_name, email, roles: roleNames };
+
+        return next();
+    } catch (error) {
+        const err = new Error('Sesión no válida o expirada');
+        err.statusCode = 401;
+        return next(err);
     }
 };
 

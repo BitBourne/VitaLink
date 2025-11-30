@@ -10,7 +10,7 @@ import validateMedicalLicense from './helpers/validateMedicalLicense.js';
 import validateCedulaProfesional from './helpers/validateCedulaProfesional.js';
 
 const signUpService = async (signUpDTO) => {
-    const { name, last_name, email, password, roleId, permId, medical_license_number, cedula_profesional } = signUpDTO;
+    const { name, last_name, email, password, roleId, permId, medical_license_number, cedula_profesional, files } = signUpDTO;
 
     const userDAO = new UserDAO();
     const userPermissionDAO = new UserPermissionDAO();
@@ -37,6 +37,7 @@ const signUpService = async (signUpDTO) => {
 
     // roleId === 2 is doctor role
     if (roleId === 2 || (!roleId && permId === 11)) {
+        // Validar números de credenciales
         if (medical_license_number && !validateMedicalLicense(medical_license_number)) {
             const error = new Error('El número de licencia médica no es válido. Debe tener entre 6-12 caracteres alfanuméricos.');
             error.statusCode = 400;
@@ -45,6 +46,19 @@ const signUpService = async (signUpDTO) => {
 
         if (cedula_profesional && !validateCedulaProfesional(cedula_profesional)) {
             const error = new Error('La cédula profesional no es válida. Debe tener 7-8 dígitos.');
+            error.statusCode = 400;
+            throw error;
+        }
+
+        // Validar que se hayan subido los documentos obligatorios
+        if (!files || !files.medical_license_document || !files.medical_license_document[0]) {
+            const error = new Error('Debes subir el documento de licencia médica.');
+            error.statusCode = 400;
+            throw error;
+        }
+
+        if (!files || !files.cedula_document || !files.cedula_document[0]) {
+            const error = new Error('Debes subir el documento de cédula profesional.');
             error.statusCode = 400;
             throw error;
         }
@@ -94,6 +108,21 @@ const signUpService = async (signUpDTO) => {
 
         if (roleDefualt === 2) {
             const doctorProfileDAO = new DoctorProfileDAO();
+
+            // Construir URLs de documentos
+            const baseUrl = '/uploads/doctor-credentials/';
+            const medicalLicenseUrl = files?.medical_license_document?.[0]
+                ? baseUrl + files.medical_license_document[0].filename
+                : null;
+            const cedulaUrl = files?.cedula_document?.[0]
+                ? baseUrl + files.cedula_document[0].filename
+                : null;
+
+            // URLs de documentos adicionales (opcional)
+            const additionalUrls = files?.additional_documents
+                ? files.additional_documents.map(file => baseUrl + file.filename)
+                : null;
+
             await doctorProfileDAO.create({
                 user_id: usuario.id,
                 is_active: true,
@@ -101,6 +130,10 @@ const signUpService = async (signUpDTO) => {
                 cedula_profesional: cedula_profesional || null,
                 license_verified: false,
                 cedula_verified: false,
+                medical_license_document_url: medicalLicenseUrl,
+                cedula_document_url: cedulaUrl,
+                additional_documents_urls: additionalUrls,
+                verification_status: 'under_review'
             });
         }
 

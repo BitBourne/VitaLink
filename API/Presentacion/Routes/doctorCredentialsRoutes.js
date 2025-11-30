@@ -2,6 +2,7 @@ import express from 'express';
 import { updateCredentials, verifyCredentials, getCredentialStatus } from '../Controllers/doctorCredentialsController.js';
 import uploadDocuments from '../Controllers/DoctorControllers/uploadDocumentsController.js';
 import requestDocumentsController from '../Controllers/DoctorControllers/requestDocumentsController.js';
+import rejectDoctorCredentialsController from '../Controllers/DoctorControllers/rejectDoctorCredentialsController.js';
 import getDocument from '../Controllers/DoctorControllers/getDocumentController.js';
 import { checkAuth, checkRole } from '../../Infraestructura/middlewares/authMiddleware.js';
 import checkDocumentAccess from '../../Infraestructura/middlewares/checkDocumentAccess.js';
@@ -29,6 +30,8 @@ router.put(
 );
 
 router.post('/credentials/request-documents/:doctorProfileId', checkAuth, checkRole(['admin']), requestDocumentsController);
+
+router.post('/credentials/reject/:doctorId', checkAuth, checkRole(['admin']), rejectDoctorCredentialsController);
 
 router.get('/credentials/document/:filename', checkAuth, checkDocumentAccess, getDocument);
 

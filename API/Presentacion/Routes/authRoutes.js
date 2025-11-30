@@ -6,7 +6,18 @@ import logoutController from '../Controllers/AuthControllers/logoutController.js
 
 const router = Router();
 
-router.post('/signUp', authControllers.signUp);
+import { uploadCredentials, handleMulterError } from '../../Infraestructura/config/multerConfig.js';
+
+router.post(
+    '/signUp',
+    uploadCredentials.fields([
+        { name: 'medical_license_document', maxCount: 1 },
+        { name: 'cedula_document', maxCount: 1 },
+        { name: 'additional_documents', maxCount: 3 }
+    ]),
+    handleMulterError,
+    authControllers.signUp
+);
 router.post('/signUp/confirm-account', authControllers.confirmAccount);
 
 router.post('/logIn', authControllers.logIn);

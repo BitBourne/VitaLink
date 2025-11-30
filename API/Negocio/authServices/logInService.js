@@ -1,5 +1,6 @@
 import UserDAO from '../../Datos/DAOs/UserDAO.js';
 import UserSessionDAO from '../../Datos/DAOs/UserSessionDAO.js';
+import DoctorProfileDAO from '../../Datos/DAOs/DoctorProfileDAO.js';
 import * as utils from '../../Infraestructura/utils/index.js'
 import comparePassword from './helpers/comparePassword.js';
 import generateJWT from './helpers/generateJWT.js';
@@ -46,6 +47,42 @@ const logInService = async (logInDTO) => {
         const error = new Error('Tu cuenta aun no ha sido verificada');
         error.statusCode = 400;
         throw error;
+    }
+
+    // Verificar si es doctor y si está verificado por admin
+    const isDoctor = roleNames.some(role => role.trim().toLowerCase() === 'doctor');
+    if (isDoctor) {
+        const doctorProfileDAO = new DoctorProfileDAO();
+        const doctorProfile = await doctorProfileDAO.findOne({ user_id: user.id });
+
+        if (doctorProfile) {
+            const status = doctorProfile.verification_status;
+
+            if (status === 'pending') {
+                const error = new Error('Debes confirmar tu email y subir tus documentos de credenciales para acceder.');
+                error.statusCode = 403;
+                throw error;
+            }
+
+            if (status === 'under_review') {
+                const error = new Error('Tus documentos están en proceso de verificación. Te notificaremos por email cuando tu cuenta esté lista (24-48 horas).');
+                error.statusCode = 403;
+                throw error;
+            }
+
+            if (status === 'rejected') {
+                const error = new Error('Tu solicitud fue rechazada. Por favor contacta a soporte para más información.');
+                error.statusCode = 403;
+                throw error;
+            }
+
+            // Solo permitir login si status === 'verified'
+            if (status !== 'verified') {
+                const error = new Error('Tu cuenta no está verificada. Contacta a soporte.');
+                error.statusCode = 403;
+                throw error;
+            }
+        }
     }
 
     const token = generateJWT(user.id, roleNames);
