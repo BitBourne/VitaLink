@@ -1,4 +1,6 @@
 import DoctorProfileDAO from '../../Datos/DAOs/DoctorProfileDAO.js';
+import UserDAO from '../../Datos/DAOs/UserDAO.js';
+import emailAccountVerified from '../authServices/helpers/emailAccountVerified.js';
 import logger from '../../Infraestructura/utils/logger.js';
 
 /**
@@ -33,6 +35,7 @@ const verifyDoctorCredentials = async (doctorProfileId, verificationData, adminI
             verification_notes: verification_notes || null
         };
 
+        // Solo marcar como verified si AMBAS credenciales están verificadas
         if (license_verified && cedula_verified) {
             updateData.verification_status = 'verified';
             updateData.verified_at = new Date();
@@ -46,6 +49,24 @@ const verifyDoctorCredentials = async (doctorProfileId, verificationData, adminI
         await doctorProfileDAO.update(doctorProfileId, updateData);
 
         const updatedProfile = await doctorProfileDAO.findById(doctorProfileId);
+
+        // Si fue verificado exitosamente, enviar email de aprobación
+        if (updatedProfile.verification_status === 'verified') {
+            try {
+                const userDAO = new UserDAO();
+                const user = await userDAO.findById(updatedProfile.user_id);
+
+                if (user) {
+                    await emailAccountVerified({
+                        name: user.name,
+                        last_name: user.last_name,
+                        email: user.email
+                    });
+                }
+            } catch (emailError) {
+                logger.error('Error enviando email de aprobación (no crítico):', emailError);
+            }
+        }
 
         return {
             success: true,

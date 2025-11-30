@@ -15,6 +15,15 @@ const logIn = async (req, res, next) => {
         };
 
         const result = await logInService(logInDTO);
+
+        // Configurar cookie httpOnly con el token
+        res.cookie('token', result.token, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === 'production', // Solo HTTPS en producción
+            sameSite: 'strict',
+            maxAge: 24 * 60 * 60 * 1000 // 24 horas
+        });
+
         res.json({
             success: true,
             data: result
