@@ -58,11 +58,7 @@ export default function FormCardPaciente() {
         last_name: apellidos,
         email,
         password,
-<<<<<<< HEAD
         role: "1",
-=======
-        role: "2", 
->>>>>>> MC
       });
 
       console.log("Paciente creado:", response.data);
