@@ -1,5 +1,4 @@
 import React, { createContext, useState, useEffect } from 'react';
-import { jwtDecode } from 'jwt-decode';
 import apiClient from '../../api/apiClient';
 
 // 1. Crear el Contexto
@@ -20,7 +19,7 @@ const AuthProvider = ({ children }) => {
           if(!token) {
             setLoading(false);
             return;
-          } 
+          } // $645 20723024
 
           try {
               // realiza peticion a backend y se le asigna la configuracion establecida

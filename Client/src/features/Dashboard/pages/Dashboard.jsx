@@ -3,7 +3,7 @@ import { Bell } from "lucide-react";
 import AppointmentCard from "../components/AppoinmentCard";
 import AppointmentModal from "../../Citas/components/AppointmentModal";
 
-import useAuth from "../../../core/hooks/useAuth";
+import useAuth from "../../auth/hooks/useAuth"
 
 
 export default function Dashboard() {
