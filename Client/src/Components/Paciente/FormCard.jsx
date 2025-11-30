@@ -51,14 +51,14 @@ export default function FormCardPaciente() {
     }
 
     try {
-      setError(""); 
+      setError("");
 
-      const response = await axios.post("http://localhost:4000/api/auth/register", {
+      const response = await axios.post("http://localhost:4000/api/auth/signUp", {
         name: nombre,
         last_name: apellidos,
         email,
         password,
-        role: "paciente", 
+        role: "1",
       });
 
       console.log("Paciente creado:", response.data);

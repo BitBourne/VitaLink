@@ -3,13 +3,18 @@ import { Mail, Lock, LogIn, ArrowLeft } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
+import useAuth from "../../auth/hooks/useAuth"
+import apiClient from "../../api/apiClient";
+
 export default function LoginCard() {
+  const { login } = useAuth();
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
     email: "",
     password: "",
   });
+
 
   const [error, setError] = useState("");
 
@@ -28,15 +33,19 @@ export default function LoginCard() {
 
     try {
       setError("");
-      const response = await axios.post("http://localhost:4000/api/auth/login", {
-        email,
-        password,
-      });
+      // const response = await axios.post("http://localhost:4000/api/auth/login", {
+      //   email,
+      //   password,
+      // });
 
-      console.log("Login exitoso:", response.data);
-      navigate("/Dashboard");
+      const response =  await apiClient.post('/auth/login', { email, password });
+      const { token } = response.data;
+
+      login(token);
+
+      navigate("/doctor");
     } catch (err) {
-      console.error("Error al iniciar sesión:", err);
+      console.log("Error al iniciar sesión:", err);
       setError(err.response?.data?.msg || "Credenciales inválidas o error en el servidor.");
     }
   };

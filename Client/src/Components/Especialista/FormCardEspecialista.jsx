@@ -26,7 +26,7 @@ export default function FormCardEspecialista() {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-    const handleSubmit = async (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const { nombre, apellidos, email, password, confirmPassword, especialidad } = formData;
 
@@ -52,14 +52,13 @@ export default function FormCardEspecialista() {
     }
 
     try {
-      // Enviar datos al backend
-      const response = await axios.post("http://localhost:4000/api/auth/register", {
+      // Enviar datos al backend         
+      const response = await axios.post("http://localhost:4000/api/auth/signUp", {
         name: nombre,
         last_name: apellidos,
         email,
         password,
-        role: "specialist_role",
-        especialidad
+        role: 2
       });
 
       console.log("Usuario creado:", response.data);
@@ -76,7 +75,7 @@ export default function FormCardEspecialista() {
       }
     }
   };
-  
+
   return (
     <div className="bg-white shadow-2xl rounded-2xl p-8 w-full max-w-lg">
       <h2 className="text-lg font-semibold text-[#4C575F] mb-6">

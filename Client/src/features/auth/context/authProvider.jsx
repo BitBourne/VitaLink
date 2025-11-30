@@ -27,7 +27,7 @@ const AuthProvider = ({ children }) => {
               // Agregamos al estado global el JWT
               setUser(data); 
           } catch (error) {
-              console.log(error.response.data.msg)
+              // console.log(error.response.data.msg)
               setUser({});
           }
           setLoading(false);
