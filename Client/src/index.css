@@ -1,7 +1,10 @@
 @import "tailwindcss";
 
 @theme {
+<<<<<<< HEAD
 
+=======
+>>>>>>> remotes/origin/Cristian
     /* Colors */
 
     --color-primary: #5EE7DF;

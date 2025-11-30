@@ -63,7 +63,7 @@ export default function App() {
           {/* </Route>
  */}
           {/* Página no encontrada */}
-          {/* <Route path="*" element={<h1>404: Página No Encontrada</h1>} /> */}
+          <Route path="*" element={<h1>404: Página No Encontrada</h1>} />
         </Routes>
       </Router>
      </AuthProvider>
