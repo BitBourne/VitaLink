@@ -10,16 +10,6 @@ import routes from './Presentacion/Routes/index.js';
 import ErrorHandling from './Infraestructura/middlewares/errorHandling.js';
 import logger from './Infraestructura/utils/logger.js';
 
-<<<<<<< HEAD
-// Config env
-dotenv.config();
-
-// Inicializar express
-const app = express();
-
-// Middleware
-app.use(express.json());
-=======
 // Middlewares de seguridad
 import securityHeaders from './Infraestructura/middlewares/securityHeaders.js';
 import { globalRateLimiter } from './Infraestructura/middlewares/rateLimiter.js';
@@ -40,19 +30,15 @@ app.use(express.json({ limit: '10mb' }));
 app.use(cookieParser());
 
 // CORS configurado
->>>>>>> remotes/origin/tux
 app.use(cors({
   origin: process.env.ALLOWED_ORIGINS?.split(',') || 'http://localhost:5173',
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   credentials: true
 }));
 
-<<<<<<< HEAD
-=======
 // Rate limiting global (antes de las rutas)
 app.use(globalRateLimiter);
 
->>>>>>> remotes/origin/tux
 // Conectar a la base de datos
 db.authenticate()
   .then(() => {
