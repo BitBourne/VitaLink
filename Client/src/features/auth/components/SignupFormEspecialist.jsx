@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Form, useNavigate } from 'react-router-dom';
-import axios from "axios";
+import { authService } from  '../../../core/Services/authService';
 
 
 // Components
@@ -57,18 +57,15 @@ const SignupFormEspecialist = () => {
 
     try {
       // Limpiar alerta previa
-      setAlert({});
-
-      // Enviar datos al backend
-      const response = await axios.post("http://localhost:4000/api/auth/register", {
-        name: name,
-        last_name: last_name,
+      const response = await authService.registerEspecialista({
+        name,
+        last_name,
         email,
         password,
+        especialidad, 
         role: "2"
       });
 
-      // Redirigir a pantalla de verificación
       navigate("/VerificationCard");
 
     } catch (error) {
@@ -143,7 +140,6 @@ const SignupFormEspecialist = () => {
           />
         )}
 
-        {/* Form Controls */}
         <div className="flex justify-between pt-4">
           <Button
             type="button"

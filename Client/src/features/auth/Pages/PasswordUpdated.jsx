@@ -1,6 +1,5 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { CheckCircle } from "lucide-react";
 import Button from "../../../core/ui/Components/Button";
 import Alert from "../../../core/ui/Components/Alert";
 

@@ -1,13 +1,42 @@
-import axios from "axios";
+import { useAxiosPrivate } from '../api/useAxiosPrivate';
 
-const API_URL = "http://localhost:4000/api/users"; 
+export const createUserService = () => {
+  const axiosPrivate = useAxiosPrivate();
+  
+  return {
+    //  PERFIL protegido
+    getProfile: () => 
+      axiosPrivate.get("/auth/profile"),
 
-export const registerUser = async (userData) => {
-  try {
-    const response = await axios.post(`${API_URL}/register`, userData);
-    return response.data;
-  } catch (error) {
-    console.error("Error al registrar usuario:", error);
-    throw error.response?.data || { message: "Error desconocido" };
-  }
+    updateProfile: (userData) => 
+      axiosPrivate.put("/users/profile", userData),
+
+    changePassword: (currentPassword, newPassword) => 
+      axiosPrivate.put("/users/change-password", { 
+        currentPassword, 
+        newPassword 
+      }),
+
+    // SESIONES protegidas
+    getSessions: () => 
+      axiosPrivate.get("/auth/sessions"),
+
+    logoutSession: (sessionId) => 
+      axiosPrivate.delete(`/auth/sessions/${sessionId}`),
+
+    // ADMIN: gestión de usuarios
+    getUsers: (params = {}) => 
+      axiosPrivate.get("/users", { params }),
+
+    getUserById: (id) => 
+      axiosPrivate.get(`/users/${id}`),
+
+    updateUser: (id, userData) => 
+      axiosPrivate.put(`/users/${id}`, userData),
+
+    deleteUser: (id) => 
+      axiosPrivate.delete(`/users/${id}`)
+  };
 };
+
+export const useUserService = () => createUserService();

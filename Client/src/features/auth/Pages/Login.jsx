@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 
 // Context
 import useAuth from "../../../features/auth/hooks/useAuth";
-import apiClient from "../../../core/api/apiClient";
+import { authService } from "../../../core/Services/authService";
 
 // Components
 import FormInput from "../../../core/ui/Components/FormInput";
@@ -21,6 +21,7 @@ export default function Login() {
 
   // Alert State
   const [alert, setAlert] = useState({});
+  const [loading, setLoading] = useState(false);
 
   // Auth
   const { login } = useAuth();
@@ -39,17 +40,23 @@ export default function Login() {
 
     try {
       setAlert({});
+      setLoading(true);
 
-      const response = await apiClient.post("/auth/login", { email, password });
+      const response = await authService.login(email, password);
       const { token } = response.data;
 
       login(token);
 
       navigate("/user");
     } catch (err) {
-      setAlert({ type: "error", message: err.response?.data?.msg || "Credenciales inválidas o error en el servidor." });
-    }
-  };
+        setAlert({ 
+          type: "error", 
+          message: err.response?.data?.msg || "Credenciales inválidas o error en el servidor." 
+        });
+      } finally {
+        setLoading(false); 
+      }
+    };
 
   return (
     <div className="w-full px-4 sm:px-6 lg:px-8"> 

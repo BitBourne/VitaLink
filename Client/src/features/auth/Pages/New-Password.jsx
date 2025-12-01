@@ -65,13 +65,13 @@ const NewPassword = () => {
             Password
           </label>
           <div className="relative">
-            <TextInput
-              name="password"
-              type={showPassword ? "text" : "password"}
-              placeholder="Ingresa tu nueva contraseña"
-              value={formData.password}
-              onChange={handleChange}
-            />
+           <TextInput
+            id="password"
+            label="Password"
+            type={showPassword ? "text" : "password"}
+            value={formData.password}
+            setValue={(val) => setFormData({ ...formData, password: val })}
+          />
             <button
               type="button"
               onClick={() => setShowPassword(!showPassword)}
@@ -87,13 +87,13 @@ const NewPassword = () => {
             Confirmar Password
           </label>
           <div className="relative">
-            <TextInput
-              name="confirmPassword"
-              type={showConfirmPassword ? "text" : "password"}
-              placeholder="Confirma tu nueva contraseña"
-              value={formData.confirmPassword}
-              onChange={handleChange}
-            />
+           <TextInput
+            id="confirmPassword"
+            label="Confirmar Password"
+            type={showConfirmPassword ? "text" : "password"}
+            value={formData.confirmPassword}
+            setValue={(val) => setFormData({ ...formData, confirmPassword: val })}
+          />
             <button
               type="button"
               onClick={() => setShowConfirmPassword(!showConfirmPassword)}
@@ -119,9 +119,11 @@ const NewPassword = () => {
             Atrás
           </button>
 
-          <Button type="submit">
+          <Button 
+            icon="arrowRight"
+            iconPosition="right"
+            type="submit">
             Siguiente
-            <ArrowRight className="w-4 h-4" />
           </Button>
         </div>
       </form>

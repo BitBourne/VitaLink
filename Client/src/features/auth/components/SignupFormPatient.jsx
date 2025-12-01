@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Form, useNavigate } from 'react-router-dom';
-import axios from "axios";
+import { authService } from  '../../../core/Services/authService';
 
 // Components
 import Button from "../../../core/ui/Components/Button";
@@ -47,11 +47,11 @@ const SignupFormPatient = () => {
     }
 
     try {
-      // Eliminamos las posibles alertas previas
-      setAlert({});
+      // Eliminamos alertas previas
+     setAlert({});
 
-      // Crear usuario paciente
-      const response = await axios.post("http://localhost:4000/api/auth/singUp", {
+      //  USAMOS EL SERVICIO
+      const response = await authService.registerPaciente({
         name,
         last_name,
         email,
@@ -59,7 +59,7 @@ const SignupFormPatient = () => {
         role: "1", 
       });
 
-      navigate("/VerificationCard"); // Redirigir a pantalla de verificación
+      navigate("/VerificationCard");
 
     } catch (err) {
       setAlert({ type: "error", message: err.response?.data?.msg || "Ocurrió un error al crear la cuenta. Intenta más tarde." });

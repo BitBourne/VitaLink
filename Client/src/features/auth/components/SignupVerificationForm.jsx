@@ -1,7 +1,7 @@
 import React from "react";
 import { Form, useNavigate } from "react-router-dom";
 import { useState } from "react";
-import axios from "axios";
+import { authService } from  '../../../core/Services/authService';
 
 // Components
 import Button from "../../../core/ui/Components/Button";
@@ -38,17 +38,17 @@ const SignupVerification = ({value, setValue}) => {
       // Limpiar alerta
       setAlert({});
 
-      const response = await axios.post("http://localhost:4000/api/auth/singUp/confirm-account", {
+      const response = await axiosPublic.post("/auth/signup/confirm-account", {
         token
       });
 
-      // mostrar mensaje de éxito en componente padre
       setValue(!value);
 
     } catch (err) {
       setAlert({ type: "error", message: err.response?.data?.msg || "Ocurrió un error al enviar el codigo." });
     }
   };
+
 
   return (
     <div className="w-full">
