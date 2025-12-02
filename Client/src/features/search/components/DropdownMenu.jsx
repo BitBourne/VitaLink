@@ -1,11 +1,8 @@
-// search/components/DropdownMenu.jsx
 import React, { useState } from "react";
 import { ChevronDown } from "lucide-react";
 
-// NOTA: Este componente ahora usa la prop 'options' que se le pasa.
 const DropdownMenu = ({ label, options }) => {
     const [isOpen, setIsOpen] = useState(false);
-    // Usa la primera opción como valor por defecto, si existe
     const [selectedValue, setSelectedValue] = useState(options && options.length > 0 ? options[0] : { label, value: '' }); 
 
     const handleSelect = (option) => {
@@ -15,7 +12,7 @@ const DropdownMenu = ({ label, options }) => {
     
     const toggleMenu = () => setIsOpen(!isOpen);
 
-    // Muestra la etiqueta o el valor seleccionado
+    // etiqueta o valor seleccionado
     const currentLabel = selectedValue.label !== label ? selectedValue.label : label;
 
     return (

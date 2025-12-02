@@ -5,7 +5,6 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-d
 import { AuthProvider } from "./features/auth/context/authProvider";
 
 // Features
-import Dashboard from "./features/Dashboard/pages/Dashboard";
 
 // Authentication Pages and Layout
 import AuthLayout from "./features/auth/layout/AuthLayout";
@@ -21,17 +20,43 @@ import NewPassword from "./features/auth/Pages/New-Password";
 import InvalidLink from "./features/auth/Pages/InvalidLink";
 import PasswordUpdated from "./features/auth/Pages/PasswordUpdated";
 
+// Layout para Home
+import MainLayout from "./core/ui/Layout/MainLayout"; 
+
+// import Features
+import HomePage from "./features/home/pages/HomePage";
+import SearchPage from "./features/search/pages/SearchPage";
+
+// import Dashboards
+import DashboardPaciente from "./features/Dashboard/pages/DashboardPaciente";
+import DashboardEspecialista from "./features/Dashboard/pages/DashboardEspecialista";
 
 export default function App() {
   return (
 
      <AuthProvider>
       <Router>
-        <Routes> {/* Crear un conjunto de rutas */}
+        <Routes> 
+          {/* Index */}
+           <Route element={<MainLayout />}> 
+            <Route index element={<HomePage />} /> {/* Carga de componente por defecto */}
+          </Route>
+
+          <Route>
+            {/* Buscar Doctor */}
+            <Route path="/buscar" element={<SearchPage />} />
+          </Route>
+          
+          <Route>
+            {/* Dashboards */}
+            <Route path="/dashboard/paciente" element={<DashboardPaciente />} />
+             <Route path="/dashboard/especialista" element={<DashboardEspecialista />} />
+          </Route>
+         
 
           {/* Redirección al registro */}
           <Route path="/" element={<AuthLayout />} > {/** Indica el layout principal de la ruta */}
-            <Route index element={<Login />} /> {/* Carga de componente por defecto */}
+            <Route path="Login" element={<Login />} /> {/* Carga de componente por defecto */}
             <Route path="signup" element={<Signup />} />
             <Route path="signup/verify-account" element={<SignupVerification />} />
 
@@ -46,7 +71,7 @@ export default function App() {
 
 
 
-          <Route path="/" element={<Navigate to="/signup" replace />} />
+        {/*  <Route path="/" element={<Navigate to="/signup" replace />} />*/ } 
 
 
           {/* Registro y autenticación */}

@@ -37,7 +37,7 @@ const DoctorCard = ({ doctor }) => {
                 </div>
             </div>
             
-            {/* Ubicación */}
+            {/* Ubicacion */}
             <div className="mt-4 flex items-start space-x-2 text-sm text-gray-600 border-t border-gray-100 pt-3">
                 <MapPin className="w-4 h-4 text-gray-400 mt-0.5 flex-shrink-0" />
                 <div>
