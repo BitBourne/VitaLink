@@ -1,12 +1,14 @@
 import confirmAccountService from '../../../Negocio/authServices/confirmAccountService.js'
 
-
 const confirmAccount = async (req, res, next) => {
     const { token } = req.body;
-    const singUpDTO = { token };
+    const signUpDTO = { token };
 
-    const result = await confirmAccountService(singUpDTO);
-    res.json({ message: result });
+    const result = await confirmAccountService(signUpDTO);
+    res.json({
+        success: true,
+        message: result
+    });
 }
 
 export default confirmAccount;

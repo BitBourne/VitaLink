@@ -1,78 +1,56 @@
 import React, { createContext, useState, useEffect } from 'react';
-import apiClient from '../../../core/api/apiClient'; 
+import apiClient from '../../../core/api/apiClient';
 
+// 1. Crear el Contexto
 const AuthContext = createContext();
 
+// 2. Crear el Proveedor del Contexto (AuthProvider)
 const AuthProvider = ({ children }) => {
   const [user, setUser] = useState({});
   const [loading, setLoading] = useState(true);
-  const [auth, setAuth] = useState({ accessToken: null }); // Estado para token
 
   // Verifica que el usuario este autenticado
   useEffect(() => {
-    const autenticarUsuario = async () => {
-      const token = localStorage.getItem('token');
-      
-      if (!token) {
-        setLoading(false);
-        return;
-      } 
+      const autenticarUsuario = async () => {
+        const token = localStorage.getItem('token');
 
-      try {
-        const { data } = await apiClient.get('/auth/profile');
-        setUser(data);
-        setAuth({ accessToken: token }); //  Guardar token en estado
-      } catch (error) {
-        console.log(error.response?.data?.msg || 'Error de autenticación');
-        setUser({});
-        setAuth({ accessToken: null });
+        // en caso de que no encuentre el token detiene la ejecucion del codigo
+          if(!token) {
+            setLoading(false);
+            return;
+          } 
+
+          try {
+              // realiza peticion a backend y se le asigna la configuracion establecida
+              const { data } = await apiClient.get('/auth/profile');
+
+              // Agregamos al estado global el JWT
+              setUser(data); 
+          } catch (error) {
+              // console.log(error.response.data.msg)
+              setUser({});
+          }
+          setLoading(false);
       }
-      setLoading(false);
-    };
-    autenticarUsuario();
-  }, []);
-
-  //  FUNCIÓN REFRESH TOKEN ( necesita el interceptor)
-  const refresh = async () => {
-    try {
-      
-      const response = await apiClient.post('/auth/refresh');
-      const newToken = response.data.token;
-      
-      localStorage.setItem('token', newToken);
-      setAuth({ accessToken: newToken });
-      
-      return newToken;
-    } catch (error) {
-      console.error('Error refrescando token:', error);
-      logout();
-      throw error;
-    }
-  };
+      autenticarUsuario();
+  }, [])
 
   const login = (token) => {
     localStorage.setItem('token', token);
-    setAuth({ accessToken: token }); //  Actualizar estado
+    // const decodedUser = jwtDecode(token);
+    // setUser({ token, ...decodedUser });
   };
 
   const logout = () => {
     localStorage.removeItem('token');
     setUser(null);
-    setAuth({ accessToken: null }); //  Limpiar token
   };
 
-  //  Actualizar token para el interceptor
-  const updateToken = (newToken) => {
-    setAuth({ accessToken: newToken });
-  };
-
+  // El valor del contexto que será accesible por los componentes hijos
   const authContextValue = {
     user,
-    auth,        //  Exportar auth state
     login,
     logout,
-    refresh,     //  Exportar funcion refresh
-    updateToken, //  Exportar updateToken
     loading
   };
 
@@ -83,5 +61,5 @@ const AuthProvider = ({ children }) => {
   );
 };
 
-export { AuthProvider };
+export { AuthProvider }
 export default AuthContext;
