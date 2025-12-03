@@ -7,6 +7,7 @@ import axios from "axios";
 import Button from "../../../core/ui/Components/Button";
 import Alert from "../../../core/ui/Components/Alert";
 import FormInput from "../../../core/ui/Components/FormInput";
+import apiClient from "../../../core/api/apiClient";
 
 const SignupVerification = ({value, setValue}) => {
   const navigate = useNavigate();
@@ -38,9 +39,7 @@ const SignupVerification = ({value, setValue}) => {
       // Limpiar alerta
       setAlert({});
 
-      const response = await axios.post("http://localhost:4000/api/auth/singUp/confirm-account", {
-        token
-      });
+      const response = await apiClient.post("/auth/signUp/confirm-account", {token})
 
       // mostrar mensaje de éxito en componente padre
       setValue(!value);
@@ -71,15 +70,6 @@ const SignupVerification = ({value, setValue}) => {
         )}
 
         <div className="flex justify-between gap-4 pt-4">
-          <Button
-            icon="arrowLeft"
-            iconPosition="left"
-            type="button"
-            variant="secondary"
-            onClick={() => navigate(-1)}
-            text="Anterior"
-          />
-
           <Button
             icon="arrowRight"
             iconPosition="right"

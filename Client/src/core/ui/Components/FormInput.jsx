@@ -12,12 +12,22 @@ const FormInput = ({ icon, id, label, type, value, setValue }) => {
     CircleStar,
   };
   const IconComponent = icon ? iconMap[icon] : null;
+
+  const handleChange = (e) => {
+    if (type === 'file') {
+      // Si es un archivo, capturamos el objeto File real
+      const file = e.target.files && e.target.files[0];
+      setValue(file || null); 
+    } else {
+      // Si es texto, email, password, capturamos el valor string
+      setValue(e.target.value);
+    }
+  };
   
   return (
     <div className="w-full">
       <div className="relative h-10 leading-10">
-        {/* 1. Icono */}
-
+        {/* Icono */}
         {icon ? 
           <div className="absolute z-50 px-2.5 py-2">
             {<IconComponent className="text-gray-400 w-5" />} 
@@ -25,13 +35,13 @@ const FormInput = ({ icon, id, label, type, value, setValue }) => {
           : null
         }
 
-        {/* 2. Input */}
+        {/* Input */}
         <input
           id={id}
           name={id}
           type={type}
-          value={value}
-          onChange={(e) => setValue(e.target.value)}
+          value={type === 'file' ? undefined : value}
+          onChange={handleChange}
           placeholder=" " 
           className={`
             absolute peer w-full outline-none ${icon ? 'pl-10 pr-5' : 'px-5'}  rounded-lg 
@@ -47,7 +57,7 @@ const FormInput = ({ icon, id, label, type, value, setValue }) => {
           `}
         />
 
-        {/* 3. Label */}
+        {/* Label */}
         <label
           htmlFor={id}
           className={`
@@ -69,6 +79,8 @@ const FormInput = ({ icon, id, label, type, value, setValue }) => {
             peer-[:not(:placeholder-shown)]:z-30 
             peer-[:not(:placeholder-shown)]:px-3 
             peer-[:not(:placeholder-shown)]:font-bold
+
+            ${type === 'file' ? 'h-7 leading-7 -translate-y-3.5 -translate-x-1 scale-80 z-30 px-3 font-bold' : ''}
          `}
         >
           {label}

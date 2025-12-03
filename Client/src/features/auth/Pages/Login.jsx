@@ -43,11 +43,11 @@ export default function Login() {
       const response = await apiClient.post("/auth/logIn", { email, password });
       const { token } = response.data.data;
 
-      login(token);
+      localStorage.setItem('token', token);
 
       navigate("/user");
     } catch (err) {
-      setAlert({ type: "error", message: err.response?.data?.msg || "Credenciales inválidas o error en el servidor." });
+      setAlert({ type: "error", message: err.response?.data?.error || "Credenciales inválidas o error en el servidor." });
     }
   };
 
@@ -87,7 +87,7 @@ export default function Login() {
                 />
             )}
 
-            <button className="text-sm text-[#4C575F] " onClick={() => navigate('/forgot-password')} type="button">
+            <button className="text-sm text-[#4C575F] " onClick={() => navigate('/reset-password')} type="button">
             ¿Olvidaste tu contraseña?
             </button>
 

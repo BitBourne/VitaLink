@@ -22,6 +22,11 @@ import InvalidLink from "./features/auth/Pages/InvalidLink";
 import PasswordUpdated from "./features/auth/Pages/PasswordUpdated";
 
 
+import SearchPage from "./features/search/pages/SearchPage";
+import DoctorProfile from "./features/doctor/page/DoctorProfile";
+
+
+
 export default function App() {
   return (
 
@@ -35,33 +40,31 @@ export default function App() {
             <Route path="signup" element={<Signup />} />
             <Route path="signup/verify-account" element={<SignupVerification />} />
 
-            <Route path="forgot-password" element={<ForgotPassword/>} />
-            <Route path="new-password" element={< NewPassword/>} />
+            <Route path="reset-password" element={<ForgotPassword/>} />
+            <Route path="reset-password/:token" element={< NewPassword/>} />
             <Route path="invalid-link" element={< InvalidLink/>} />
             <Route path="password-updated" element={< PasswordUpdated/>} />
+
+
+
             <Route path="user" element={< UserLayout/>} />
+            
+            {/* Busqueda */}
+            <Route path="search" element={< SearchPage/>} />
+            <Route path="infoDoctor/:id" element={< DoctorProfile/>} />
+
             <Route path="/appointments/:id" element={<AppointmentPage />} />
+          </Route>
+
+          <Route path="/user" element={<UserLayout />}>
+            <Route index element={<Dashboard />} />
           </Route>
 
 
 
 
           <Route path="/" element={<Navigate to="/signup" replace />} />
-
-
-          {/* Registro y autenticación */}
-          {/* <Route path="/signup" element={<Signup />} />
-          <Route path="/SignupPaciente" element={<SignupPaciente />} />
-          <Route path="/SignupEspecialista" element={<SignupEspecialista />} />
-          <Route path="/VerificationCard" element={<VerificationCard />} />
-          <Route path="/Sucess" element={<Sucess />} />
-          <Route path="/login" element={<Login />} />
-
-          {/* Área del usuario doctor */}
-          {/* <Route path="/doctor" element={<UserLayout />}> */}
-            {/* <Route index element={<Dashboard />} /> */}
-          {/* </Route>
- */}
+          
           {/* Página no encontrada */}
           <Route path="*" element={<h1>404: Página No Encontrada</h1>} />
         </Routes>

@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-
+// API Client
+import apiClient from "../../../core/api/apiClient";
 
 // Components
 import TextInput from "../../../core/ui/Components/FormInput";
@@ -13,7 +14,7 @@ const ForgotPassword = () => {
   const [email, setEmail] = useState("");
   const [alert, setAlert] = useState({});
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     
     // Validación de email
@@ -28,8 +29,16 @@ const ForgotPassword = () => {
       return;
     }
 
-    // Limpiar alerta
-    setAlert({});
+    try {
+      // Limpiar alerta
+      setAlert({});
+
+      const response = await apiClient.post("/auth/reset-password", { email });
+      setAlert({ type: "success", message: response.data.message });
+
+    } catch (err) {
+      setAlert({ type: "error", message: err.response?.data?.error || "Hubo un error." });
+    }
   };
 
   return (

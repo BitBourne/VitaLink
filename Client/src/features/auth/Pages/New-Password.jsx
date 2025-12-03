@@ -1,9 +1,14 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import { ArrowLeft, ArrowRight, Eye, EyeOff } from "lucide-react";
+
+// Components
 import TextInput from "../../../core/ui/Components/FormInput";
 import Button from "../../../core/ui/Components/Button";
 import Alert from "../../../core/ui/Components/Alert";
+import apiClient from "../../../core/api/apiClient";
+
+import { AlertCircle } from "lucide-react";
 
 const NewPassword = () => {
   const navigate = useNavigate();
@@ -11,120 +16,166 @@ const NewPassword = () => {
     password: "",
     confirmPassword: ""
   });
-  const [showPassword, setShowPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const [error, setError] = useState("");
-  const [showAlert, setShowAlert] = useState(false);
+  // const [showPassword, setShowPassword] = useState(false);
+  // const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  
+  // Extraer token de la URL
+  const params = useParams();
+  const { token } = params;
 
-  const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value
-    });
-  };
+  const [tokenValido, setTokenValido] = useState(false)
+  const [alert, setAlert] = useState({})
 
-  const handleSubmit = (e) => {
+  const [passwordModificado, setPasswordModificado] = useState(false)
+
+  // Ejecuta este codigo cunando detecte el token de la URL
+useEffect(() => {
+    const comprobarToken = async () => {
+        try {
+            await apiClient.get(`/auth/reset-password/${token}`);
+
+            setTokenValido(true);
+        } catch (err) {
+            setAlert({ 
+                type: "error", 
+                message: err.response?.data?.error || "Este enlace no es válido o ha expirado" 
+            });
+        }
+    }
+
+    comprobarToken();
+}, [token]);
+
+
+
+
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
     
     // Validaciones
     if (!formData.password || !formData.confirmPassword) {
-      setError("Por favor completa todos los campos");
-      setShowAlert(true);
+      setAlert({ type: "error", message: "Por favor completa todos los campos." });
       return;
     }
 
     if (formData.password.length < 8) {
-      setError("La contraseña debe tener al menos 8 caracteres");
-      setShowAlert(true);
+      setAlert({ type: "error", message: "La contraseña debe tener al menos 8 caracteres" });
       return;
     }
 
     if (formData.password !== formData.confirmPassword) {
-      setError("Las contraseñas no coinciden");
-      setShowAlert(true);
+      setAlert({ type: "error", message: "Las contraseñas no coinciden" });
       return;
     }
 
-    // Si pasa la validación
-    setError("");
-    setShowAlert(false);
-    console.log("Nueva contraseña establecida:", formData.password);
-    
+    try {
+      // Si pasa la validación
+      setAlert({})
+
+      const response = await apiClient.post(`/auth/reset-password/${token}`, {password: formData.password})
+      setAlert({ type: "success", message: response.data.msg });
+      setPasswordModificado(true)
+      
+    } catch (err) {
+      setAlert({ type: "error", message: err.response?.data?.error || "Ocurrió un error. Intenta más tarde." });
+    }
+
+
   };
 
   return (
     <div className="w-full">
-      <h2 className="text-center text-2xl font-bold text-[#4C575F] mb-4">
-        Crea una nueva contraseña
-      </h2>
+      <div className={ `${tokenValido ? 'block' : 'hidden'}`}>
 
-      <form onSubmit={handleSubmit} className="space-y-6">
+        <h2 className="text-center text-2xl font-bold text-[#4C575F] mb-4">
+          Crea una nueva contraseña
+        </h2>
 
-        <div>
-          <label className="block text-sm font-medium text-[#4C575F] mb-2">
-            Password
-          </label>
-          <div className="relative">
-            <TextInput
-              name="password"
-              type={showPassword ? "text" : "password"}
-              placeholder="Ingresa tu nueva contraseña"
-              value={formData.password}
-              onChange={handleChange}
-            />
-            <button
-              type="button"
-              onClick={() => setShowPassword(!showPassword)}
-              className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
-            >
-              {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
-            </button>
+        <form onSubmit={handleSubmit} className="space-y-6">
+
+          <div>
+            <div className="relative">
+              <TextInput
+                id="password"
+                label="Contraseña"
+                type="password"
+                placeholder="Ingresa tu nueva contraseña"
+                value={formData.password}
+                setValue={(value) => setFormData({ ...formData, password: value })}
+              />
+              {/* <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
+              >
+                {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+              </button> */}
+            </div>
           </div>
-        </div>
 
-        <div>
-          <label className="block text-sm font-medium text-[#4C575F] mb-2">
-            Confirmar Password
-          </label>
-          <div className="relative">
-            <TextInput
-              name="confirmPassword"
-              type={showConfirmPassword ? "text" : "password"}
-              placeholder="Confirma tu nueva contraseña"
-              value={formData.confirmPassword}
-              onChange={handleChange}
-            />
-            <button
-              type="button"
-              onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-              className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
-            >
-              {showConfirmPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
-            </button>
+          <div>
+            <div className="relative">
+              <TextInput
+                id="confirmPassword"
+                label="Confirmar contraseña"
+                type="password"
+                placeholder="Confirma tu nueva contraseña"
+                value={formData.confirmPassword}
+                setValue={(value) => setFormData({ ...formData, confirmPassword: value })}
+              />
+              {/* <button
+                type="button"
+                onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
+              >
+                {showConfirmPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+              </button> */}
+            </div>
           </div>
+
+          {/* Mostrar alerta */}
+          {alert.message && (
+            <Alert
+              type={alert.type}
+              message={alert.message}
+            />
+          )}
+
+          <div className="flex justify-end items-center pt-4">
+            
+
+            {passwordModificado ? (
+              <Button
+                icon="login"
+                iconPosition="right"
+                text="Iniciar Sesión"
+                type="button"
+                variant="primary"
+                onClick={() => navigate("/")}
+              />
+            ) : (     
+              <Button
+                icon="arrowRight"
+                text="Siguiente"
+                type="submit"
+                variant="primary"
+              />
+            )}
+
         </div>
+        </form>
+      </div>
 
-        {/* alerta si hay error */}
-        {showAlert && error && (
-          <Alert type="error" message={error} />
-        )}
-
-        <div className="flex justify-between items-center pt-4">
-          <button
-            type="button"
-            onClick={() => navigate(-1)}
-            className="flex items-center gap-2 px-4 py-2 border border-gray-300 text-[#4C575F] text-sm rounded-lg hover:bg-[#5EE7DF]/10 transition"
-          >
-            <ArrowLeft className="w-4 h-4" />
-            Atrás
-          </button>
-
-          <Button type="submit">
-            Siguiente
-            <ArrowRight className="w-4 h-4" />
-          </Button>
+      <div className={`${tokenValido ? 'hidden' : 'block'} flex items-center justify-center gap-3 bg-red-50 border border-red-200 rounded-lg p-3`}>
+        <AlertCircle className="w-5 h-5 text-red-500" />
+        <div className="text-left">
+          <h3 className="font-semibold text-red-700">Error</h3>
+          <p className="text-red-600 text-sm">Enlace inválido o expirado</p>
         </div>
-      </form>
+      </div>
+
+
     </div>
   );
 };

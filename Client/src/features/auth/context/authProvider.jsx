@@ -18,7 +18,7 @@ const AuthProvider = ({ children }) => {
           if(!token) {
             setLoading(false);
             return;
-          } 
+          }
 
           try {
               // realiza peticion a backend y se le asigna la configuracion establecida
@@ -35,8 +35,13 @@ const AuthProvider = ({ children }) => {
       autenticarUsuario();
   }, [])
 
-  const login = (token) => {
+  const login = async (token) => {
     localStorage.setItem('token', token);
+    // setLoading(true);
+    // Llamamos a la funcion para obtener los datos del usuario inmediatamente
+    // await autenticarUsuario();
+
+
     // const decodedUser = jwtDecode(token);
     // setUser({ token, ...decodedUser });
   };

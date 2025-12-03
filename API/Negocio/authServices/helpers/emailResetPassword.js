@@ -19,7 +19,7 @@ const emailResetPassword = async (data) => {
     const info = await transport.sendMail({
         from: '"VitaLink" <no-reply@vitalink.com>',
         to: email,
-        subject: 'Restablece tu Contraseña | VitaLink',
+        subject: 'Restablece tu Contraseña | VitaLink', 
         text: `Hola ${name} ${last_name}, has solicitado restablecer tu contraseña. Sigue el enlace: ${process.env.CLIENT_URL}/olvide-password/${token}`,
         html: `
             <div style="font-family: Arial, sans-serif; background-color: #f9f9f9; padding: 20px;">

@@ -6,6 +6,7 @@ import axios from "axios";
 import Button from "../../../core/ui/Components/Button";
 import Alert from "../../../core/ui/Components/Alert";
 import FormInput from "../../../core/ui/Components/FormInput";
+import apiClient from "../../../core/api/apiClient";
 
 const SignupFormPatient = () => {
   const navigate = useNavigate();
@@ -50,19 +51,18 @@ const SignupFormPatient = () => {
       // Eliminamos las posibles alertas previas
       setAlert({});
 
-      // Crear usuario paciente
-      const response = await axios.post("http://localhost:4000/api/auth/singUp", {
+      await apiClient.post("/auth/signUp", {
         name,
         last_name,
         email,
         password,
-        role: "1", 
+        roleId: 3, 
       });
 
-      navigate("/VerificationCard"); // Redirigir a pantalla de verificación
+      navigate("verify-account"); // Redirigir a pantalla de verificación
 
     } catch (err) {
-      setAlert({ type: "error", message: err.response?.data?.msg || "Ocurrió un error al crear la cuenta. Intenta más tarde." });
+      setAlert({ type: "error", message: err.response?.data?.error || "Ocurrió un error al crear la cuenta. Intenta más tarde." });
     }
   };
 
