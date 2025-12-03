@@ -1,10 +1,11 @@
 import React, { createContext, useState, useEffect } from 'react';
 import apiClient from '../../../core/api/apiClient';
 
-// 1. Crear el Contexto
 const AuthContext = createContext();
 
-// 2. Crear el Proveedor del Contexto (AuthProvider)
+export const useAuth = () => React.useContext(AuthContext);
+
+
 const AuthProvider = ({ children }) => {
   const [user, setUser] = useState({});
   const [loading, setLoading] = useState(true);
@@ -24,10 +25,9 @@ const AuthProvider = ({ children }) => {
               // realiza peticion a backend y se le asigna la configuracion establecida
               const { data } = await apiClient.get('/auth/profile');
 
-              // Agregamos al estado global el JWT
               setUser(data); 
           } catch (error) {
-              // console.log(error.response.data.msg)
+            
               setUser({});
           }
           setLoading(false);
@@ -37,8 +37,7 @@ const AuthProvider = ({ children }) => {
 
   const login = (token) => {
     localStorage.setItem('token', token);
-    // const decodedUser = jwtDecode(token);
-    // setUser({ token, ...decodedUser });
+  
   };
 
   const logout = () => {
