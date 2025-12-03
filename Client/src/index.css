@@ -1,0 +1,23 @@
+@import "tailwindcss";
+
+@theme {
+    /* Colors */
+
+    --color-primary: #5EE7DF;
+    --color-secondary: #B490CA;
+
+
+    /* Gradient */
+    --background-image-main-gradient: linear-gradient(110deg, #B490CA, #5EE7DF);
+
+    --background-image-main-gradient-10: linear-gradient(110deg, #B490CA1A, #5EE7DF1A);
+    --background-image-main-gradient-15: linear-gradient(110deg, #B490CA26, #5EE7DF26);
+    --background-image-main-gradient-20: linear-gradient(110deg, #B490CA33, #5EE7DF33);
+    --background-image-main-gradient-30: linear-gradient(110deg, #B490CA4D, #5EE7DF4D);
+    --background-image-main-gradient-40: linear-gradient(110deg, #B490CA66, #5EE7DF66);
+    --background-image-main-gradient-50: linear-gradient(110deg, #B490CA80, #5EE7DF80);
+    --background-image-main-gradient-60: linear-gradient(110deg, #B490CA99, #5EE7DF99);
+    --background-image-main-gradient-70: linear-gradient(110deg, #B490CAB3, #5EE7DFB3);
+    --background-image-main-gradient-80: linear-gradient(110deg, #B490CACC, #5EE7DFCC);
+    --background-image-main-gradient-90: linear-gradient(110deg, #B490CAE6, #5EE7DFE6);
+}

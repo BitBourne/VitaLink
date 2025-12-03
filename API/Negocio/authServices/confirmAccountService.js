@@ -1,0 +1,35 @@
+import UserDAO from '../../Datos/DAOs/UserDAO.js';
+
+const confirmAccountService = async (confirmAccountDTO) => {
+    const { token } = confirmAccountDTO;
+    const userDAO = new UserDAO();
+
+    if (!token) {
+        const error = new Error('Todos los campos son obligatorios');
+        error.statusCode = 400;
+        throw error;
+    }
+
+    if (token.length > 6) {
+        const error = new Error('Este codigo no es valido o ha expirado');
+        error.statusCode = 400;
+        throw error;
+    }
+
+    const userToConfirm = await userDAO.findOne({ token });
+    if (!userToConfirm) {
+        const error = new Error('Este codigo no es valido o ha expirado');
+        error.statusCode = 400;
+        throw error;
+    }
+
+    try {
+        const userConfirmed = await userDAO.update(userToConfirm.id, { token: null, verified: true });
+        return "Su cuenta ha sido verificada con exito, ya puede iniciar sesion!";
+    } catch (error) {
+        console.error(error);
+        return error;
+    }
+};
+
+export default confirmAccountService;

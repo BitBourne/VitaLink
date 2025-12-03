@@ -1,0 +1,9 @@
+export { default as assignDoctorToClinic } from './assignDoctorToClinicController.js';
+export { default as getDoctorClinics } from './getDoctorClinicsController.js';
+export { default as removeDoctorFromClinic } from './removeDoctorFromClinicController.js';
+export { default as getDoctores } from './getDoctoresController.js';
+export { default as searchDoctors } from './searchDoctorsController.js';
+export { default as updateDoctorSalary } from './updateDoctorSalaryController.js';
+export { default as getDocument } from './getDocumentController.js';
+export { default as requestDocuments } from './requestDocumentsController.js';
+export { default as uploadDocuments } from './uploadDocumentsController.js';
