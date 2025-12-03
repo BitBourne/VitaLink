@@ -43,6 +43,17 @@ Permission.belongsToMany(User, {
   as: 'P_users',
 });
 
+// Asociaciones hasMany para includes directos
+User.hasMany(UserRoles, {
+  foreignKey: 'user_id',
+  as: 'user_roles'
+});
+
+User.hasMany(UserPermission, {
+  foreignKey: 'user_id',
+  as: 'user_permissions'
+});
+
 UserRoles.belongsTo(Role, {
   foreignKey: 'role_id',
   as: 'UR_role'

@@ -25,6 +25,15 @@ class UserRolesDAO extends BaseDAO {
             }]
         })
     }
+
+    async removeRole(userId, roleId) {
+        return await this.model.destroy({
+            where: {
+                user_id: userId,
+                role_id: roleId
+            }
+        });
+    }
 }
 
 export default UserRolesDAO;

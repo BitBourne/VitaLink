@@ -2,17 +2,13 @@ import axios from 'axios';
 
 const apiClient = axios.create({
   baseURL: 'http://localhost:4000/api',
+  withCredentials: true // Enable cookies
 });
 
 // Interceptor: Se ejecuta ANTES de cada petición.
 apiClient.interceptors.request.use(
   (config) => {
-    // Recuperamos el token de localStorage
-    const token = localStorage.getItem('token');
-    if (token) {
-      // Si el token existe, lo añadimos a la cabecera Authorization
-      config.headers.Authorization = `Bearer ${token}`;
-    }
+    // No need to manually add token from localStorage anymore
     return config;
   },
   (error) => {

@@ -8,3 +8,5 @@ export { default as changepassStep3 } from "./changePassStep3Controller.js";
 export { default as getActiveSessions } from "./getActiveSessionsController.js";
 export { default as deleteSession } from "./deleteSessionController.js";
 export { default as logoutSessionById } from "./logoutSessionByIdController.js";
+export { default as changePassword } from "./changePasswordController.js";
+export { default as updateProfile } from "./updateProfileController.js";

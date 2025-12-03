@@ -25,6 +25,15 @@ class UserPermissionDAO extends BaseDAO {
             }]
         })
     }
+
+    async removePermission(userId, permissionId) {
+        return await this.model.destroy({
+            where: {
+                user_id: userId,
+                permission_id: permissionId
+            }
+        });
+    }
 }
 
 export default UserPermissionDAO;

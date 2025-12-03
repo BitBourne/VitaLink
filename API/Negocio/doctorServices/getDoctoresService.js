@@ -6,6 +6,30 @@ import Clinic from '../../Datos/Models/Clinic.js';
 const getAllDoctorsService = async () => {
     try {
         const doctors = await DoctorProfile.findAll({
+            attributes: [
+                'id',
+                'user_id',
+                'location',
+                'city',
+                'state',
+                'experience_years',
+                'salary',
+                'clinic_id',
+                'is_active',
+                'average_rating',
+                'total_reviews',
+                'medical_license_number',
+                'cedula_profesional',
+                'license_verified',
+                'cedula_verified',
+                'verification_notes',
+                'medical_license_document_url',
+                'cedula_document_url',
+                'additional_documents_urls',
+                'verification_status',
+                'verified_at',
+                'verified_by_admin_id'
+            ],
             include: [
                 {
                     model: User,

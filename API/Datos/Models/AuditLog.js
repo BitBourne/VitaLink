@@ -35,6 +35,9 @@ const AuditLog = db.define("audit_logs", {
     type: Sequelize.TEXT,
     allowNull: true,
   },
+}, {
+  timestamps: true,
+  underscored: true
 });
 
 export default AuditLog;

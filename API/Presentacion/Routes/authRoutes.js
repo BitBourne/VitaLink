@@ -3,6 +3,7 @@ import { Router } from 'express';
 import * as authControllers from '../Controllers/AuthControllers/index.js';
 import { checkAuth } from '../../Infraestructura/middlewares/authMiddleware.js'
 import logoutController from '../Controllers/AuthControllers/logoutController.js'
+import auditAction from '../../Infraestructura/middlewares/auditMiddleware.js';
 
 const router = Router();
 
@@ -16,13 +17,14 @@ router.post(
         { name: 'additional_documents', maxCount: 3 }
     ]),
     handleMulterError,
+    auditAction('user_signup', 'User'),
     authControllers.signUp
 );
 router.post('/signUp/confirm-account', authControllers.confirmAccount);
 
-router.post('/logIn', authControllers.logIn);
+router.post('/logIn', auditAction('user_login', 'User'), authControllers.logIn);
 
-router.post('/logout', checkAuth, logoutController)
+router.post('/logout', checkAuth, auditAction('user_logout', 'User'), logoutController)
 
 router.post('/reset-password', authControllers.changePassStep1);
 router.route('/reset-password/:token')
@@ -30,6 +32,8 @@ router.route('/reset-password/:token')
     .post(authControllers.changepassStep3);
 
 router.get('/profile', checkAuth, authControllers.profile);
+router.put('/profile', checkAuth, auditAction('user_update_profile', 'User'), authControllers.updateProfile);
+router.post('/change-password', checkAuth, auditAction('user_change_password', 'User'), authControllers.changePassword);
 
 router.get('/sessions', checkAuth, authControllers.getActiveSessions);
 router.delete('/sessions/:sessionId', checkAuth, authControllers.logoutSessionById);

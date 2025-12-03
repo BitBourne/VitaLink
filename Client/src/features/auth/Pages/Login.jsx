@@ -13,7 +13,7 @@ import Alert from "../../../core/ui/Components/Alert";
 
 export default function Login() {
 
-      // Form Data
+  // Form Data
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -40,75 +40,84 @@ export default function Login() {
     try {
       setAlert({});
 
-      const response = await apiClient.post("/auth/login", { email, password });
-      const { token } = response.data;
+      // Login request (cookie is set automatically by backend)
+      await apiClient.post("/auth/login", { email, password });
 
-      login(token);
+      // Fetch user profile to get role information
+      const profileResponse = await apiClient.get("/auth/profile");
+      const userData = profileResponse.data;
 
-      navigate("/user");
+      // Check if user has admin role
+      const isAdmin = userData.roles && userData.roles.some(r => r.toLowerCase() === 'admin');
+
+      if (isAdmin) {
+        navigate("/admin");
+      } else {
+        navigate("/user");
+      }
+
     } catch (err) {
-      setAlert({ type: "error", message: err.response?.data?.msg || "Credenciales inválidas o error en el servidor." });
+      setAlert({ type: "error", message: err.response?.data?.error || err.response?.data?.msg || "Credenciales inválidas o error en el servidor." });
     }
   };
 
   return (
-    <div className="w-full px-4 sm:px-6 lg:px-8"> 
-        <h2 className="text-center text-lg font-semibold mb-2 text-[#4C575F]">
-            Inicia sesión en tu cuenta
-        </h2>
+    <div className="w-full px-4 sm:px-6 lg:px-8">
+      <h2 className="text-center text-lg font-semibold mb-2 text-[#4C575F]">
+        Inicia sesión en tu cuenta
+      </h2>
 
-        <p className="text-center text-sm text-gray-500 mb-6">
-            Bienvenido de nuevo, nos alegra verte otra vez
-        </p>
+      <p className="text-center text-sm text-gray-500 mb-6">
+        Bienvenido de nuevo, nos alegra verte otra vez
+      </p>
 
-        <form className="space-y-5" onSubmit={handleSubmit}>
-            <FormInput
-                icon="Mail"
-                id="email"
-                label="Email"
-                type="email"
-                value={formData.email}
-                setValue={(value) => setFormData({ ...formData, email: value })}
-            />
+      <form className="space-y-5" onSubmit={handleSubmit}>
+        <FormInput
+          icon="Mail"
+          id="email"
+          label="Email"
+          type="email"
+          value={formData.email}
+          setValue={(value) => setFormData({ ...formData, email: value })}
+        />
 
-            <FormInput
-                icon="Lock"
-                id="password"
-                label="Contraseña"
-                type="password"
-                value={formData.password}
-                setValue={(value) => setFormData({ ...formData, password: value })}
-            />
+        <FormInput
+          icon="Lock"
+          id="password"
+          label="Contraseña"
+          type="password"
+          value={formData.password}
+          setValue={(value) => setFormData({ ...formData, password: value })}
+        />
 
-            {alert.message && (
-                <Alert
-                    type={alert.type}
-                    message={alert.message}
-                />
-            )}
+        {alert.message && (
+          <Alert
+            type={alert.type}
+            message={alert.message}
+          />
+        )}
 
-            <button className="text-sm text-[#4C575F] " onClick={() => navigate('/forgot-password')} type="button">
-            ¿Olvidaste tu contraseña?
-            </button>
+        <button className="text-sm text-[#4C575F] " onClick={() => navigate('/forgot-password')} type="button">
+          ¿Olvidaste tu contraseña?
+        </button>
 
-            <div className="flex justify-between items-center pt-4 gap-5">
-                <Button
-                    text="Crear cuenta"
-                    type="button"
-                    variant="secondary"
-                    onClick={() => navigate("/signup")}
-                />
+        <div className="flex justify-between items-center pt-4 gap-5">
+          <Button
+            text="Crear cuenta"
+            type="button"
+            variant="secondary"
+            onClick={() => navigate("/signup")}
+          />
 
-                <Button
-                    icon="login"
-                    iconPosition="right"
-                    text="Iniciar Sesion"
-                    type="submit"
-                    variant="primary"
-                    onClick={handleSubmit}
-                />
-            </div>
-        </form>
+          <Button
+            icon="login"
+            iconPosition="right"
+            text="Iniciar Sesion"
+            type="submit"
+            variant="primary"
+          />
+        </div>
+      </form>
     </div>
   );
 }

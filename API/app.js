@@ -31,7 +31,7 @@ app.use(cookieParser());
 
 // CORS configurado
 app.use(cors({
-  origin: process.env.ALLOWED_ORIGINS?.split(',') || 'http://localhost:5173',
+  origin: ['http://localhost:5173', 'http://localhost:5174'],
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   credentials: true
 }));
@@ -43,7 +43,7 @@ app.use(globalRateLimiter);
 db.authenticate()
   .then(() => {
     logger.info('Database connected');
-    return db.sync({ alter: true });
+    return db.sync();
   })
   .then(() => logger.info('Database synchronized'))
   .catch(error => logger.error('Database connection or sync failed', error));

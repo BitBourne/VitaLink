@@ -20,7 +20,8 @@ const logIn = async (req, res, next) => {
         res.cookie('token', result.token, {
             httpOnly: true,
             secure: process.env.NODE_ENV === 'production', // Solo HTTPS en producción
-            sameSite: 'strict',
+            sameSite: 'lax', // Lax es mejor para navegación normal
+            path: '/', // Asegura que la cookie esté disponible en todas las rutas
             maxAge: 24 * 60 * 60 * 1000 // 24 horas
         });
 

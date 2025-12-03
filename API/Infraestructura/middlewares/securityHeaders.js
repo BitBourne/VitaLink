@@ -17,14 +17,22 @@ const securityHeaders = helmet({
             defaultSrc: ["'self'"],
             styleSrc: ["'self'", "'unsafe-inline'"],
             scriptSrc: ["'self'"],
-            imgSrc: ["'self'", 'data:', 'https:'],
-            connectSrc: ["'self'"],
+            imgSrc: ["'self'", 'data:', 'https:', 'http://localhost:4000'],
+            connectSrc: ["'self'", 'http://localhost:4000'],
             fontSrc: ["'self'"],
             objectSrc: ["'none'"],
-            mediaSrc: ["'self'"],
-            frameSrc: ["'none'"],
+            mediaSrc: ["'self'", 'http://localhost:4000'],
+            frameSrc: ["'self'", 'http://localhost:4000'],
         },
     },
+
+    // Cross-Origin Resource Policy - Permite acceso cross-origin a recursos
+    crossOriginResourcePolicy: {
+        policy: 'cross-origin'
+    },
+
+    // Cross-Origin Embedder Policy - Permite embeber recursos cross-origin
+    crossOriginEmbedderPolicy: false,
 
     // Strict Transport Security - Fuerza HTTPS por 1 año
     hsts: {

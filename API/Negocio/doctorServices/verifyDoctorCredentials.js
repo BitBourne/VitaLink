@@ -11,9 +11,15 @@ import logger from '../../Infraestructura/utils/logger.js';
  * @returns {object} Perfil de doctor actualizado
  */
 const verifyDoctorCredentials = async (doctorProfileId, verificationData, adminId) => {
-    const { license_verified, cedula_verified, verification_notes } = verificationData;
+    // Asegurar que sean booleanos
+    const license_verified = verificationData.license_verified === true || verificationData.license_verified === 'true';
+    const cedula_verified = verificationData.cedula_verified === true || verificationData.cedula_verified === 'true';
+    const { verification_notes } = verificationData;
 
-    if (license_verified === undefined && cedula_verified === undefined) {
+    // Log para depuración
+    logger.info(`Verifying doctor ${doctorProfileId}: license=${license_verified}, cedula=${cedula_verified}`);
+
+    if (verificationData.license_verified === undefined && verificationData.cedula_verified === undefined) {
         const error = new Error('Debe proporcionar al menos un estado de verificación.');
         error.statusCode = 400;
         throw error;
@@ -41,11 +47,14 @@ const verifyDoctorCredentials = async (doctorProfileId, verificationData, adminI
             updateData.verified_at = new Date();
             updateData.verified_by_admin_id = adminId;
         } else if (!license_verified || !cedula_verified) {
+            // Si alguna es rechazada (false), el estado general puede ser rejected o documents_requested
+            // Aquí asumimos rejected si no están ambas aprobadas, pero esto podría refinarse
             updateData.verification_status = 'rejected';
             updateData.verified_at = null;
             updateData.verified_by_admin_id = null;
         }
 
+        logger.info(`Updating doctor ${doctorProfileId} with data:`, updateData);
         await doctorProfileDAO.update(doctorProfileId, updateData);
 
         const updatedProfile = await doctorProfileDAO.findById(doctorProfileId);
@@ -87,7 +96,8 @@ const verifyDoctorCredentials = async (doctorProfileId, verificationData, adminI
         if (error.statusCode) {
             throw error;
         }
-        const serviceError = new Error('Error al verificar las credenciales.');
+        // Exponer mensaje de error para depuración
+        const serviceError = new Error(`Error al verificar las credenciales: ${error.message}`);
         serviceError.statusCode = 500;
         throw serviceError;
     }

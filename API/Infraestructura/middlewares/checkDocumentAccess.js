@@ -5,13 +5,15 @@ const checkDocumentAccess = async (req, res, next) => {
     try {
         const { filename } = req.params;
         const userId = req.user.id;
-        const userRole = req.user.role;
+        const userRoles = req.user.roles || [];
+        const isDoctor = userRoles.includes('doctor');
+        const isAdmin = userRoles.includes('admin');
 
-        if (userRole === 'admin' || userRole === 1) {
+        if (isAdmin) {
             return next();
         }
 
-        if (userRole === 'doctor' || userRole === 2) {
+        if (isDoctor) {
             const DoctorProfileDAO = (await import('../../Datos/DAOs/DoctorProfileDAO.js')).default;
             const doctorProfileDAO = new DoctorProfileDAO();
 

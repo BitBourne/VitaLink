@@ -7,3 +7,5 @@ export { default as updateDoctorSalary } from './updateDoctorSalaryController.js
 export { default as getDocument } from './getDocumentController.js';
 export { default as requestDocuments } from './requestDocumentsController.js';
 export { default as uploadDocuments } from './uploadDocumentsController.js';
+export { default as assignDoctorToSpecialty } from './assignDoctorToSpecialtyController.js';
+export { default as removeDoctorFromSpecialty } from './removeDoctorFromSpecialtyController.js';

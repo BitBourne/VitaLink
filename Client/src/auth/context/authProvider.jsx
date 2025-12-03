@@ -1,6 +1,6 @@
 import React, { createContext, useState, useEffect } from 'react';
 import { jwtDecode } from 'jwt-decode';
-import apiClient from '../../api/apiClient';
+import apiClient from '../../core/api/apiClient';
 
 // 1. Crear el Contexto
 const AuthContext = createContext();
@@ -12,29 +12,29 @@ const AuthProvider = ({ children }) => {
 
   // Verifica que el usuario este autenticado
   useEffect(() => {
-      const autenticarUsuario = async () => {
-        setLoading(true);
-        const token = localStorage.getItem('token');
+    const autenticarUsuario = async () => {
+      setLoading(true);
+      const token = localStorage.getItem('token');
 
-        // en caso de que no encuentre el token detiene la ejecucion del codigo
-          if(!token) {
-            setLoading(false);
-            return;
-          } 
-
-          try {
-              // realiza peticion a backend y se le asigna la configuracion establecida
-              const { data } = await apiClient.get('/auth/profile');
-
-              // Agregamos al estado global el JWT
-              setUser(data); 
-          } catch (error) {
-              console.log(error.response.data.msg)
-              setUser({});
-          }
-          setLoading(false);
+      // en caso de que no encuentre el token detiene la ejecucion del codigo
+      if (!token) {
+        setLoading(false);
+        return;
       }
-      autenticarUsuario();
+
+      try {
+        // realiza peticion a backend y se le asigna la configuracion establecida
+        const { data } = await apiClient.get('/auth/profile');
+
+        // Agregamos al estado global el JWT
+        setUser(data);
+      } catch (error) {
+        console.log(error.response.data.msg)
+        setUser({});
+      }
+      setLoading(false);
+    }
+    autenticarUsuario();
   }, [])
 
   const login = (token) => {

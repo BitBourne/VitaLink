@@ -6,7 +6,7 @@ import rateLimit from 'express-rate-limit';
  */
 export const globalRateLimiter = rateLimit({
     windowMs: 15 * 60 * 1000, // 15 minutos
-    max: 100, // Límite de 100 solicitudes por ventana
+    max: process.env.NODE_ENV === 'production' ? 100 : 1000, // 1000 en dev, 100 en producción
     message: {
         error: 'Demasiadas solicitudes desde esta IP, por favor intenta de nuevo más tarde.',
         retryAfter: '15 minutos'
@@ -32,7 +32,7 @@ export const globalRateLimiter = rateLimit({
  */
 export const authRateLimiter = rateLimit({
     windowMs: 15 * 60 * 1000, // 15 minutos
-    max: 5, // Límite de 5 intentos por ventana
+    max: process.env.NODE_ENV === 'production' ? 5 : 50, // 50 en dev, 5 en producción
     message: {
         error: 'Demasiados intentos de inicio de sesión. Por favor intenta de nuevo más tarde.',
         retryAfter: '15 minutos'

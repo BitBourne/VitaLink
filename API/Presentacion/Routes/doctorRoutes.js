@@ -14,6 +14,10 @@ router.post('/:doctorId/clinics', checkAuth, checkRole(['admin']), doctorControl
 
 router.delete('/:doctorId/clinics/:clinicId', checkAuth, checkRole(['admin']), doctorControllers.removeDoctorFromClinic);
 
+router.post('/:doctorId/specialties', checkAuth, checkRole(['admin']), doctorControllers.assignDoctorToSpecialty);
+
+router.delete('/:doctorId/specialties/:specialtyId', checkAuth, checkRole(['admin']), doctorControllers.removeDoctorFromSpecialty);
+
 router.put('/:doctorProfileId/salary', checkAuth, checkRole(['admin']), doctorControllers.updateDoctorSalary);
 
 export default router;

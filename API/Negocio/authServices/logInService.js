@@ -44,7 +44,7 @@ const logInService = async (logInDTO) => {
 
     // MySQL puede devolver 0/1 en lugar de booleano
     if (user.verified !== true && user.verified !== 1) {
-        const error = new Error('Tu cuenta aun no ha sido verificada');
+        const error = new Error('Tu cuenta no ha sido verificada. Por favor revisa tu correo y usa el código de verificación.');
         error.statusCode = 400;
         throw error;
     }

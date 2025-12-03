@@ -11,39 +11,49 @@ const AuthProvider = ({ children }) => {
 
   // Verifica que el usuario este autenticado
   useEffect(() => {
-      const autenticarUsuario = async () => {
-        const token = localStorage.getItem('token');
+    const autenticarUsuario = async () => {
+      try {
+        // realiza peticion a backend y se le asigna la configuracion establecida
+        // La cookie se envía automáticamente gracias a withCredentials: true en apiClient
+        const { data } = await apiClient.get('/auth/profile');
 
-        // en caso de que no encuentre el token detiene la ejecucion del codigo
-          if(!token) {
-            setLoading(false);
-            return;
-          } 
-
-          try {
-              // realiza peticion a backend y se le asigna la configuracion establecida
-              const { data } = await apiClient.get('/auth/profile');
-
-              // Agregamos al estado global el JWT
-              setUser(data); 
-          } catch (error) {
-              // console.log(error.response.data.msg)
-              setUser({});
-          }
-          setLoading(false);
+        // Agregamos al estado global el usuario
+        setUser(data);
+      } catch (error) {
+        // Si falla (401/403), asumimos que no hay sesión válida
+        setUser({});
       }
-      autenticarUsuario();
+      setLoading(false);
+    }
+    autenticarUsuario();
   }, [])
 
   const login = (token) => {
-    localStorage.setItem('token', token);
-    // const decodedUser = jwtDecode(token);
-    // setUser({ token, ...decodedUser });
+    // Ya no necesitamos guardar el token en localStorage.
+    // El backend establece la cookie 'token' automáticamente.
+    // Solo necesitamos refrescar el estado del usuario si es necesario,
+    // o dejar que la redirección maneje el flujo.
   };
 
-  const logout = () => {
-    localStorage.removeItem('token');
-    setUser(null);
+  const logout = async () => {
+    try {
+      await apiClient.post('/auth/logout');
+    } catch (error) {
+      console.error("Logout failed", error);
+    } finally {
+      setUser({});
+    }
+  };
+
+  const refreshUser = async () => {
+    try {
+      const { data } = await apiClient.get('/auth/profile');
+      setUser(data);
+      return data;
+    } catch (error) {
+      setUser({});
+      throw error;
+    }
   };
 
   // El valor del contexto que será accesible por los componentes hijos
@@ -51,7 +61,8 @@ const AuthProvider = ({ children }) => {
     user,
     login,
     logout,
-    loading
+    loading,
+    refreshUser
   };
 
   return (
