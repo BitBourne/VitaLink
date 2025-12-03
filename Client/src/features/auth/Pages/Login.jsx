@@ -43,7 +43,7 @@ export default function Login() {
       const response = await apiClient.post("/auth/logIn", { email, password });
       const { token } = response.data.data;
 
-      login(token);
+      localStorage.setItem('token', token);
 
       navigate("/user");
     } catch (err) {

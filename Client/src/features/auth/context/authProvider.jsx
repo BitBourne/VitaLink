@@ -35,8 +35,13 @@ const AuthProvider = ({ children }) => {
       autenticarUsuario();
   }, [])
 
-  const login = (token) => {
+  const login = async (token) => {
     localStorage.setItem('token', token);
+    // setLoading(true);
+    // Llamamos a la funcion para obtener los datos del usuario inmediatamente
+    // await autenticarUsuario();
+
+
     // const decodedUser = jwtDecode(token);
     // setUser({ token, ...decodedUser });
   };

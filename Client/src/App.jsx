@@ -37,9 +37,11 @@ export default function App() {
 
             <Route path="reset-password" element={<ForgotPassword/>} />
             <Route path="reset-password/:token" element={< NewPassword/>} />
-            
             <Route path="invalid-link" element={< InvalidLink/>} />
             <Route path="password-updated" element={< PasswordUpdated/>} />
+
+
+
             <Route path="user" element={< UserLayout/>} />
             <Route path="/appointments/:id" element={<AppointmentPage />} />
           </Route>
@@ -52,21 +54,7 @@ export default function App() {
 
 
           <Route path="/" element={<Navigate to="/signup" replace />} />
-
-
-          {/* Registro y autenticación */}
-          {/* <Route path="/signup" element={<Signup />} />
-          <Route path="/SignupPaciente" element={<SignupPaciente />} />
-          <Route path="/SignupEspecialista" element={<SignupEspecialista />} />
-          <Route path="/VerificationCard" element={<VerificationCard />} />
-          <Route path="/Sucess" element={<Sucess />} />
-          <Route path="/login" element={<Login />} />
-
-          {/* Área del usuario doctor */}
-          {/* <Route path="/doctor" element={<UserLayout />}> */}
-            {/* <Route index element={<Dashboard />} /> */}
-          {/* </Route>
- */}
+          
           {/* Página no encontrada */}
           <Route path="*" element={<h1>404: Página No Encontrada</h1>} />
         </Routes>

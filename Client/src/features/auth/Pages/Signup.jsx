@@ -51,7 +51,7 @@ export default function Signup() {
             }}
           />
 
-          <SignupRoleCard
+          {/* <SignupRoleCard
             role={3}
             icon="Dock"
             title="Soy Recepcionista"
@@ -61,7 +61,7 @@ export default function Signup() {
               setShowReceptionistForm(!showReceptionistForm)
               setShowSelectionRole(!showSelectionRole)
             }}
-          />
+          /> */}
         </div>
       </div>
 

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Form, useNavigate } from 'react-router-dom';
-import axios from "axios";
+import apiClient from "../../../core/api/apiClient";
 
 
 // Components
@@ -20,7 +20,8 @@ const SignupFormEspecialist = () => {
     email: "",
     password: "",
     confirmPassword: "",
-    especialidad: ""
+    medical_license_document: null,
+    cedula_document: null
   });
 
   // estado de alerta
@@ -32,11 +33,11 @@ const SignupFormEspecialist = () => {
 
     const handleSubmit = async (e) => {
     e.preventDefault();
-    const { name, last_name, email, password, confirmPassword, especialidad } = formData;
+    const { name, last_name, email, password, confirmPassword, medical_license_document, cedula_document } = formData;
 
     // Validaciones
-    if (!name || !last_name || !email || !password || !confirmPassword || !especialidad) {
-      setAlert({ type: "error", message: "Por favor completa todos los campos." });
+    if (!name || !last_name || !email || !password || !confirmPassword || !medical_license_document || !cedula_document) {
+      setAlert({ type: "error", message: "Por favor completa todos los campos" });
       return;
     }
 
@@ -59,17 +60,32 @@ const SignupFormEspecialist = () => {
       // Limpiar alerta previa
       setAlert({});
 
+      // CONSTRUCCIÓN DEL FORMDATA
+      const dataToSend = new FormData();
+      
+      // Agregamos campos de texto
+      dataToSend.append('name', name);
+      dataToSend.append('last_name', last_name);
+      dataToSend.append('email', email);
+      dataToSend.append('password', password);
+      dataToSend.append('role', "2"); // O formData.role
+
+      // Agregamos los archivos
+      dataToSend.append('medical_license_document', medical_license_document);
+      dataToSend.append('cedula_document', cedula_document);
+
       // Enviar datos al backend
-      const response = await axios.post("http://localhost:4000/api/auth/register", {
-        name: name,
-        last_name: last_name,
-        email,
-        password,
-        role: "2"
-      });
+      const response = await apiClient.post('/auth/signUp', dataToSend)
+      // const response = await axios.post("http://localhost:4000/api", {
+      //   name: name,
+      //   last_name: last_name,
+      //   email,
+      //   password,
+      //   role: "2"
+      // });
 
       // Redirigir a pantalla de verificación
-      navigate("/VerificationCard");
+      navigate("/signup/verify-account");
 
     } catch (error) {
       setAlert({ type: "error", message: error.response?.data?.message || "Ocurrió un error al crear la cuenta. Intenta más tarde." });
@@ -128,11 +144,20 @@ const SignupFormEspecialist = () => {
 
         <FormInput
           icon="CircleStar"
-          id="especialidad"
-          label="Especialidad"
-          type="text"
-          value={formData.especialidad}
-          setValue={(value) => setFormData({ ...formData, especialidad: value })}
+          id="medical_licence"
+          label="Licencia Medica (PDF, JPG, PNG)"
+          type="file"
+          // value={formData.especialidad}
+          setValue={(archivo) => setFormData({ ...formData, medical_license_document: archivo })}
+        />
+
+        <FormInput
+          icon="CircleStar"
+          id="cedula"
+          label="Cedula (PDF, JPG, PNG)"
+          type="file"
+          // value={formData.especialidad}
+          setValue={(archivo) => setFormData({ ...formData, cedula_document: archivo })}
         />
 
         {/* Mostrar Alerta */}
