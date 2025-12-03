@@ -33,7 +33,7 @@ const checkAuth = async (req, res, next) => {
         const roleNames = roles.map(r => r.name.trim());
 
         const { id, name, last_name, email } = user;
-        req.user = { id, name, last_name, email, roles: roleNames };
+        req.user = { id, name, last_name, email, roles: roleNames, rol_id: 2 };
 
         return next();
     } catch (error) {

@@ -1,116 +1,119 @@
-import React, { useState } from "react";
-import { X } from "lucide-react";
+// Puedes poner esto en un archivo separado: components/AppointmentModal.jsx
+import React from 'react';
+import { X, Calendar, Clock, User, FileText, Activity } from 'lucide-react'; // Asumiendo que usas lucide-react
 
-export default function AppointmentModal({ onClose, onSave, user }) {
-  const [formData, setFormData] = useState({
-    fecha: "",
-    hora: "",
-    doctor: "",
-    motivo: "",
+const AppointmentModal = ({ isOpen, onClose, eventData }) => {
+  if (!isOpen || !eventData) return null;
+
+  // Accedemos a los datos originales que guardamos en extendedProps
+  const data = eventData.extendedProps;
+  
+  // Formatear fecha para que se vea bonita (Ej: Viernes, 10 de Enero 2025)
+  const fechaLegible = new Date(eventData.start).toLocaleDateString('es-ES', {
+    weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
   });
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-
-    // estructura del back
-    const data = {
-      paciente_id: user?.id || null,
-      fecha: formData.fecha,
-      hora: formData.hora,
-      doctor: formData.doctor,
-      motivo: formData.motivo,
-      estado: "pendiente",
-    };
-
-    onSave(data); 
-  };
-
   return (
-    <div className="fixed inset-0 bg-black/30 flex items-center justify-center z-50">
-      <div className="bg-white rounded-2xl shadow-xl p-8 w-full max-w-md relative">
-        <button
-          onClick={onClose}
-          className="absolute top-4 right-4 text-gray-500 hover:text-[#B490CA] transition"
-        >
-          <X className="w-5 h-5" />
-        </button>
-
-        <h2 className="text-2xl font-semibold text-[#4C575F] mb-6">
-          Crear nueva cita
-        </h2>
-
-        <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+    // 1. Fondo oscurecido (Backdrop)
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
+      
+      {/* 2. Contenedor del Modal */}
+      <div className="bg-white rounded-xl shadow-2xl w-full max-w-md overflow-hidden transform transition-all scale-100">
+        
+        {/* Header con color dinámico según estatus (opcional) */}
+        <div className="bg-gradient-to-r from-[#B490CA] to-[#5EE7DF] p-6 text-white flex justify-between items-start">
           <div>
-            <label className="block text-sm font-medium text-[#4C575F]/80 mb-1">
-              Fecha
-            </label>
-            <input
-              type="date"
-              name="fecha"
-              value={formData.fecha}
-              onChange={handleChange}
-              className="w-full pl-10 pr-3 py-2 border rounded-md text-sm text-[#4C575F] focus:outline-none focus:ring-2 focus:ring-[#5EE7DF]"
-              required
-            />
+            <h2 className="text-2xl font-bold flex items-center gap-2">
+              <Activity className="w-6 h-6" />
+              Detalles de la Cita
+            </h2>
+            <p className="opacity-90 mt-1 text-sm">ID Referencia: #{eventData.id}</p>
           </div>
-
-          <div>
-            <label className="block text-sm font-medium text-[#4C575F]/80 mb-1">
-              Hora
-            </label>
-            <input
-              type="time"
-              name="hora"
-              value={formData.hora}
-              onChange={handleChange}
-              className="w-full pl-10 pr-3 py-2 border rounded-md text-sm text-[#4C575F] focus:outline-none focus:ring-2 focus:ring-[#5EE7DF]"
-              required
-            />
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium text-[#4C575F]/80 mb-1">
-              Doctor
-            </label>
-            <input
-              type="text"
-              name="doctor"
-              value={formData.doctor}
-              onChange={handleChange}
-              placeholder="Ej. Dr. Victor"
-              className="w-full pl-10 pr-3 py-2 border rounded-md text-sm text-[#4C575F] focus:outline-none focus:ring-2 focus:ring-[#5EE7DF]"
-              required
-            />
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium text-[#4C575F]/80 mb-1">
-              Motivo
-            </label>
-            <textarea
-              name="motivo"
-              value={formData.motivo}
-              onChange={handleChange}
-              rows="3"
-              placeholder="Ej. Chequeo general"
-              className="w-full pl-10 pr-3 py-2 border rounded-md text-sm text-[#4C575F] focus:outline-none focus:ring-2 focus:ring-[#5EE7DF]"
-              required
-            ></textarea>
-          </div>
-
-          <button
-            type="submit"
-            className="bg-gradient-to-r from-[#B490CA] to-[#5EE7DF] text-white py-2 rounded-lg font-medium hover:opacity-90 transition"
+          <button 
+            onClick={onClose}
+            className="text-white/80 hover:text-white hover:bg-white/20 rounded-full p-1 transition"
           >
-            Guardar cita
+            <X size={24} />
           </button>
-        </form>
+        </div>
+
+        {/* Cuerpo del Modal */}
+        <div className="p-6 space-y-4 text-gray-700">
+          
+          {/* Motivo de la consulta */}
+          <div className="flex items-start gap-3">
+             <div className="bg-purple-100 p-2 rounded-lg text-purple-600">
+                <FileText size={20} />
+             </div>
+             <div>
+                <p className="text-xs text-gray-500 font-bold uppercase">Motivo</p>
+                <p className="font-semibold text-lg text-gray-800">{eventData.title}</p>
+             </div>
+          </div>
+
+          {/* Fecha y Hora */}
+          <div className="grid grid-cols-2 gap-4">
+             <div className="flex items-center gap-3">
+               <Calendar className="text-gray-400" size={18} />
+               <div>
+                 <p className="text-xs text-gray-500">Fecha</p>
+                 <p className="font-medium text-sm capitalize">{fechaLegible}</p>
+               </div>
+             </div>
+             <div className="flex items-center gap-3">
+               <Clock className="text-gray-400" size={18} />
+               <div>
+                 <p className="text-xs text-gray-500">Hora</p>
+                 <p className="font-medium text-sm">{data.appointment_time || 'Todo el día'}</p>
+               </div>
+             </div>
+          </div>
+
+          <hr className="border-gray-100" />
+
+          {/* Datos del Paciente (Ejemplo) */}
+          <div className="flex items-center gap-3 bg-gray-50 p-3 rounded-lg border border-gray-100">
+             <User className="text-gray-400" size={20} />
+             <div>
+                <p className="text-xs text-gray-500 font-bold">Paciente</p>
+                {/* Asegúrate que tu backend envíe estos campos, si no, usa 'Sin nombre' */}
+                <p className="font-medium">{data.patient_name || 'Nombre no disponible'}</p>
+                <p className="text-xs text-gray-400">{data.patient_email || ''}</p>
+             </div>
+          </div>
+
+          {/* Estado de la cita */}
+          <div className="flex justify-between items-center pt-2">
+             <span className="text-sm text-gray-500">Estado actual:</span>
+             <span className={`px-3 py-1 rounded-full text-xs font-bold border 
+                ${data.status === 'completed' ? 'bg-green-100 text-green-700 border-green-200' : 
+                  data.status === 'cancelled' ? 'bg-red-100 text-red-700 border-red-200' : 
+                  'bg-yellow-100 text-yellow-700 border-yellow-200'}`}>
+                {data.status || 'Pendiente'}
+             </span>
+          </div>
+
+        </div>
+
+        {/* Footer con acciones */}
+        <div className="bg-gray-50 p-4 flex justify-end gap-3 border-t border-gray-100">
+          <button 
+             onClick={onClose}
+             className="px-4 py-2 text-sm text-gray-600 hover:bg-gray-100 rounded-lg transition"
+          >
+            Cerrar
+          </button>
+          <button 
+             className="px-4 py-2 text-sm bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 shadow-sm transition"
+             onClick={() => alert("Aquí iría la lógica para editar")}
+          >
+            Editar Cita
+          </button>
+        </div>
+
       </div>
     </div>
   );
-}
+};
+
+export default AppointmentModal;
