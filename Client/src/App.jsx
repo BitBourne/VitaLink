@@ -58,10 +58,11 @@ export default function App() {
             <Route path="password-updated" element={< PasswordUpdated/>} />
           </Route>
 
+
+          {/* Vista paciente */}
           <Route path="/search" element={<SearchLayout/>}>
             <Route index element={<SearchPage/>} />
-            <Route path="doctor/:id" element={<SearchPage/>} />
-
+            <Route path="doctor/:id" element={<DoctorProfile/>} />
           </Route>
 
 
