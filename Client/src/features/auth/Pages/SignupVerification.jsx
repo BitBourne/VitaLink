@@ -60,7 +60,7 @@ const SignupVerification = () => {
 
           <hr className="border-t border-[#E0E6EA] mb-10 mx-8" />
 
-          <div>
+          <div className="flex justify-end">
             <Button
               icon="arrowRight"
               iconPosition="right"

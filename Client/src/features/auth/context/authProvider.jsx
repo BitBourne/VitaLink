@@ -4,46 +4,50 @@ import apiClient from '../../../core/api/apiClient';
 // 1. Crear el Contexto
 const AuthContext = createContext();
 
-// 2. Crear el Proveedor del Contexto (AuthProvider)
+// 2. Crear el Proveedor
 const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState({});
+  // Inicializamos en null para saber claramente cuando no hay usuario
+  const [user, setUser] = useState(null); 
   const [loading, setLoading] = useState(true);
 
-  // Verifica que el usuario este autenticado
-  useEffect(() => {
-      const autenticarUsuario = async () => {
-        const token = localStorage.getItem('token');
+  // --- PASO 1: Definir la función de carga de usuario fuera del useEffect ---
+  // Esta función ahora es accesible por todo el componente
+  const cargarUsuario = async () => {
+      const token = localStorage.getItem('token');
 
-        // en caso de que no encuentre el token detiene la ejecucion del codigo
-          if(!token) {
-            setLoading(false);
-            return;
-          }
+      if(!token) {
+        setLoading(false);
+        setUser(null);
+        return;
+      }
 
-          try {
-              // realiza peticion a backend y se le asigna la configuracion establecida
-              const { data } = await apiClient.get('/auth/profile');
-
-              // Agregamos al estado global el JWT
-              setUser(data); 
-          } catch (error) {
-              // console.log(error.response.data.msg)
-              setUser({});
-          }
+      try {
+          // Nota: Asegúrate que apiClient envíe el header Authorization automáticamente
+          const { data } = await apiClient.get('/auth/profile');
+          setUser(data); 
+      } catch (error) {
+          console.log("Error cargando perfil", error);
+          // Si el token no sirve, lo borramos y reseteamos usuario
+          localStorage.removeItem('token');
+          setUser(null);
+      } finally {
           setLoading(false);
       }
-      autenticarUsuario();
+  }
+
+  // --- PASO 2: El useEffect solo llama a la función ---
+  useEffect(() => {
+      cargarUsuario();
   }, [])
 
+  // --- PASO 3: Actualizar la función login ---
   const login = async (token) => {
     localStorage.setItem('token', token);
-    // setLoading(true);
-    // Llamamos a la funcion para obtener los datos del usuario inmediatamente
-    // await autenticarUsuario();
-
-
-    // const decodedUser = jwtDecode(token);
-    // setUser({ token, ...decodedUser });
+    
+    // Al iniciar sesión, ponemos loading true (opcional, para UX) y recargamos los datos
+    setLoading(true);
+    await cargarUsuario(); 
+    // Al terminar cargarUsuario, el estado 'user' se actualizará y el Header cambiará solo
   };
 
   const logout = () => {
@@ -51,7 +55,6 @@ const AuthProvider = ({ children }) => {
     setUser(null);
   };
 
-  // El valor del contexto que será accesible por los componentes hijos
   const authContextValue = {
     user,
     login,

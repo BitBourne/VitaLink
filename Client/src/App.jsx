@@ -7,6 +7,8 @@ import { AuthProvider } from "./features/auth/context/authProvider";
 // Features
 import Dashboard from "./features/Dashboard/pages/Dashboard";
 
+import HomePage from "./features/home/pages/HomePage";
+
 // Authentication Pages and Layout
 import AuthLayout from "./features/auth/layout/AuthLayout";
 import Login from "./features/auth/Pages/Login";
@@ -27,48 +29,39 @@ import DoctorProfile from "./features/doctor/page/DoctorProfile";
 
 
 
+
 export default function App() {
   return (
 
-     <AuthProvider>
-      <Router>
+    <Router>
+      <AuthProvider>
+
         <Routes> {/* Crear un conjunto de rutas */}
+          <Route path="/" >
+            <Route index element={<HomePage/>}/>
+          </Route>
+            
 
           {/* Redirección al registro */}
-          <Route path="/" element={<AuthLayout />} > {/** Indica el layout principal de la ruta */}
+          <Route path="/auth" element={<AuthLayout />} > {/** Indica el layout principal de la ruta */}
             <Route index element={<Login />} /> {/* Carga de componente por defecto */}
             <Route path="signup" element={<Signup />} />
             <Route path="signup/verify-account" element={<SignupVerification />} />
 
-            <Route path="reset-password" element={<ForgotPassword/>} />
-            <Route path="reset-password/:token" element={< NewPassword/>} />
+            <Route path="forgot-password" element={<ForgotPassword/>} />
+            <Route path="forgot-password/:token" element={< NewPassword/>} />
             <Route path="invalid-link" element={< InvalidLink/>} />
             <Route path="password-updated" element={< PasswordUpdated/>} />
-
-
-
-            <Route path="user" element={< UserLayout/>} />
-            
-            {/* Busqueda */}
-            <Route path="search" element={< SearchPage/>} />
-            <Route path="infoDoctor/:id" element={< DoctorProfile/>} />
-
-            <Route path="/appointments/:id" element={<AppointmentPage />} />
-          </Route>
-
-          <Route path="/user" element={<UserLayout />}>
-            <Route index element={<Dashboard />} />
           </Route>
 
 
-
-
-          <Route path="/" element={<Navigate to="/signup" replace />} />
-          
-          {/* Página no encontrada */}
-          <Route path="*" element={<h1>404: Página No Encontrada</h1>} />
+            {/* Página no encontrada */}
+          <Route path="*" element={<UserLayout />}>
+            <Route index element={<h1>404: Página No Encontrada</h1>} />
+          </Route>
         </Routes>
+
+        </AuthProvider>
       </Router>
-     </AuthProvider>
   );
 }

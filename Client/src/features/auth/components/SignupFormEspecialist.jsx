@@ -85,7 +85,7 @@ const SignupFormEspecialist = () => {
       // });
 
       // Redirigir a pantalla de verificación
-      navigate("/signup/verify-account");
+      navigate("verify-account");
 
     } catch (error) {
       setAlert({ type: "error", message: error.response?.data?.message || "Ocurrió un error al crear la cuenta. Intenta más tarde." });

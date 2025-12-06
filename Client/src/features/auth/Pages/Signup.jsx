@@ -69,14 +69,14 @@ export default function Signup() {
         <p className="text-sm font-medium text-[#4C575F] mb-4">
           Información Personal
         </p>
-        <SignupFormPatient />
+        {showPatientForm && (<SignupFormPatient />)}
       </div>
 
       <div className={`${showEspecialistForm ? 'block' : 'hidden'}`}>
         <p className="text-sm font-medium text-[#4C575F] mb-4">
           Información Personal
         </p>
-        <SignupFormEspecialist />        
+        {showEspecialistForm && (<SignupFormEspecialist />  )}              
       </div>
 
       <div className={`${showReceptionistForm ? 'block' : 'hidden'}`}>

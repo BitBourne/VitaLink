@@ -69,7 +69,7 @@ const SignupVerification = ({value, setValue}) => {
           />
         )}
 
-        <div className="flex justify-between gap-4 pt-4">
+        <div className="flex justify-end gap-4 pt-4">
           <Button
             icon="arrowRight"
             iconPosition="right"

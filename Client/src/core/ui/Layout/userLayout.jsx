@@ -19,7 +19,7 @@ const UserLayout = () => {
       <header className="w-full bg-white shadow-sm px-6 py-4 flex justify-between items-center">
         <h1 className="flex items-center gap-2 text-3xl font-bold bg-gradient-to-r from-[#B490CA] to-[#5EE7DF] text-transparent bg-clip-text">
           VitaLink 
-          <span className="text-lg text-gray-400 font-normal">|{user.role_id == 1 ? ' Doctor' : ' Paciente'}</span> 
+          {/* <span className="text-lg text-gray-400 font-normal">|{user.role_id == 1 ? ' Doctor' : ' Paciente'}</span>  */}
         </h1>
 
         <div className="flex items-center gap-6">
