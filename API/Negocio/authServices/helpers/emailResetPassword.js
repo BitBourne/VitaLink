@@ -32,7 +32,7 @@ const emailResetPassword = async (data) => {
                         Has solicitado restablecer tu contraseña en <strong>VitaLink</strong>. Por favor, haz clic en el siguiente botón para crear una nueva contraseña:
                     </p>
                     <div style="text-align: center; margin: 30px 0;">
-                        <a href="${process.env.REACT_WEB_CLIENT}/reset-password/${token}" style="background-color: #0056b3; color: #ffffff; padding: 12px 25px; text-decoration: none; border-radius: 5px; font-size: 16px; font-weight: bold;">
+                        <a href="${process.env.REACT_WEB_CLIENT}/auth/forgot-password/${token}" style="background-color: #0056b3; color: #ffffff; padding: 12px 25px; text-decoration: none; border-radius: 5px; font-size: 16px; font-weight: bold;">
                             Restablecer Contraseña
                         </a>
                     </div>

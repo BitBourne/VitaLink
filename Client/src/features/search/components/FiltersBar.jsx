@@ -1,6 +1,6 @@
 import React from "react";
 import { ChevronDown } from "lucide-react"; 
-import SearchBar from "../../home/components/SearchBar"; 
+import SearchBar from "./SearchBar"; 
 import DropdownMenu from "./DropdownMenu"; 
 
 // filtros 

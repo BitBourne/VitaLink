@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 // Components
 import Header from "../../../core/ui/layout/Header";
 import BaseCard from "../components/baseCard";
+import SearchBar from "../../search/components/SearchBar";
 import Button from "../../../core/ui/Components/Button";
 
 const HomePage = () => {
@@ -20,9 +21,10 @@ const HomePage = () => {
         <div className="max-w-11/12 md:max-w-6xl py-16 mx-auto">
 
           <div className="grid md:grid-cols-5 place-items-center mb-12">
-            <div className="col-span-3 m-10 text-gray-600">
-              <h2 className="text-3xl md:text-5xl font-bold pb-8 md:pb-10">¿Qué especialista buscas hoy?</h2>
+            <div className="col-span-3 m-10 text-gray-600 space-y-10">
+              <h2 className="text-3xl md:text-5xl font-bold md:pb-10">¿Qué especialista buscas hoy?</h2>
               <p className="text-lg">Reserva tu cita médica en segundos con nuestra plataforma inteligente. Telemedicina, especialistas certificados y atencion 24/7.</p>
+              <SearchBar/>
             </div>
             <div className="hidden md:block col-span-2">
               <img src="/src/assets/doctor-home.png" alt="Imagen de doctor animada"/>

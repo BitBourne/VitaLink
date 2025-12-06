@@ -8,7 +8,7 @@ import useAuth from "../../../features/auth/hooks/useAuth";
 import Button from "../Components/Button";
 import UserMenu from "./UserMenu";
 
-export default function Header({ children }) {
+export default function Header({ showOptions, children }) {
   const { user, loading } = useAuth(); // 'loading' no es estrictamente necesario aquí si el layout lo maneja
   const [isOpen, setIsOpen] = useState(false);
   const navigate = useNavigate();
@@ -21,7 +21,7 @@ export default function Header({ children }) {
 
   return (
     <header className="w-full bg-white border-b border-gray-300 relative z-50">
-      <div className="max-w-6xl mx-auto p-5 flex items-center justify-between">
+      <div className="w-11/12 md:max-w-6xl mx-auto p-5 flex items-center justify-between">
         <h1 className="text-4xl font-bold bg-main-gradient text-transparent bg-clip-text select-none cursor-pointer" onClick={() => navigate("/")}>
           VitaLink
         </h1>
@@ -66,6 +66,7 @@ export default function Header({ children }) {
                   <a className="font-light text-gray-500 hover:text-gray-800 transition-colors" href="/auth/signup">
                     Crear Cuenta
                   </a>
+                  <p>{console.log(showOptions)}</p>
                   <Button
                       text="Iniciar Sesión"
                       type="button"

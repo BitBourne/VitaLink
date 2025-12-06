@@ -5,16 +5,15 @@ import { useNavigate } from "react-router-dom";
 import apiClient from "../../../core/api/apiClient";
 
 
-import SearchHeader from "../components/SearchHeader";
 import FiltersBar from "../components/FiltersBar";
 import DoctorCard from "../components/DoctorCard";
+import SearchBar from "../components/SearchBar";
+import DropdownMenu from "../components/DropdownMenu";
 
 
 const SearchPage = () => {
-
-    const [doctors, setDoctors] = useState([]);
-
     const navigate = useNavigate();
+    const [doctors, setDoctors] = useState([]);
 
 
     useEffect(() => {
@@ -27,21 +26,58 @@ const SearchPage = () => {
           console.error(error);
         }
     };
-
     fetchDoctors();
-    }, []);
+}, []);
+
+    const TarifasOptions = [
+        { label: "Precio: Alto a Bajo", value: "DESC" },
+        { label: "Precio: Bajo a Alto", value: "ACS" },
+    ];
+    const DisponibilidadOptions = [
+        { label: "Hoy", value: "1" },
+        { label: "3 dias", value: "3" },
+        { label: "7 dias", value: "7" },
+    ];
+    const CalificacionOptions = [
+        { label: "Calificacion: Alto a Bajo", value: "DESC" },
+        { label: "Calificacion: Bajo a Alto", value: "ASC" },
+    ];
+
 
     const handleNavigate = (doctor) => {
-        navigate(`/infoDoctor/${doctor.id}`, { state: doctor });
+        navigate(`/doctor/${doctor.id}`, { state: doctor });
     };
 
 
 
+
+
     return (
-        <div className="min-h-screen bg-blue-50/50">
+        <div className="min-h-screen">
 
             {/* Barra de Búsqueda y Filtros */}
-            <FiltersBar /> 
+            {/* <FiltersBar />  */}
+
+            <div className="grid md:grid-cols-5 gap-5">
+                <div className="md:col-span-3">
+                    {/* <SearchBar/> */}
+                </div>
+
+                {/* <div className="md:col-span-2 md:flex gap-2 bg-white rounded-xl py-3 px-4 shadow-lg border border-gray-200 max-w-3xl items-center">
+                    <DropdownMenu
+                        label="Tarifas"
+                        options={TarifasOptions}
+                    />
+                    <DropdownMenu
+                        label="Disponibilidad"
+                        options={DisponibilidadOptions}
+                    />
+                    <DropdownMenu
+                        label="Calificacion"
+                        options={CalificacionOptions}
+                    />
+                </div> */}
+            </div>
 
             {/* Resultados de Doctores */}
             <div className="max-w-7xl mx-auto px-6 py-10">

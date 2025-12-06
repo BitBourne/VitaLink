@@ -20,7 +20,7 @@ const DropdownMenu = ({ label, options }) => {
             {/* Botón Principal */}
             <button
                 onClick={toggleMenu}
-                className="flex items-center justify-between bg-white text-gray-700 px-4 py-3 border border-gray-200 rounded-xl text-base font-normal hover:bg-gray-50 transition-colors whitespace-nowrap w-full shadow-sm"
+                className="flex items-center justify-between bg-white text-gray-700 px-4 py-2 border border-gray-200 rounded-xl text-base font-normal hover:bg-gray-50 transition-colors whitespace-nowrap w-full shadow-sm"
             >
                 <span className="truncate">
                     {currentLabel} 

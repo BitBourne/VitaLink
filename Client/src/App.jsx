@@ -15,6 +15,11 @@ import Login from "./features/auth/Pages/Login";
 import Signup from "./features/auth/Pages/Signup";
 import SignupVerification from "./features/auth/Pages/SignupVerification";
 
+// Search pages and layout
+import SearchLayout from "./features/search/layout/SearchLayout";
+import SearchPage from "./features/search/pages/SearchPage";
+
+
 
 import UserLayout from "./core/ui/Layout/UserLayout";
 import AppointmentPage from "./core/ui/Layout/appointmentpage";
@@ -24,7 +29,6 @@ import InvalidLink from "./features/auth/Pages/InvalidLink";
 import PasswordUpdated from "./features/auth/Pages/PasswordUpdated";
 
 
-import SearchPage from "./features/search/pages/SearchPage";
 import DoctorProfile from "./features/doctor/page/DoctorProfile";
 
 
@@ -52,6 +56,12 @@ export default function App() {
             <Route path="forgot-password/:token" element={< NewPassword/>} />
             <Route path="invalid-link" element={< InvalidLink/>} />
             <Route path="password-updated" element={< PasswordUpdated/>} />
+          </Route>
+
+          <Route path="/search" element={<SearchLayout/>}>
+            <Route index element={<SearchPage/>} />
+            <Route path="doctor/:id" element={<SearchPage/>} />
+
           </Route>
 
 
