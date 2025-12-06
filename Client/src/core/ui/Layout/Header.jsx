@@ -66,7 +66,6 @@ export default function Header({ showOptions, children }) {
                   <a className="font-light text-gray-500 hover:text-gray-800 transition-colors" href="/auth/signup">
                     Crear Cuenta
                   </a>
-                  <p>{console.log(showOptions)}</p>
                   <Button
                       text="Iniciar Sesión"
                       type="button"
