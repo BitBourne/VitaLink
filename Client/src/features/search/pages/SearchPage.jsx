@@ -5,10 +5,7 @@ import { useNavigate } from "react-router-dom";
 import apiClient from "../../../core/api/apiClient";
 
 
-import FiltersBar from "../components/FiltersBar";
 import DoctorCard from "../components/DoctorCard";
-import SearchBar from "../components/SearchBar";
-import DropdownMenu from "../components/DropdownMenu";
 
 
 const SearchPage = () => {
@@ -19,8 +16,9 @@ const SearchPage = () => {
     useEffect(() => {
     const fetchDoctors = async () => {
         try {
+            
           const res = await apiClient.get("/doctor");
-          console.log(res.data);
+
           setDoctors(res.data); // Guardar todo el objeto del doctor
         } catch (error) {
           console.error(error);
@@ -45,7 +43,7 @@ const SearchPage = () => {
 
 
     const handleNavigate = (doctor) => {
-        navigate(`/doctor/${doctor.id}`, { state: doctor });
+        navigate(`doctor/${doctor.id}`, { state: doctor });
     };
 
 

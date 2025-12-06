@@ -1,9 +1,11 @@
 import React, {useState} from "react";
 import { useLocation } from "react-router-dom";
+import AppointmentModal from "../../Citas/Modals/AppointmentModal";
 
 const DoctorIdentity = () => {
   const { state: doctor } = useLocation();
   const [open, setOpen] = useState(false);
+  const [showModal, setShowModal] = useState(false);
 
   if (!doctor) return <p className="text-center pt-20">Cargando doctor...</p>;
 
@@ -25,21 +27,19 @@ const DoctorIdentity = () => {
               <p className="text-xl text-blue-600 font-medium mt-1">
                 {specialty}
               </p>
+              <AppointmentModal
+                show={showModal}
+                onClose={() => setShowModal(false)}
+                doctor={doctor}
+              />
 
+              <button
+                onClick={() => setShowModal(true)}
+                className="bg-blue-600 text-white px-4 py-2 rounded-md"
+              >
+                Agendar Cita
+              </button>
 
-                  <div className="">
-                    <button
-                      onClick={() => setOpen(true)}
-                      className="bg-blue-600 text-white px-3 py-2 rounded-lg"
-                    >
-                    Agendar Cita
-                    </button>
-
-                    <Modal show={open} onClose={() => setOpen(false)}>
-                      <h2 className="text-xl font-bold mb-3">Hola 😄</h2>
-                      <p>Este es un modal sencillo.</p>
-                    </Modal>
-                </div>
             </div>
           </div>
         </div>

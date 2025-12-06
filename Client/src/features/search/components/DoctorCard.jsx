@@ -1,6 +1,6 @@
 import React from "react";
 import { Star, MapPin } from "lucide-react";
-
+import AppointmentModal from "../../Citas/Modals/AppointmentModal";
 
 const DoctorCard = ({ doctor, onClick  }) => {
 

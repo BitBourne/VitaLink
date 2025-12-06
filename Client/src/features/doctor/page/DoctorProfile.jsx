@@ -1,10 +1,14 @@
+import { useLocation } from "react-router-dom";
 import React from "react";
-import SearchHeader from "../../search/components/SearchHeader.jsx";
-import FiltersBar from "../../search/components/FiltersBar.jsx";
+
+
+
 import DoctorIdentity from "../components/DoctorIdentity.jsx"
 import Disponibility from "../components/Contact.jsx"
 import PersonalInformation from "../components/ProfesionalInfo.jsx";
 
+
+import Calendar from "../../Citas/components/Calendar.jsx";
 
 
 
@@ -13,6 +17,8 @@ import PersonalInformation from "../components/ProfesionalInfo.jsx";
 
 
 const DoctorProfile = () => {
+    const { state: doctor } = useLocation();
+
     return (
         <div className="min-h-screen bg-blue-50/50">
 
@@ -30,6 +36,7 @@ const DoctorProfile = () => {
                         <Disponibility  /> 
                     </div>
                 </div>
+                <Calendar doctorId={doctor.id}/> 
 
             </div>
             
