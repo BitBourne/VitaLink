@@ -8,16 +8,20 @@ import UserDAO from '../../Datos/DAOs/UserDAO.js';
  * @param {number} creatorUserId - ID del usuario que crea la conversación
  * @returns {Promise<Object>} Conversación creada
  */
+
+
 const createConversationService = async (conversationDTO, creatorUserId) => {
-    const { appointment_id, doctor_user_id, patient_id } = conversationDTO;
+    const { appointment_id, doctor_profile_id, patient_id } = conversationDTO;
 
     const conversationDAO = new ConversationDAO();
     const appointmentDAO = new AppointmentDAO();
     const userDAO = new UserDAO();
+console.log("DTO recibido:", conversationDTO);
+console.log("creatorUserId:", creatorUserId);
 
     // Validaciones
-    if (!appointment_id || !doctor_user_id || !patient_id) {
-        const error = new Error('appointment_id, doctor_user_id y patient_id son obligatorios');
+    if (!appointment_id || !doctor_profile_id || !patient_id) {
+        const error = new Error('appointment_id, doctor_profile_id y patient_id son obligatorios');
         error.statusCode = 400;
         throw error;
     }
@@ -30,7 +34,7 @@ const createConversationService = async (conversationDTO, creatorUserId) => {
     }
 
     // Verificar que doctor y paciente correspondan a la cita
-    if (appointment.doctor_profile_id !== doctor_user_id && appointment.patient_id !== patient_id) {
+    if (appointment.doctor_profile_id !== doctor_profile_id && appointment.patient_id !== patient_id) {
         const error = new Error('Doctor o paciente no corresponden a la cita');
         error.statusCode = 400;
         throw error;
@@ -39,7 +43,7 @@ const createConversationService = async (conversationDTO, creatorUserId) => {
     // Crear la conversación
     const newConversation = await conversationDAO.create({
         appointment_id,
-        doctor_user_id,
+        doctor_profile_id,
         patient_id,
         created_by: creatorUserId
     });

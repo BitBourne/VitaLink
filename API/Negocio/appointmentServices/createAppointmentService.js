@@ -72,7 +72,7 @@ const createAppointmentService = async (appointmentDTO, creatorUserId) => {
     // Crear la conversación inmediatamente después de crear la cita
     const conversation = await createConversationService({
         appointment_id: newAppointment.id,
-        doctor_user_id: doctorProfile.user_id, 
+        doctor_profile_id: doctorProfile.user_id, 
         patient_id
     }, creatorUserId);
 
