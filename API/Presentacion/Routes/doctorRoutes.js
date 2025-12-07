@@ -16,4 +16,4 @@ router.delete('/:doctorId/clinics/:clinicId', checkAuth, checkRole(['admin']), d
 
 router.put('/:doctorProfileId/salary', checkAuth, checkRole(['admin']), doctorControllers.updateDoctorSalary);
 
-export default router;
+export default router; 
