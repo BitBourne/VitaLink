@@ -70,9 +70,8 @@ const AppointmentModal = ({ show, onClose, doctor, appointment }) => {
         onClose();
         setSuccess("");
       }, 2000);
-    } catch (err) {
-      console.error(err);
-      setError("Ocurrió un error al crear/actualizar la cita.");
+    } catch (error) {
+      console.log("Error real del backend:", error.message || error);
     }
   };
 
