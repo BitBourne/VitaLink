@@ -43,7 +43,7 @@ const ForgotPassword = () => {
 
   return (
     <div className="w-full">
-      <h2 className="text-center text-2xl font-bold text-[#4C575F] mb-4">
+      <h2 className="text-center text-2xl font-bold text-[#4C575F] mb-4 cursor-pointer">
         ¿Olvidaste tu contraseña?
       </h2>
 

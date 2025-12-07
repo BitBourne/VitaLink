@@ -1,9 +1,11 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import useSearchDoctors from "../hooks/useSearchDoctors";
-import DoctorCard from "../components/DoctorCard";
 import SearchBar from "../components/SearchBar";
-import DropdownMenu from "../components/DropdownMenu";
+
+// Components
+import DoctorCard from "../components/DoctorCard";
+import DropdownMenu from "../components/DropdownMenu"
 
 const SearchPage = () => {
     const navigate = useNavigate();

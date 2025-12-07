@@ -3,11 +3,11 @@ import createConversationService from '../../../Negocio/conversationServices/con
 const createConversation = async (req, res, next) => {
     try {
         const userId = req.user.id; // usuario que crea la conversación
-        const { appointment_id, doctor_user_id, patient_id } = req.body;
+        const { appointment_id, doctor_profile_id, patient_id } = req.body;
 
         const conversationData = {
             appointment_id,
-            doctor_user_id,
+            doctor_profile_id,
             patient_id
         };
 
