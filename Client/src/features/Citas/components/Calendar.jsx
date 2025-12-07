@@ -7,32 +7,36 @@ import dayGridPlugin from '@fullcalendar/daygrid' // Vista de mes
 import timeGridPlugin from '@fullcalendar/timegrid' // Vista de semana/dia
 import interactionPlugin from '@fullcalendar/interaction' // Para clicks
 
-import AppointmentModal from './AppointmentModal'
+import AppointmentModal from '../Modals/AppointmentModal'
 import apiClient from '../../../core/api/apiClient'
 
-const Calendar = () => {
+
+// si le llega un id de doctor, muestra las citas del doctor
+const Calendar = ({ doctorId }) => {
 
     const [appointments, setAppointments] = useState([]);
     const [selectedEvent, setSelectedEvent] = useState(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
+    
 
       // Verifica que el usuario este autenticado
-  useEffect(() => {
-      const getAppointments = async () => {
-          try {
-                console.log("hasta aqui ses")
-                // realiza peticion a backend y se le asigna la configuracion establecida
-                const {data} = await apiClient.get('/appointments');
-                setAppointments(data.appointments); 
-                
-          } catch (error) {
-                
-              console.log(error)
-            //   setUser({});
-          }
-      }
-      getAppointments();
-  }, [])
+useEffect(() => {
+  const getAppointments = async () => {
+    try {
+      const url = doctorId
+        ? `/appointments?doctor_id=${doctorId}`
+        : `/appointments`;
+
+      const { data } = await apiClient.get(url);
+      setAppointments(data.appointments);
+    } catch (error) {
+      console.error("Error al obtener citas:", error);
+    }
+  };
+
+  getAppointments();
+}, [doctorId]);
+
   // Ejemplo de citas (esto vendría de tu backend)
 
    const eventosFormateados = appointments.map(cita => {

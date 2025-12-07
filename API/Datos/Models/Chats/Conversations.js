@@ -11,7 +11,7 @@ const Conversation = db.define("conversations", {
         type: DataTypes.INTEGER, 
         allowNull: false 
     },
-    doctor_id: { 
+    doctor_profile_id: { 
         type: DataTypes.INTEGER, 
         allowNull: false 
     },

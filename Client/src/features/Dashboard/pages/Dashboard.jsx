@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Bell } from "lucide-react";
 import AppointmentCard from "../components/AppoinmentCard";
-import AppointmentModal from "../../Citas/components/AppointmentModal";
+import AppointmentModal from "../../Citas/Modals/AppointmentModal";
 
 import useAuth from "../../auth/hooks/useAuth"
 

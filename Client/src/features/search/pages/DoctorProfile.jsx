@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import DoctorIdentity from "../components/DoctorIdentity.jsx"
+import AppointmentModal from "../../Citas/Modals/AppointmentModal.jsx";
 import { useLocation, useNavigate } from "react-router-dom";
 import { MapPin, Stethoscope, Star, Clock, CalendarCheck, ShieldCheck, Banknote } from "lucide-react";
 
@@ -7,6 +8,8 @@ const DoctorProfile = () => {
     const { state: doctor } = useLocation();
     // const [open, setOpen] = useState(false);
     const navigate = useNavigate();
+    const [showModal, setShowModal] = useState(false);
+
 
     // Validación inicial
     if (!doctor) {
@@ -22,7 +25,7 @@ const DoctorProfile = () => {
     const firstName = doctor?.DP_user?.name || "Nombre";
     const lastName = doctor?.DP_user?.last_name || "";
     const fullName = `${firstName} ${lastName}`;
-    const specialty = doctor?.specialty || "Medicina General";
+    const specialty =  "Medicina General";
     const city = doctor?.city || "Ubicación no disponible";
     const bio = doctor?.bio || `El Dr(a). ${lastName} es un especialista dedicado con amplia experiencia en el tratamiento de...`;
     const price = doctor?.price || 500; // Precio ejemplo si no viene en la data
@@ -31,8 +34,15 @@ const DoctorProfile = () => {
     // Obtener iniciales para el avatar
     const initials = firstName.charAt(0) + (lastName ? lastName.charAt(0) : "");
 
+
     return (
         <div className=" bg-blue-50/50">
+
+            <AppointmentModal
+                show={showModal}
+                onClose={() => setShowModal(false)}
+                doctor={doctor}
+            />
             {/* Resultados de Doctores */}
             <div className="container mx-auto px-4 lg:py-12">
                 <div className="max-w-6xl mx-auto space-y-6">
@@ -67,10 +77,12 @@ const DoctorProfile = () => {
                                     <Stethoscope size={20} />
                                     {specialty}
                                 </p>
-                                <div className="flex items-center gap-4 mt-3 text-gray-500 text-sm">
-                                    <span className="flex items-center gap-1"><MapPin size={16} /> {city}</span>
+                                {doctor?.clinics?.map((clinic) => (
+                                <div key={clinic.id} className="flex items-center gap-4 mt-3 text-gray-500 text-sm">
+                                    <span className="flex items-center gap-1"><MapPin size={16} /> {clinic.city}</span>
                                     <span className="flex items-center gap-1 text-yellow-500 font-bold"><Star size={16} fill="currentColor"/> {rating} (120 reseñas)</span>
                                 </div>
+                                ))}
                             </div>
                         </div>
                     </div>
@@ -112,13 +124,15 @@ const DoctorProfile = () => {
                                 </div>
 
                                 <div className="space-y-4 mb-6">
-                                    <div className="flex items-start gap-3 text-sm text-gray-600 bg-gray-50 p-3 rounded-lg">
+                                    {doctor?.clinics?.map((clinic) => (
+                                    <div key={clinic.id} className="flex items-start gap-3 text-sm text-gray-600 bg-gray-50 p-3 rounded-lg">
                                         <MapPin className="mt-0.5 text-blue-500 shrink-0" size={18} />
                                         <div>
-                                            <p className="font-bold text-gray-900">Consultorio Privado</p>
-                                            <p>{city}, Calle Ejemplo #123</p>
+                                        <p className="font-bold text-gray-900">{clinic.name || "Consultorio Privado"}</p>
+                                        <p>{clinic.city || "Ubicación no disponible"}, {clinic.address}</p>
                                         </div>
                                     </div>
+                                    ))}
                                     <div className="flex items-start gap-3 text-sm text-gray-600 bg-gray-50 p-3 rounded-lg">
                                         <Clock className="mt-0.5 text-blue-500 shrink-0" size={18} />
                                         <div>
@@ -128,8 +142,10 @@ const DoctorProfile = () => {
                                     </div>
                                 </div>
 
+
+
                                 <button
-                                    onClick={() => setOpen(true)}
+                                    onClick={() => setShowModal(true)}
                                     className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3.5 px-4 rounded-xl shadow-blue-200 shadow-lg transition-all transform active:scale-95 flex items-center justify-center gap-2"
                                 >
                                     <CalendarCheck size={20} />
