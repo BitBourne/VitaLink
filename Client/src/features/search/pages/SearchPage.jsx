@@ -5,27 +5,17 @@ import { useNavigate } from "react-router-dom";
 import apiClient from "../../../core/api/apiClient";
 
 
+// Context
+import useSearchDoctors from "../hooks/useSearchDoctors";
+
+
+import FiltersBar from "../components/FiltersBar";
 import DoctorCard from "../components/DoctorCard";
 
 
 const SearchPage = () => {
     const navigate = useNavigate();
-    const [doctors, setDoctors] = useState([]);
-
-
-    useEffect(() => {
-    const fetchDoctors = async () => {
-        try {
-            
-          const res = await apiClient.get("/doctor");
-
-          setDoctors(res.data); // Guardar todo el objeto del doctor
-        } catch (error) {
-          console.error(error);
-        }
-    };
-    fetchDoctors();
-}, []);
+    const { doctors } = useSearchDoctors();
 
     const TarifasOptions = [
         { label: "Precio: Alto a Bajo", value: "DESC" },
@@ -45,10 +35,6 @@ const SearchPage = () => {
     const handleNavigate = (doctor) => {
         navigate(`doctor/${doctor.id}`, { state: doctor });
     };
-
-
-
-
 
     return (
         <div className="min-h-screen">
