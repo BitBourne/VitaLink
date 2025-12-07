@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import DoctorIdentity from "..//components/DoctorIdentity.jsx"
+import DoctorIdentity from "../components/DoctorIdentity.jsx"
 import { useLocation, useNavigate } from "react-router-dom";
 import { MapPin, Stethoscope, Star, Clock, CalendarCheck, ShieldCheck, Banknote } from "lucide-react";
 
