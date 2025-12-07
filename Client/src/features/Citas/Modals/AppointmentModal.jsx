@@ -2,11 +2,12 @@ import React, { useState, useEffect } from "react";
 import apiClient from "../../../core/api/apiClient";
 
 const AppointmentModal = ({ show, onClose, doctor, appointment }) => {
-
   const [date, setDate] = useState(appointment?.appointment_date || "");
   const [time, setTime] = useState(appointment?.appointment_time || "");
   const [reason, setReason] = useState(appointment?.reason || "");
   const [selectedClinic, setSelectedClinic] = useState(appointment?.clinic_id || "");
+  const [selectedDoctor, setSelectedDoctor] = useState(doctor?.id || "");
+  const [doctorsList, setDoctorsList] = useState([]);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
 
@@ -20,58 +21,55 @@ const AppointmentModal = ({ show, onClose, doctor, appointment }) => {
     "13:00","13:30","14:00","14:30"
   ];
 
-  // Limpiar mensajes cada vez que se abre el modal
+  // Limpiar mensajes y cargar doctores si es necesario
   useEffect(() => {
     if (show) {
       setError("");
       setSuccess("");
-    }
-  }, [show]);
 
+      if (!doctor) {
+        apiClient.get("/doctor")
+          .then(res => setDoctorsList(res.data))
+          .catch(err => console.error(err));
+      }
+    }
+  }, [show, doctor]);
 
   if (!show) return null;
 
   const handleSubmit = async () => {
-    // Limpiar mensajes previos al enviar
     setError("");
     setSuccess("");
 
-    // Validación de campos
-    if (!selectedClinic || !date || !time || !reason) {
+    if (!selectedDoctor || !selectedClinic || !date || !time || !reason) {
       setError("Por favor completa todos los campos antes de continuar.");
       return;
     }
 
     try {
       const payload = {
+        doctor_profile_id: selectedDoctor,
         clinic_id: selectedClinic,
         appointment_date: date,
         appointment_time: time,
         reason,
         is_telemedicine: false,
-        doctor_profile_id: doctor.id,
         patient_id: patientId,
       };
 
-      const url = isEditing
-        ? `/appointments/${appointment.id}`
-        : "/appointments";
-
+      const url = isEditing ? `/appointments/${appointment.id}` : "/appointments";
       const method = isEditing ? "put" : "post";
 
       await apiClient[method](url, payload, {
-        headers: { Authorization: `Bearer ${token}` }
+        headers: { Authorization: `Bearer ${token}` },
       });
 
-      // Mostrar mensaje de éxito según si es edición o creación
       setSuccess(isEditing ? "Cita actualizada exitosamente" : "Cita creada exitosamente");
 
-      // Cerrar el modal después de 2 segundos
       setTimeout(() => {
         onClose();
-        setSuccess(""); // Limpiar mensaje para la próxima vez
+        setSuccess("");
       }, 2000);
-
     } catch (err) {
       console.error(err);
       setError("Ocurrió un error al crear/actualizar la cita.");
@@ -91,35 +89,49 @@ const AppointmentModal = ({ show, onClose, doctor, appointment }) => {
 
         <h3 className="text-xl font-semibold mb-4">Agendar cita</h3>
 
-        {/* Mensaje de error */}
-        {error && (
-          <div className="mb-4 p-3 text-sm text-red-700 bg-red-100 border border-red-400 rounded">
-            {error}
-          </div>
+        {error && <div className="mb-4 p-3 text-sm text-red-700 bg-red-100 border border-red-400 rounded">{error}</div>}
+        {success && <div className="mb-4 p-3 text-sm text-green-700 bg-green-100 border border-green-400 rounded">{success}</div>}
+
+        {/* Selección de doctor si no hay uno asignado */}
+        {!doctor && (
+          <label className="block mb-3">
+            Doctor:
+            <select
+              className="border p-2 w-full rounded mt-1"
+              value={selectedDoctor}
+              onChange={(e) => {
+                setSelectedDoctor(e.target.value);
+                setSelectedClinic(""); // limpiar clínica al cambiar doctor
+              }}
+            >
+              <option value="">Selecciona un doctor</option>
+              {doctorsList.map(d => (
+                <option key={d.id} value={d.id}>
+                  {d.DP_user?.name} {d.DP_user?.last_name} — {d.specialty || "Medicina General"}
+                </option>
+              ))}
+            </select>
+          </label>
         )}
 
-        {/* Mensaje de éxito */}
-        {success && (
-          <div className="mb-4 p-3 text-sm text-green-700 bg-green-100 border border-green-400 rounded">
-            {success}
-          </div>
+        {/* Selección de clínica solo si hay doctor */}
+        {(doctor || selectedDoctor) && (
+          <label className="block mb-3">
+            Sucursal:
+            <select
+              className="border p-2 w-full rounded mt-1"
+              value={selectedClinic}
+              onChange={(e) => setSelectedClinic(e.target.value)}
+            >
+              <option value="">Selecciona una sucursal</option>
+              {(doctor?.clinics || doctorsList.find(d => d.id === parseInt(selectedDoctor))?.clinics)?.map(clinic => (
+                <option key={clinic.id} value={clinic.id}>
+                  {clinic.name} — {clinic.city ?? "Sin ciudad"}
+                </option>
+              ))}
+            </select>
+          </label>
         )}
-
-        <label className="block mb-3">
-          Sucursal:
-          <select
-            className="border p-2 w-full rounded mt-1"
-            value={selectedClinic}
-            onChange={(e) => setSelectedClinic(e.target.value)}
-          >
-            <option value="">Selecciona una sucursal</option>
-            {doctor?.clinics?.map((clinic) => (
-              <option key={clinic.id} value={clinic.id}>
-                {clinic.name} — {clinic.city ?? "Sin ciudad"}
-              </option>
-            ))}
-          </select>
-        </label>
 
         <label className="block mb-3">
           Fecha:
@@ -139,9 +151,7 @@ const AppointmentModal = ({ show, onClose, doctor, appointment }) => {
             onChange={(e) => setTime(e.target.value)}
           >
             <option value="">Selecciona una hora</option>
-            {times.map((t) => (
-              <option key={t} value={t}>{t}</option>
-            ))}
+            {times.map(t => <option key={t} value={t}>{t}</option>)}
           </select>
         </label>
 
@@ -161,6 +171,7 @@ const AppointmentModal = ({ show, onClose, doctor, appointment }) => {
         >
           Confirmar Cita
         </button>
+
       </div>
     </div>
   );
