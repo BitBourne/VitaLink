@@ -6,7 +6,6 @@ import { AuthProvider } from "./features/auth/context/authProvider";
 import { SearchProvider } from "./features/search/Context/searchProvider";
 
 // Features
-import Dashboard from "./features/Dashboard/pages/Dashboard";
 
 import HomePage from "./features/home/pages/HomePage";
 import NotFoundPage from "./core/ui/pages/NotFoundPage";
@@ -27,8 +26,10 @@ import PasswordUpdated from "./features/auth/Pages/PasswordUpdated";
 import SearchLayout from "./features/search/layout/SearchLayout";
 import SearchPage from "./features/search/pages/SearchPage";
 import DoctorProfile from "./features/search/pages/DoctorProfile";
+import DashboardPatient from "./features/Dashboard/patient/pages/DashboardPatient";
 
 
+import PatientLayout from "./features/Dashboard/patient/layout/PatientLayout";
 
 
 export default function App() {
@@ -43,6 +44,10 @@ export default function App() {
                 <Route index element={<HomePage/>}/>
               </Route>
                 
+            <Route element={<PatientLayout />}>
+              <Route path="/paciente" element={<DashboardPatient />} />
+              
+            </Route>
 
               {/* Redirección al registro */}
               <Route path="/auth" element={<AuthLayout />} > {/** Indica el layout principal de la ruta */}
