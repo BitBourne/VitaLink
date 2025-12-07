@@ -1,5 +1,6 @@
 import React from "react";
 import { Star, MapPin } from "lucide-react";
+import { FiArrowRight } from "react-icons/fi";
 import AppointmentModal from "../../Citas/Modals/AppointmentModal";
 
 const DoctorCard = ({ doctor, onClick  }) => {
@@ -38,23 +39,28 @@ const DoctorCard = ({ doctor, onClick  }) => {
             </div>
             
             {/* Ubicacion */}
-            <div className="mt-4 flex items-start space-x-2 text-sm text-gray-600 border-t border-gray-100 pt-3">
-                <MapPin className="w-4 h-4 text-gray-400 mt-0.5 flex-shrink-0" />
-                <div>
-                    
+            <div className="mt-4 flex border-t border-gray-100 pt-3 text-sm text-gray-600">
+                {/* Columna izquierda: clínicas */}
+                <div className="flex-1 pr-2">
+                <MapPin className="w-4 h-4 text-gray-400 mt-0.5 inline-block" />
+                    <div className="inline-block ml-1">
                     {clinics.length > 0 ? (
                         clinics.map(clinic => (
-                        <div key={clinic.id} className="text-sm text-gray-700 mb-1">
+                        <div key={clinic.id} className="text-sm text-gray-700 mb-2">
                             <p><strong>{clinic.name}</strong></p>
-                            <p className="text-gray-500">{clinic.address}</p>
-                            <p className="text-gray-500">
-                            {clinic.city}, {clinic.state}
-                            </p>
+                            <p className="text-gray-500">{clinic.city}, {clinic.state}</p>
                         </div>
                         ))
                     ) : (
                         <p className="text-gray-400">No hay clínicas registradas</p>
                     )}
+                    </div>
+                </div>
+
+                {/* Columna derecha: contenido adicional */}
+                <div className="flex items-center justify-end space-x-1">
+                    <p>Agendar cita</p>
+                    <FiArrowRight className="w-4 h-4 text-gray-700" />
                 </div>
             </div>
         </div>
