@@ -6,7 +6,7 @@ import useAuth from "../../auth/hooks/useAuth";
 import { SearchProvider } from "../Context/searchProvider";
 
 // Components
-import Header from "../../../core/ui/layout/Header";
+import Header from "../../../core/ui/Layout/Header";
 import SearchBar from "../components/SearchBar";
 
 const SearchLayout = () => {
