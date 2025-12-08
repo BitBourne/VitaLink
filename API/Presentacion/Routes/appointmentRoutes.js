@@ -8,7 +8,7 @@ import handleValidationErrors from '../Validators/validationMiddleware.js';
 const router = Router();
 
 // Crear cita con validación
-router.post('/', checkAuth, checkRole(['patient', 'doctor']), checkDoctorVerified(['doctor']), validateCreateAppointment, handleValidationErrors, appointmentControllers.createAppointment);
+router.post('/', checkAuth, checkRole(['patient', 'doctor']), checkDoctorVerified(['doctor']), handleValidationErrors, appointmentControllers.createAppointment);
 
 router.get('/', checkAuth, appointmentControllers.getAppointments);
 
