@@ -28,6 +28,12 @@ import SearchLayout from "./features/search/layout/SearchLayout";
 import SearchPage from "./features/search/pages/SearchPage";
 import DoctorProfile from "./features/search/pages/DoctorProfile";
 
+// Dashboard Doctor
+import DoctorLayout from "./features/Dashboard/doctor/layout/DoctorLayout";
+import ProtectedRoute from "./features/Dashboard/doctor/components/ProtectedRoute";
+import DoctorHome from "./features/Dashboard/doctor/pages/DoctorHome"; 
+import DoctorAppointments from "./features/Dashboard/doctor/pages/DoctorAppointments";
+
 
 
 
@@ -61,6 +67,17 @@ export default function App() {
                 <Route index element={<SearchPage/>} />
                 <Route path="doctor/:id" element={<DoctorProfile/>} />
               </Route>
+
+              {/* <Route element={<ProtectedRoute allowedRoles={["doctor"]} />}> */}
+                <Route path="/doctor" element={<DoctorLayout />}>
+                    {/* Redirigir /doctor a /doctor/dashboard */}
+                    <Route index element={<DoctorHome />} /> 
+                    <Route path="dashboard" element={<DoctorHome />} />
+                    <Route path="appointments" element={<DoctorAppointments />} />
+                    <Route path="availability" element={<div>Próximamente: Disponibilidad</div>} />
+                    <Route path="profile" element={<div>Próximamente: Perfil</div>} />
+                </Route>
+              {/* </Route> */}
 
 
               {/* Página no encontrada */}

@@ -55,7 +55,7 @@ export const validateCreateAppointment = [
  * Validación para actualización de estado de cita
  */
 export const validateUpdateAppointmentStatus = [
-    param('appointmentId')
+    param('appointment_id')
         .trim()
         .notEmpty().withMessage('El ID de la cita es requerido')
         .isInt({ min: 1 }).withMessage('ID de cita inválido'),
@@ -70,7 +70,7 @@ export const validateUpdateAppointmentStatus = [
  * Validación para cancelación de cita
  */
 export const validateCancelAppointment = [
-    param('appointmentId')
+    param('appointment_id')
         .trim()
         .notEmpty().withMessage('El ID de la cita es requerido')
         .isInt({ min: 1 }).withMessage('ID de cita inválido'),
@@ -86,7 +86,7 @@ export const validateCancelAppointment = [
  * Validación para ID de cita en parámetros
  */
 export const validateAppointmentId = [
-    param('appointmentId')
+    param('appointment_id')
         .trim()
         .notEmpty().withMessage('El ID de la cita es requerido')
         .isInt({ min: 1 }).withMessage('ID de cita inválido')
