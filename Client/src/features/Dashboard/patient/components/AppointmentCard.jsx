@@ -6,32 +6,32 @@ export function AppointmentCard() {
   const [appointments, setAppointments] = useState([]);
 
   useEffect(() => {
-const fetchAppointments = async () => {
-  try {
-    const token = localStorage.getItem("token");
-    const res = await apiClient.get("/appointments", {
-      headers: { Authorization: `Bearer ${token}` },
-    });
+    const fetchAppointments = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        const res = await apiClient.get("/appointments", {
+          headers: { Authorization: `Bearer ${token}` },
+        });
 
-    console.log("Citas recibidas:", res.data.appointments);
-    const appointments = res.data.appointments || [];
+        console.log("Citas recibidas:", res.data.appointments);
+        const appointments = res.data.appointments || [];
 
-    // Ordenar por fecha y hora
-    const upcoming = appointments.sort(
-      (a, b) =>
-        new Date(`${a.appointment_date}T${a.appointment_time}`) -
-        new Date(`${b.appointment_date}T${b.appointment_time}`)
-    );
+        // Ordenar por fecha y hora
+        const upcoming = appointments.sort(
+          (a, b) =>
+            new Date(`${a.appointment_date}T${a.appointment_time}`) -
+            new Date(`${b.appointment_date}T${b.appointment_time}`)
+        );
 
-    setAppointments(upcoming);
-  } catch (err) {
-    console.error("Error fetching appointments:", err);
-  }
-};
+        setAppointments(upcoming);
+      } catch (err) {
+        console.error("Error fetching appointments:", err);
+      }
+    };
 
 
-  fetchAppointments();
-}, []);
+    fetchAppointments();
+  }, []);
 
 
   if (appointments.length === 0)
@@ -65,11 +65,10 @@ const fetchAppointments = async () => {
               </div>
 
               <span
-                className={`rounded-full px-3 py-1 text-xs font-medium ${
-                  apt.status === "confirmed"
+                className={`rounded-full px-3 py-1 text-xs font-medium ${apt.status === "confirmed"
                     ? "bg-gradient-to-r from-[#B490CA] to-[#5EE7DF] text-white"
                     : "bg-yellow-100 text-yellow-700"
-                }`}
+                  }`}
               >
                 {apt.status === "confirmed" ? "Confirmada" : "Pendiente"}
               </span>

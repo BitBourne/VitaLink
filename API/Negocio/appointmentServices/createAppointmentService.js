@@ -11,7 +11,7 @@ const createAppointmentService = async (appointmentDTO, creatorUserId) => {
 
     const appointmentDAO = new AppointmentDAO();
     const doctorAvailabilityDAO = new DoctorAvailabilityDAO();
-    const userDAO = new UserDAO(); 
+    const userDAO = new UserDAO();
     const doctorProfileDAO = new DoctorProfileDAO();
     const clinicDAO = new ClinicDAO();
 
@@ -25,7 +25,7 @@ const createAppointmentService = async (appointmentDTO, creatorUserId) => {
         const error = new Error('clinic_id es obligatorio para citas presenciales');
         error.statusCode = 400;
         throw error;
-    }    
+    }
 
     if (clinic_id) {
         const doctorClinicDAO = new (await import('../../Datos/DAOs/DoctorClinicDAO.js')).default();
