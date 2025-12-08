@@ -45,8 +45,9 @@ import AdminProfile from "./features/Admin/pages/AdminProfile";
 // Dashboard Doctor
 import DoctorLayout from "./features/Dashboard/doctor/layout/DoctorLayout";
 import ProtectedRoute from "./features/Dashboard/doctor/components/ProtectedRoute";
-import DoctorHome from "./features/Dashboard/doctor/pages/DoctorHome"; 
+import DoctorHome from "./features/Dashboard/doctor/pages/DoctorHome";
 import DoctorAppointments from "./features/Dashboard/doctor/pages/DoctorAppointments";
+import DoctorAvailability from "./features/Dashboard/doctor/pages/DoctorAvailability";
 
 
 import PatientLayout from "./features/Dashboard/patient/layout/PatientLayout";
@@ -58,45 +59,45 @@ export default function App() {
       <Router>
         <AuthProvider>
 
-        {/* <SearchProvider> */}
-            <Routes> {/* Crear un conjunto de rutas */}
-              <Route path="/" >
-                <Route index element={<HomePage/>}/>
-              </Route>
-                
-            <Route element={<PatientLayout />}>
-              <Route path="/paciente" element={<DashboardPatient />} />
-              
+          {/* <SearchProvider> */}
+          <Routes> {/* Crear un conjunto de rutas */}
+            <Route path="/" >
+              <Route index element={<HomePage />} />
             </Route>
 
-              {/* Redirección al registro */}
-              <Route path="/auth" element={<AuthLayout />} > {/** Indica el layout principal de la ruta */}
-                <Route index element={<Login />} /> {/* Carga de componente por defecto */}
-                <Route path="signup" element={<Signup />} />
-                <Route path="signup/verify-account" element={<SignupVerification />} />
+            <Route element={<PatientLayout />}>
+              <Route path="/paciente" element={<DashboardPatient />} />
 
-                <Route path="forgot-password" element={<ForgotPassword/>} />
-                <Route path="forgot-password/:token" element={< NewPassword/>} />
-                <Route path="invalid-link" element={< InvalidLink/>} />
-                <Route path="password-updated" element={< PasswordUpdated/>} />
-              </Route>
+            </Route>
 
-              
-              <Route path="/search" element={<SearchLayout/>}>
-                <Route index element={<SearchPage/>} />
-                <Route path="doctor/:id" element={<DoctorProfile/>} />
-              </Route>
+            {/* Redirección al registro */}
+            <Route path="/auth" element={<AuthLayout />} > {/** Indica el layout principal de la ruta */}
+              <Route index element={<Login />} /> {/* Carga de componente por defecto */}
+              <Route path="signup" element={<Signup />} />
+              <Route path="signup/verify-account" element={<SignupVerification />} />
 
-              {/* <Route element={<ProtectedRoute allowedRoles={["doctor"]} />}> */}
-                <Route path="/doctor" element={<DoctorLayout />}>
-                    {/* Redirigir /doctor a /doctor/dashboard */}
-                    <Route index element={<DoctorHome />} /> 
-                    <Route path="dashboard" element={<DoctorHome />} />
-                    <Route path="appointments" element={<DoctorAppointments />} />
-                    <Route path="availability" element={<div>Próximamente: Disponibilidad</div>} />
-                    <Route path="profile" element={<div>Próximamente: Perfil</div>} />
-                </Route>
-              {/* </Route> */}
+              <Route path="forgot-password" element={<ForgotPassword />} />
+              <Route path="forgot-password/:token" element={< NewPassword />} />
+              <Route path="invalid-link" element={< InvalidLink />} />
+              <Route path="password-updated" element={< PasswordUpdated />} />
+            </Route>
+
+
+            <Route path="/search" element={<SearchLayout />}>
+              <Route index element={<SearchPage />} />
+              <Route path="doctor/:id" element={<DoctorProfile />} />
+            </Route>
+
+            {/* <Route element={<ProtectedRoute allowedRoles={["doctor"]} />}> */}
+            <Route path="/doctor" element={<DoctorLayout />}>
+              {/* Redirigir /doctor a /doctor/dashboard */}
+              <Route index element={<DoctorHome />} />
+              <Route path="dashboard" element={<DoctorHome />} />
+              <Route path="appointments" element={<DoctorAppointments />} />
+              <Route path="availability" element={<DoctorAvailability />} />
+              <Route path="profile" element={<div>Próximamente: Perfil</div>} />
+            </Route>
+            {/* </Route> */}
 
 
             {/* Admin Routes */}
@@ -117,8 +118,8 @@ export default function App() {
 
 
             {/* Página no encontrada */}
-              <Route path="*" element={<NotFoundPage />} />
-            </Routes>
+            <Route path="*" element={<NotFoundPage />} />
+          </Routes>
           {/* </SearchProvider> */}
         </AuthProvider>
       </Router>

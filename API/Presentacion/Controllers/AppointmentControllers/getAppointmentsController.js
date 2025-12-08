@@ -9,8 +9,7 @@ const getAppointments = async (req, res, next) => {
         const filters = { ...req.query };
 
         if (roleId === 2) {
-            filters.patient_id = userId;
-        } else if (roleId === 3) {
+            // Doctor - find their doctor profile and filter by it
             const doctorProfileDAO = new DoctorProfileDAO();
             const doctorProfile = await doctorProfileDAO.findByUserId(userId);
             if (doctorProfile) {
@@ -18,8 +17,11 @@ const getAppointments = async (req, res, next) => {
             } else {
                 return res.status(200).json({ success: true, appointments: [] });
             }
+        } else if (roleId === 3) {
+            // Patient - filter by patient_id
+            filters.patient_id = userId;
         } else if (roleId === 1) {
-
+            // Admin - no filters, show all appointments
         }
 
         const appointments = await getAppointmentsService(filters);
