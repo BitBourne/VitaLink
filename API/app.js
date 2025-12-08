@@ -43,27 +43,13 @@ app.use(globalRateLimiter);
 db.authenticate()
   .then(() => {
     logger.info('Database connected');
-    return db.sync({ alter: true });
+    return db.sync({ alter: false });
   })
   .then(() => logger.info('Database synchronized'))
   .catch(error => logger.error('Database connection or sync failed', error));
 
 // Sincronizar modelos
 import './Datos/Models/Relations.js';
-import User from './Datos/Models/User.js';
-import UserRoles from './Datos/Models/UserRoles.js';
-import UserPermission from './Datos/Models/UserPermission.js';
-import Roles from './Datos/Models/Role.js';
-import Permission from './Datos/Models/Permission.js';
-import AuditLog from './Datos/Models/AuditLog.js';
-import UserSession from './Datos/Models/UserSession.js';
-import Review from './Datos/Models/Review.js';
-import Conversation from './Datos/Models/Chats/Conversations.js';
-import DoctorAvailability from './Datos/Models/DoctorAvailability.js';
-// db.sync({ alter: true })
-//   .then(() => console.log('Database & tables synced'))
-//   .catch(err => console.log(err));
-
 
 // Rutas
 app.use('/api', routes);

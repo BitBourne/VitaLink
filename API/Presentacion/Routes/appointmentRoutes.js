@@ -13,7 +13,7 @@ router.post('/', checkAuth, checkRole(['patient', 'doctor']), checkDoctorVerifie
 router.get('/', checkAuth, appointmentControllers.getAppointments);
 
 // Pantalla de citas
-router.get('/:id', checkAuth, appointmentControllers.getAppointmentById);
+router.get('/:id', checkAuth, appointmentControllers.getAppointmentDetails);
 
 
 

@@ -15,8 +15,9 @@ export const getRolesUserService = async () => {
   return userRoles;
 };
 
-export const removeRolesUserService = async () => {
+export const removeRolesUserService = async (removeRoleUserDTO) => {
+  const { userId, roleId } = removeRoleUserDTO;
   const userRoleDAO = new UserRoleDAO();
-  const deleteUserRole = await userRoleDAO.delete({ where: { user_id: userId, rol_id: roleId } });
+  const deleteUserRole = await userRoleDAO.removeRole(userId, roleId);
   return deleteUserRole;
 };

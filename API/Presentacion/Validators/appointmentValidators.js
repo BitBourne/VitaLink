@@ -9,11 +9,11 @@ import { sanitizeText } from '../../Infraestructura/utils/sanitization.js';
  * Validación para creación de cita
  */
 export const validateCreateAppointment = [
-    body('doctorId')
+    body('doctor_profile_id')
         .notEmpty().withMessage('El ID del doctor es requerido')
         .isInt({ min: 1 }).withMessage('ID de doctor inválido'),
 
-    body('appointmentDate')
+    body('appointment_date')
         .notEmpty().withMessage('La fecha de la cita es requerida')
         .isISO8601().withMessage('Formato de fecha inválido (use YYYY-MM-DD)')
         .custom((value) => {
@@ -36,7 +36,7 @@ export const validateCreateAppointment = [
             return true;
         }),
 
-    body('appointmentTime')
+    body('appointment_time')
         .notEmpty().withMessage('La hora de la cita es requerida')
         .matches(/^([01]?[0-9]|2[0-3]):[0-5][0-9]$/).withMessage('Formato de hora inválido (use HH:MM)'),
 
@@ -46,7 +46,7 @@ export const validateCreateAppointment = [
         .isLength({ max: 500 }).withMessage('La razón no puede exceder 500 caracteres')
         .customSanitizer(sanitizeText),
 
-    body('clinicId')
+    body('clinic_id')
         .optional()
         .isInt({ min: 1 }).withMessage('ID de clínica inválido')
 ];
