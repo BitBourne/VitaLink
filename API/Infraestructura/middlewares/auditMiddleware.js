@@ -17,12 +17,25 @@ const auditAction = (action, resourceType = null) => {
 
         // Sobrescribe res.json para capturar la respuesta
         res.json = function (data) {
+            // Intenta obtener el resource_id de múltiples fuentes
+            let resourceId = data?.id || data?.result?.id || data?.data?.id || null;
+
+            // Si no está en la respuesta, busca en los parámetros de la request
+            if (!resourceId) {
+                resourceId = req.params?.userId ||
+                    req.params?.id ||
+                    req.params?.appointmentId ||
+                    req.body?.userId ||
+                    req.body?.id ||
+                    null;
+            }
+
             // Registra la acción en auditoría
             logAuditService({
                 user_id: req.user?.id || null,
                 action,
                 resource_type: resourceType,
-                resource_id: data?.id || data?.result?.id || null,
+                resource_id: resourceId,
                 ip_address: req.ip || req.connection.remoteAddress,
                 user_agent: req.get('user-agent'),
                 details: {

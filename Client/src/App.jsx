@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-d
 // Context
 import { AuthProvider } from "./features/auth/context/authProvider";
 import { SearchProvider } from "./features/search/Context/searchProvider";
+import { ToastProvider } from "./core/ui/Components/ToastProvider";
 
 // Features
 
@@ -28,15 +29,33 @@ import SearchPage from "./features/search/pages/SearchPage";
 import DoctorProfile from "./features/search/pages/DoctorProfile";
 import DashboardPatient from "./features/Dashboard/patient/pages/DashboardPatient";
 
+// Admin imports
+import AdminLayout from "./core/ui/Layout/AdminLayout";
+import AdminLogin from "./features/auth/Pages/AdminLogin";
+import AdminDashboard from "./features/Dashboard/pages/AdminDashboard";
+import UsersManagement from "./features/Admin/pages/UsersManagement";
+import DoctorVerifications from "./features/Admin/pages/DoctorVerifications";
+import AppointmentsOverview from "./features/Admin/pages/AppointmentsOverview";
+import AuditLogs from "./features/Admin/pages/AuditLogs";
+import AdminSettings from "./features/Admin/pages/AdminSettings";
+import RolesPermissions from "./features/Admin/pages/RolesPermissions";
+import ClinicsManagement from "./features/Admin/pages/ClinicsManagement";
+import SpecialtiesManagement from "./features/Admin/pages/SpecialtiesManagement";
+import AdminProfile from "./features/Admin/pages/AdminProfile";
 
 import PatientLayout from "./features/Dashboard/patient/layout/PatientLayout";
 
 
 export default function App() {
   return (
+    <ToastProvider>
+      <Router>
+        <AuthProvider>
 
-    <Router>
-      <AuthProvider>
+          <Routes> {/* Crear un conjunto de rutas */}
+            <Route path="/" >
+              <Route index element={<HomePage />} />
+            </Route>
 
         {/* <SearchProvider> */}
             <Routes> {/* Crear un conjunto de rutas */}
@@ -68,12 +87,32 @@ export default function App() {
               </Route>
 
 
-              {/* Página no encontrada */}
+            {/* Admin Routes */}
+            <Route path="/admin/login" element={<AdminLogin />} />
+
+            <Route path="/admin" element={<AdminLayout />}>
+              <Route index element={<AdminDashboard />} />
+              <Route path="users" element={<UsersManagement />} />
+              <Route path="verifications" element={<DoctorVerifications />} />
+              <Route path="appointments" element={<AppointmentsOverview />} />
+              <Route path="clinics" element={<ClinicsManagement />} />
+              <Route path="specialties" element={<SpecialtiesManagement />} />
+              <Route path="roles-permissions" element={<RolesPermissions />} />
+              <Route path="audit-logs" element={<AuditLogs />} />
+              <Route path="settings" element={<AdminSettings />} />
+              <Route path="profile" element={<AdminProfile />} />
+            </Route>
+
+
+            {/* Página no encontrada */}
               <Route path="*" element={<NotFoundPage />} />
             </Routes>
+          </Routes>
 
           {/* </SearchProvider> */}
         </AuthProvider>
       </Router>
+    </ToastProvider>
   );
 }
+

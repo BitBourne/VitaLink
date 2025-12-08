@@ -35,6 +35,11 @@ const AuditLog = db.define("audit_logs", {
     type: Sequelize.TEXT,
     allowNull: true,
   },
+}, {
+  timestamps: true,
+  underscored: true, // This tells Sequelize to use snake_case for auto-generated fields
+  createdAt: 'created_at',
+  updatedAt: 'updated_at'
 });
 
 export default AuditLog;

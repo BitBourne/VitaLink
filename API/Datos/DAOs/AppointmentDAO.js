@@ -2,6 +2,7 @@ import BaseDAO from './BaseDAO.js';
 import Appointment from '../Models/Appointment.js';
 import User from '../Models/User.js';
 import DoctorProfile from '../Models/DoctorProfile.js';
+import Specialty from '../Models/Specialty.js';
 import { Op } from 'sequelize';
 
 class AppointmentDAO extends BaseDAO {
@@ -60,6 +61,12 @@ class AppointmentDAO extends BaseDAO {
                             model: User,
                             as: 'DP_user',
                             attributes: ['id', 'name', 'last_name', 'email']
+                        },
+                        {
+                            model: Specialty,
+                            as: 'DP_specialties',
+                            attributes: ['id', 'name'],
+                            through: { attributes: [] }
                         }
                     ]
                 }

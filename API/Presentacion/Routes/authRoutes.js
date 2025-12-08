@@ -7,6 +7,7 @@ import logoutController from '../Controllers/AuthControllers/logoutController.js
 const router = Router();
 
 import { uploadCredentials, handleMulterError } from '../../Infraestructura/config/multerConfig.js';
+import auditAction from '../../Infraestructura/middlewares/auditMiddleware.js';
 
 router.post(
     '/signUp',
@@ -16,22 +17,26 @@ router.post(
         { name: 'additional_documents', maxCount: 3 }
     ]),
     handleMulterError,
+    auditAction('user_signup', 'User'),
     authControllers.signUp
 );
-router.post('/signUp/confirm-account', authControllers.confirmAccount);
+router.post('/signUp/confirm-account', auditAction('user_confirm_account', 'User'), authControllers.confirmAccount);
 
-router.post('/logIn', authControllers.logIn);
+router.post('/logIn', auditAction('user_login', 'User'), authControllers.logIn);
+router.post('/admin/login', auditAction('admin_login', 'Admin'), authControllers.adminLogin);
 
-router.post('/logout', checkAuth, logoutController)
+router.post('/logout', checkAuth, auditAction('user_logout', 'User'), logoutController)
 
-router.post('/reset-password', authControllers.changePassStep1);
+router.post('/reset-password', auditAction('user_reset_password', 'User'), authControllers.changePassStep1);
 router.route('/reset-password/:token')
-    .get(authControllers.changePassStep2)
-    .post(authControllers.changepassStep3);
+    .get(auditAction('user_reset_password', 'User'), authControllers.changePassStep2)
+    .post(auditAction('user_reset_password', 'User'), authControllers.changepassStep3);
 
-router.get('/profile', checkAuth, authControllers.profile);
+router.get('/profile', checkAuth, auditAction('user_profile', 'User'), authControllers.profile);
+router.put('/profile', checkAuth, auditAction('user_update_profile', 'User'), authControllers.updateProfile);
+router.post('/change-password', checkAuth, auditAction('user_change_password', 'User'), authControllers.changePassword);
 
-router.get('/sessions', checkAuth, authControllers.getActiveSessions);
+router.get('/sessions', checkAuth, auditAction('user_sessions', 'User'), authControllers.getActiveSessions);
 router.delete('/sessions/:sessionId', checkAuth, authControllers.logoutSessionById);
 
 export default router;

@@ -2,7 +2,8 @@ import { getAllDoctorsService } from '../../../Negocio/DoctorServices/getDoctore
 
 const getDoctors = async (req, res, next) => {
     try {
-        const doctores = await getAllDoctorsService();
+        const verifiedOnly = req.query.verifiedOnly === 'true';
+        const doctores = await getAllDoctorsService(verifiedOnly);
         res.status(200).json(doctores);
     } catch (error) {
         next(error);

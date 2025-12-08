@@ -4,19 +4,33 @@ const getAuditLogsService = async (filters = {}) => {
     const auditLogDAO = new AuditLogDAO();
 
     try {
-        const { userId, resourceType, offset = 0, limit = 50 } = filters;
+        const { userId, user, action, dateFrom, dateTo, ip, offset = 0, limit = 50 } = filters;
 
-        let logs;
+        // Use the new findWithFilters method for all queries
+        const result = await auditLogDAO.findWithFilters({
+            userId,
+            user,
+            action,
+            dateFrom,
+            dateTo,
+            ip,
+            offset,
+            limit
+        });
 
-        if (userId) {
-            logs = await auditLogDAO.findByUserId(userId, limit);
-        } else if (resourceType) {
-            logs = await auditLogDAO.findByResourceType(resourceType, limit);
-        } else {
-            logs = await auditLogDAO.findAllWithPagination(offset, limit);
-        }
-
-        return logs;
+        // Format the response
+        return {
+            total: result.count,
+            logs: result.rows.map(log => {
+                const logJSON = log.toJSON();
+                // Flatten user info for easier consumption if needed, or keep nested
+                return {
+                    ...logJSON,
+                    user: logJSON.AL_user ? `${logJSON.AL_user.name} ${logJSON.AL_user.last_name}` : 'Sistema/Desconocido',
+                    userEmail: logJSON.AL_user?.email
+                };
+            })
+        };
     } catch (error) {
         console.error('Error in getAuditLogsService:', error);
         const serviceError = new Error('Error al obtener logs de auditoría');

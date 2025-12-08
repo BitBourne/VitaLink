@@ -32,8 +32,11 @@ const checkAuth = async (req, res, next) => {
         // Eliminar espacios en blanco para asegurar coincidencia consistente de roles
         const roleNames = roles.map(r => r.name.trim());
 
+        // Obtener el role_id real del usuario (tomar el primer rol si tiene múltiples)
+        const roleId = roles.length > 0 ? roles[0].id : null;
+
         const { id, name, last_name, email } = user;
-        req.user = { id, name, last_name, email, roles: roleNames, rol_id: 2 };
+        req.user = { id, name, last_name, email, roles: roleNames, role_id: roleId };
 
         return next();
     } catch (error) {

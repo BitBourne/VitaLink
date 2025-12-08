@@ -3,9 +3,17 @@ import User from '../../Datos/Models/User.js';
 import Specialty from '../../Datos/Models/Specialty.js';
 import Clinic from '../../Datos/Models/Clinic.js';
 
-const getAllDoctorsService = async () => {
+const getAllDoctorsService = async (verifiedOnly = false) => {
     try {
+        const whereClause = {};
+
+        // Si se solicita solo doctores verificados, agregar filtro
+        if (verifiedOnly) {
+            whereClause.verification_status = 'verified';
+        }
+
         const doctors = await DoctorProfile.findAll({
+            where: whereClause,
             include: [
                 {
                     model: User,
