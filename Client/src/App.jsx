@@ -42,6 +42,12 @@ import RolesPermissions from "./features/Admin/pages/RolesPermissions";
 import ClinicsManagement from "./features/Admin/pages/ClinicsManagement";
 import SpecialtiesManagement from "./features/Admin/pages/SpecialtiesManagement";
 import AdminProfile from "./features/Admin/pages/AdminProfile";
+// Dashboard Doctor
+import DoctorLayout from "./features/Dashboard/doctor/layout/DoctorLayout";
+import ProtectedRoute from "./features/Dashboard/doctor/components/ProtectedRoute";
+import DoctorHome from "./features/Dashboard/doctor/pages/DoctorHome"; 
+import DoctorAppointments from "./features/Dashboard/doctor/pages/DoctorAppointments";
+
 
 import PatientLayout from "./features/Dashboard/patient/layout/PatientLayout";
 
@@ -80,6 +86,17 @@ export default function App() {
                 <Route index element={<SearchPage/>} />
                 <Route path="doctor/:id" element={<DoctorProfile/>} />
               </Route>
+
+              {/* <Route element={<ProtectedRoute allowedRoles={["doctor"]} />}> */}
+                <Route path="/doctor" element={<DoctorLayout />}>
+                    {/* Redirigir /doctor a /doctor/dashboard */}
+                    <Route index element={<DoctorHome />} /> 
+                    <Route path="dashboard" element={<DoctorHome />} />
+                    <Route path="appointments" element={<DoctorAppointments />} />
+                    <Route path="availability" element={<div>Próximamente: Disponibilidad</div>} />
+                    <Route path="profile" element={<div>Próximamente: Perfil</div>} />
+                </Route>
+              {/* </Route> */}
 
 
             {/* Admin Routes */}

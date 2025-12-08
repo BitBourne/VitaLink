@@ -1,53 +1,58 @@
 import React from "react";
 import { Search } from "lucide-react";
-import useSearchDoctors from "../hooks/useSearchDoctors"; // Importar hook
+import useSearchDoctors from "../hooks/useSearchDoctors"; 
 import Button from "../../../core/ui/Components/Button";
 
 const SearchBar = () => {
-  // Consumimos el contexto
   const { updateFilter, filters } = useSearchDoctors();
 
-  // Manejadores de cambios
   const handleSpecialtyChange = (e) => updateFilter('searchQuery', e.target.value);
   const handleLocationChange = (e) => updateFilter('location', e.target.value);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("Filtros actuales:", filters);
   }
 
   return (
-    <form onSubmit={handleSubmit} className="bg-white rounded-xl py-3 px-4 shadow-lg border border-gray-200 max-w-3xl flex items-center space-x-3">
+    // CAMBIO: flex-col en móvil, md:flex-row en escritorio
+    <form 
+        onSubmit={handleSubmit} 
+        className="bg-white rounded-xl p-3 shadow-sm border border-gray-200 w-full flex flex-col md:flex-row gap-3"
+    >
       
       {/* Input Especialidad */}
-      <div className="flex-1 flex items-center space-x-3 p-2 border border-gray-200 rounded-lg focus-within:border-blue-500 transition-colors">
-        <Search className="w-5 h-5 text-gray-400" />
+      <div className="flex-1 flex items-center space-x-3 p-2 border border-gray-200 rounded-lg focus-within:border-blue-500 focus-within:ring-1 focus-within:ring-blue-500 transition-all bg-gray-50 md:bg-white">
+        <Search className="w-5 h-5 text-gray-400 shrink-0" />
         <input
           type="text"
-          placeholder="Buscar especialidad o doctor"
-          className="flex-1 border-none outline-none bg-transparent text-gray-700 placeholder-gray-400"
-          value={filters.searchQuery} // Controlled Input
+          placeholder="¿Qué especialista buscas?"
+          className="flex-1 border-none outline-none bg-transparent text-gray-700 placeholder-gray-400 w-full min-w-0" // min-w-0 evita desbordes
+          value={filters.searchQuery}
           onChange={handleSpecialtyChange}
         />
       </div>
       
       {/* Input Zona */}
-      <div className="flex-1 flex items-center space-x-3 p-2 border border-gray-200 rounded-lg focus-within:border-blue-500 transition-colors">
-        <Search className="w-5 h-5 text-gray-400" />
+      <div className="flex-1 flex items-center space-x-3 p-2 border border-gray-200 rounded-lg focus-within:border-blue-500 focus-within:ring-1 focus-within:ring-blue-500 transition-all bg-gray-50 md:bg-white">
+        <Search className="w-5 h-5 text-gray-400 shrink-0" />
         <input
           type="text"
-          placeholder="Buscar ciudad"
-          className="flex-1 border-none outline-none bg-transparent text-gray-700 placeholder-gray-400"
-          value={filters.location} // Controlled Input
+          placeholder="¿En qué ciudad?"
+          className="flex-1 border-none outline-none bg-transparent text-gray-700 placeholder-gray-400 w-full min-w-0"
+          value={filters.location}
           onChange={handleLocationChange}
         />
       </div>
 
-      <Button
-          text="Buscar"
-          type="submit"
-          variant="primary"
-      />
+      {/* Botón: Ancho completo en móvil, auto en escritorio */}
+      <div className="w-full md:w-auto">
+          <Button
+              text="Buscar"
+              type="submit"
+              variant="primary"
+              className="w-full justify-center" // Asegura que el botón llene el espacio en móvil
+          />
+      </div>
     </form>
   );
 };
