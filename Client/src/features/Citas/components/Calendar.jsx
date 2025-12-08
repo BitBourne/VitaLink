@@ -8,6 +8,7 @@ import interactionPlugin from '@fullcalendar/interaction';
 
 // Componentes y API
 import AppointmentModal from '../Modals/AppointmentModal';
+import CalendarAppointmentModal from "../Modals/CalendarAppointmentModal"
 import apiClient from '../../../core/api/apiClient';
 
 const Calendar = () => {
@@ -111,7 +112,7 @@ const Calendar = () => {
 
             {/* Renderizamos el modal solo si está abierto */}
             {isModalOpen && (
-                <AppointmentModal
+                <CalendarAppointmentModal
                     show={isModalOpen}
                     onClose={closeModal}
                     appointment={selectedEvent}

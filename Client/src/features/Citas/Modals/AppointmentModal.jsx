@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import apiClient from "../../../core/api/apiClient";
+import Alert from "../../../core/ui/Components/Alert";
+
 
 const AppointmentModal = ({ show, onClose, doctor, appointment }) => {
   const [date, setDate] = useState(appointment?.appointment_date || "");
@@ -14,6 +16,8 @@ const AppointmentModal = ({ show, onClose, doctor, appointment }) => {
   const patientId = localStorage.getItem("id");
   const token = localStorage.getItem("token");
   const isEditing = Boolean(appointment);
+
+  const [alert, setAlert] = useState({});
 
   const times = [
     "09:00","09:30","10:00","10:30",
@@ -43,10 +47,13 @@ const AppointmentModal = ({ show, onClose, doctor, appointment }) => {
 
     if (!selectedDoctor || !selectedClinic || !date || !time || !reason) {
       setError("Por favor completa todos los campos antes de continuar.");
+      setAlert({ type: "error", message: "Por favor completa todos los campos." });
       return;
     }
 
     try {
+      setAlert({});
+
       const payload = {
         doctor_profile_id: selectedDoctor,
         clinic_id: selectedClinic,
@@ -64,13 +71,17 @@ const AppointmentModal = ({ show, onClose, doctor, appointment }) => {
         headers: { Authorization: `Bearer ${token}` },
       });
 
+      setAlert({ type: "success", message: `${isEditing ? "Cita actualizada exitosamente" : "Cita creada exitosamente"}` });
+
+      
       setSuccess(isEditing ? "Cita actualizada exitosamente" : "Cita creada exitosamente");
 
       setTimeout(() => {
         onClose();
         setSuccess("");
       }, 2000);
-    } catch (error) {
+    } catch (err) {
+      setAlert({ type: "error", message: err.response?.data?.error || "Ocurrio un error al crear la cita." });
       console.log("Error real del backend:", error.message || error);
     }
   };
@@ -88,8 +99,8 @@ const AppointmentModal = ({ show, onClose, doctor, appointment }) => {
 
         <h3 className="text-xl font-semibold mb-4">Agendar cita</h3>
 
-        {error && <div className="mb-4 p-3 text-sm text-red-700 bg-red-100 border border-red-400 rounded">{error}</div>}
-        {success && <div className="mb-4 p-3 text-sm text-green-700 bg-green-100 border border-green-400 rounded">{success}</div>}
+        {/* {error && <div className="mb-4 p-3 text-sm text-red-700 bg-red-100 border border-red-400 rounded">{error}</div>}
+        {success && <div className="mb-4 p-3 text-sm text-green-700 bg-green-100 border border-green-400 rounded">{success}</div>} */}
 
         {/* Selección de doctor si no hay uno asignado */}
         {!doctor && (
@@ -164,9 +175,17 @@ const AppointmentModal = ({ show, onClose, doctor, appointment }) => {
           />
         </label>
 
+        {alert.message && (
+          <Alert
+              type={alert.type}
+              message={alert.message}
+          />
+        )}
+
+
         <button
           onClick={handleSubmit}
-          className="bg-blue-600 text-white w-full py-2 rounded hover:bg-blue-700"
+          className="bg-blue-600 mt-5 text-white w-full py-2 rounded hover:bg-blue-700"
         >
           Confirmar Cita
         </button>

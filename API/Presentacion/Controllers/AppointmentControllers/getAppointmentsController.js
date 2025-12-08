@@ -11,7 +11,7 @@ const getAppointments = async (req, res, next) => {
         if (roleId === 2) {
             // Doctor - find their doctor profile and filter by it
             const doctorProfileDAO = new DoctorProfileDAO();
-            const doctorProfile = await doctorProfileDAO.findByUserId(userId);
+            const doctorProfile = await doctorProfileDAO.findOne({ user_id: userId });
             if (doctorProfile) {
                 filters.doctor_profile_id = doctorProfile.id;
             } else {
