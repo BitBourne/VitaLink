@@ -86,7 +86,7 @@ export const validateCancelAppointment = [
  * Validación para ID de cita en parámetros
  */
 export const validateAppointmentId = [
-    param('appointment_id')
+    param('id')
         .trim()
         .notEmpty().withMessage('El ID de la cita es requerido')
         .isInt({ min: 1 }).withMessage('ID de cita inválido')
