@@ -52,11 +52,6 @@ export default function App() {
       <Router>
         <AuthProvider>
 
-          <Routes> {/* Crear un conjunto de rutas */}
-            <Route path="/" >
-              <Route index element={<HomePage />} />
-            </Route>
-
         {/* <SearchProvider> */}
             <Routes> {/* Crear un conjunto de rutas */}
               <Route path="/" >
@@ -107,8 +102,6 @@ export default function App() {
             {/* Página no encontrada */}
               <Route path="*" element={<NotFoundPage />} />
             </Routes>
-          </Routes>
-
           {/* </SearchProvider> */}
         </AuthProvider>
       </Router>

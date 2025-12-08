@@ -1,7 +1,7 @@
 import React from "react";
 import { Outlet, Navigate } from "react-router-dom";
 import useAuth from "../../../auth/hooks/useAuth";
-import Header from "../../../../core/ui/Layout/Header";
+import Header from "../../../../core/ui/layout/Header";
 
 
 const PatientLayout = () => {
@@ -10,7 +10,7 @@ const PatientLayout = () => {
   if (loading) return "Cargando...";
 
   // Solo si es paciente (role_id = 2 por ejemplo)
-  if (!user?.id || !user.roles?.includes("patient")) return <Navigate to="/" />;
+  if (!user?.id || !user.roles?.includes("patient", "admin")) return <Navigate to="/" />;
 
   return (
     <div className="min-h-screen bg-main-gradient-10 flex flex-col">
