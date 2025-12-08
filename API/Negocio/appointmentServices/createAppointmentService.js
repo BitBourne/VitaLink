@@ -4,7 +4,7 @@ import UserDAO from '../../Datos/DAOs/UserDAO.js';
 import DoctorProfileDAO from '../../Datos/DAOs/DoctorProfileDAO.js';
 import ClinicDAO from '../../Datos/DAOs/ClinicDAO.js';
 import sendAppointmentEmail from './helpers/sendAppointmentEmail.js';
-import createConversationService from '../conversationServices/conversationService.js';
+// import createConversationService from '../conversationServices/conversationService.js';
 
 const createAppointmentService = async (appointmentDTO, creatorUserId) => {
     const { patient_id, doctor_profile_id, clinic_id, appointment_date, appointment_time, reason, is_telemedicine } = appointmentDTO;
@@ -67,18 +67,18 @@ const createAppointmentService = async (appointmentDTO, creatorUserId) => {
     });
 
     // Obtener datos del doctor para la conversación
-    const doctorProfile = await doctorProfileDAO.findById(doctor_profile_id);
+    // const doctorProfile = await doctorProfileDAO.findById(doctor_profile_id);
 
     // Crear la conversación inmediatamente después de crear la cita
-    const conversation = await createConversationService({
-        appointment_id: newAppointment.id,
-        doctor_profile_id: doctorProfile.user_id, 
-        patient_id
-    }, creatorUserId);
+    // const conversation = await createConversationService({
+    //     appointment_id: newAppointment.id,
+    //     doctor_profile_id: doctorProfile.user_id, 
+    //     patient_id
+    // }, creatorUserId);
 
     return {
         newAppointment,
-        conversationId: conversation.id
+        // conversationId: conversation.id
     };
 };
 
