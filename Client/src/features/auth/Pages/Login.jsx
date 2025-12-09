@@ -56,10 +56,7 @@ export default function Login() {
         navigate("/doctor");
       } else if (userRole === 3) {
         // Patient
-        navigate("/paciente");
-      } else if (userRole === 1) {
-        // Admin
-        navigate("/admin");
+        navigate("/");
       } else {
         // Default fallback
         navigate("/");

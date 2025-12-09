@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import { User, LogOut, ChevronDown } from "lucide-react"; // Asegúrate de tener lucide-react instalado
+import { User, LogOut, ChevronDown, LayoutDashboard } from "lucide-react"; // Asegúrate de tener lucide-react instalado
+import { Link, Navigate } from "react-router-dom";
 
 import useAuth from "../../../features/auth/hooks/useAuth";
 
@@ -53,10 +54,13 @@ export default function UserMenu({ user }) {
 
             {/* Opciones del menú */}
             <div className="p-2 flex flex-col gap-1">
-              <button className="flex items-center gap-3 w-full text-left px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-lg transition-colors">
-                <User size={16} />
-                Mi Perfil
-              </button>
+              {/* <button className="flex items-center gap-3 w-full text-left px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-lg transition-colors">
+                Dashboard
+              </button> */}
+              <Link 
+                className="flex items-center gap-3 w-full text-left px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-lg transition-colors"
+                to={"/paciente"}
+              >Dashboard</Link>
               
               {/* Puedes agregar más opciones aquí */}
               
